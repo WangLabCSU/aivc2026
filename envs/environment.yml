@@ -1,0 +1,37 @@
+# VCC2026 环境初稿 —— 版本待全员评审后冻结为锁文件
+# 创建: conda env create -f envs/environment.yml && conda activate aivc2026
+name: aivc2026
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      # --- 官方工具 ---
+      - vcc                 # 提交 CLI：vcc prep / vcc submit
+      - cell-eval           # 六指标评测（cell-eval2, vcc2026 profile）
+      - git+https://github.com/ArcInstitute/state.git   # L2 起点模型（注意非商业 license）
+      # --- 数据与科学栈 ---
+      - anndata
+      - scanpy
+      - h5py
+      - pandas
+      - polars
+      - numpy
+      - scipy
+      - scikit-learn
+      - statsmodels
+      - pyarrow
+      - tqdm
+      - pyyaml
+      - hydra-core          # 与 state 生态对齐的配置管理
+      - matplotlib
+      - seaborn
+      - jupyterlab
+      # --- 深度学习（按集群 CUDA 版本再固化）---
+      - torch
+      - lightning
+      - einops
+# TODO(w1): 冻结所有版本号 -> environment.lock.yml；记录 CUDA/driver 版本
