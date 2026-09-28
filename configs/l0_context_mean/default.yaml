@@ -1,0 +1,7 @@
+# L0 上下文均值基线（密度帽合规版）
+# 假设: 预测=该上下文 NTC 均值谱是官方标度 0 分锚点；价值在打通链路+实测 naive 分数
+# 阈值语义: 0.05 CPM @ 20k lib ≈ 均值 ≥1 count（保质量；20k 深度下 1 CPM 只剩 ~50 基因，勿用）
+min_mean_cpm: 0.05
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20260928_l0_context-mean_v1
