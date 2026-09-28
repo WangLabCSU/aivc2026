@@ -1,4 +1,6 @@
-# VCC2026 环境初稿 —— 版本待全员评审后冻结为锁文件
+# VCC2026 环境 v2（2026-09-28 按调研修正版本约束）
+# 修正: python>=3.11 (arc-state 要求 >=3.11,<3.13); 包名 vcc-cli / cell-eval2 / arc-state
+# HF 走镜像: export HF_ENDPOINT=https://hf-mirror.com
 # 创建: conda env create -f envs/environment.yml && conda activate aivc2026
 name: aivc2026
 channels:
@@ -6,20 +8,22 @@ channels:
   - nvidia
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.11
   - pip
   - pip:
       # --- 官方工具 ---
-      - vcc                 # 提交 CLI：vcc prep / vcc submit
-      - cell-eval           # 六指标评测（cell-eval2, vcc2026 profile）
-      - git+https://github.com/ArcInstitute/state.git   # L2 起点模型（注意非商业 license）
+      - vcc-cli             # 提交 CLI（包名 vcc-cli，命令 vcc）：prep/submit/skill install
+      - cell-eval2          # 官方打分器：cell-eval2 --preset vcc2026（0.16.0+）
+      - cell-eval           # v1 工具：--ceiling 噪声上限估计仍用得到
+      - arc-state           # State 模型（非商业 license，竞赛用途官方鼓励）
+      - gpudge              # GPU DE 加速（可选，CUDA>=12.6）
       # --- 数据与科学栈 ---
       - anndata
       - scanpy
       - h5py
       - pandas
       - polars
-      - numpy
+      - numpy<2.3
       - scipy
       - scikit-learn
       - statsmodels
@@ -34,4 +38,4 @@ dependencies:
       - torch
       - lightning
       - einops
-# TODO(w1): 冻结所有版本号 -> environment.lock.yml；记录 CUDA/driver 版本
+# TODO(w1): pip freeze 冻结 -> environment.lock.yml；记录 CUDA/driver 版本

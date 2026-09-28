@@ -30,10 +30,10 @@
 | 不允许 | 出现 non-targeting 行；缺失 pert_counts.csv 中任何一个扰动；数量 ≠400 |
 | `.obs` 列 | `target_gene`（gene symbol 字符串）、`context`（字符串 A/B/C） |
 
-CLI 流程（VCC 官方提供 **`vcc` Python 包**，专为编码智能体设计了 skill 文档，可直接喂给 coding agent）：
+CLI 流程（官方 **`vcc-cli` Python 包**，装出的命令是 `vcc`；注意 PyPI 的 `vcc` 是无关的 Varnish 工具。内置 `vcc skill install` 可给 coding agent 安装官方技能，2026-09-16 规则修订后 LLM/启发式直接生成预测亦合规）：
 
 ```bash
-pip install vcc  # 官方命令行工具
+pip install vcc-cli  # 官方命令行工具（包名 vcc-cli，命令 vcc）
 vcc prep prediction.h5ad -g gene_names.csv --perts pert_counts.csv -o prediction.vcc
 vcc submit prediction.vcc -m "team message" --wait   # 返回排行榜结果
 ```
@@ -57,7 +57,7 @@ vcc submit prediction.vcc -m "team message" --wait   # 返回排行榜结果
 三条最关键的"标尺"设定：
 
 1. **参考标度**：每个指标按"上下文均值预测器 = 0 分、真实重复实验 ≈ 1 分"线性映射。即 1.0 就是数据噪声的理论天花板，**超过 1 表示比重复实验一致性还准**。
-2. **朴素基线锚点**：主办方一个 robust 朴素模型约得 0.85。意味着直接照抄对照态只能得"及格分"，冲排名必须稳定超越它。
+2. **朴素基线锚点**：社区流传"官方 robust 朴素模型约 0.85"，**2026-09-28 调研未在官方渠道核实到该数字**（官网只定义锚点含义），以自家 LOCO 复算为准。直接照抄对照态只能得"及格分"，冲排名必须稳定超越它是确定的。
 3. **被敲低基因自身所在行从全部六指标中剔除**（这是已知常见的"作弊"维度，官方已规避）。
 
 ### 战略推论
@@ -82,10 +82,10 @@ pred(g, context) = 控制态分布采样 ⊕ λ(context, g) × sign_mapped(logFC
 其中 logFC 先映射到该上下文可表达基因集合上（置零不可表达基因）、λ 按效应大小先验缩放。这一档成本低、可解释、是所有后续模型的必备对照组（它就是把朴素基线的 0.85 往上顶的第一杠杆）。
 
 ### L2 · State 零样本推理（官方起点，第 1–2 周）
-跑通 Arc 官方模型 State（GitHub `ArcInstitute/state`，checkpoint 有 state-24m / state-xl）：输入控制态 anndata + 靶基因，`state tx inference` 直接产出扰动后表达。官方定位它是 benchmark starter（原话大意："若它能赢就不办竞赛了"），但它是：
+跑通 Arc 官方模型 State（GitHub `ArcInstitute/state`，PyPI 包名 **`arc-state`**，要求 Python ≥3.11；checkpoint 实为 **SE-600M/SE-100M 嵌入模型 + ST-HVG-*/ST-SE-*（Parse/Tahoe/Replogle）转移模型**——原方案所写 state-24m/state-xl 命名不存在）：输入控制态 anndata + 靶基因，`state tx infer` 直接产出扰动后表达。官方定位它是 benchmark starter（原话大意："若它能赢就不办竞赛了"），且社区实测其 VCC 基线约 4.68/10、微调仅 +0.04，但它是：
 - 所有自研模型的强 baseline；
 - 其状态转移模块可作为混合架构的一个"专家分支"；
-- 注意 checkpoint 为**非商业许可**，参赛使用边界需读一遍 license（竞赛用途一般被允许，保留凭证）。
+- 注意 checkpoint 为**非商业许可**，但官方专门发布 VCC 训练 colab，竞赛用途明确被鼓励（保留凭证备 finalist 方法描述）。
 
 ### L3 · 有监督微调 / 上下文条件化（主力档，第 2–5 周）
 任务本质 = 学 `f(控制态上下文, 敲低基因) → 扰动后分布`，且要求对未见上下文外推。两条并行支线择优：
@@ -186,3 +186,51 @@ pred(g, context) = 控制态分布采样 ⊕ λ(context, g) × sign_mapped(logFC
 - 获奖 preprint：BioMap xTrimoSCPerturb（2025 冠军）；arXiv:2604.13986 PRiMeFlow（Altos Labs，通才奖）
 - 相关论文：Cell 2025 纲领（Virtual Cell Challenge: Toward a Turing test for the virtual cell）；Cell 2026 基准（Benchmarking zero-shot generalization）；Adduri et al. 2025 STATE（bioRxiv 2025.06.26.661135）；PerturBench（arXiv:2408.10609）
 - 社区教程：gmdbioinformatics.substack.com《Arc Virtual Cell Challenge》系列（Part 3 含 State 微调 notebook，建议持出一个熟悉细胞系如 HepG2 做本地零样本验证）
+
+---
+
+# v2 修订（2026-09-28，基于全面调研）
+
+> 依据：docs/research/ 四份调研（官方规则/State/获奖方法与文献/数据源）。过时事实已在正文就地修正。
+
+## A. 影响全局的新事实
+
+1. **规则修订（9/16）**：删除"预测必须由 ML 模型生成"条款 → 纯统计/启发式/LLM 生成的提交**合法**（仍禁止把实验结果直接塞进提交或修正输出）。保留一条无神经网络提交线从"风险预案"升级为"正式选项"。
+2. **官方 agent 工具链**：`vcc skill install` 给 coding agent 装官方技能；`vcc-cli`/`cell-eval2`/`arc-state` 为正确包名。
+3. **密度帽是第一工程陷阱**：均值基线 ≈11,800 entries/细胞，帽 ≈13,200，余量仅 ~10% → 所有输出必须 csr + 滤 <1 CPM + 不存显式零；首个 L0 就按此实现。
+4. **naive≈0.85 未经官方证实**；官方锚点仅定义标度（0=上下文均值，1=重复实验），一切以自家 LOCO 复算为准。
+5. **服务器网络**：HF 直连不通（走 hf-mirror.com）；GCS/Zenodo 可匿名直下；数据池下载已启动（VCC2025 34GB + scPerturb 15GB，scripts/download_pool.sh）。
+6. **gpudge/CCL_2 不可用作训练数据**（无公开下载）。
+
+## B. 技术路线 v2（证据驱动重排）
+
+2025 前排证据：前三名均非纯端到端 DL；冠军=基础模型+显式统计特征+pseudo-bulk 训练；第 3 名 TransPert 仅用 summary 级统计+蛋白嵌入；文献共识（Ahlmann-Eltze 2025、Wei 2026）：held-out 细胞系上**简单统计签名迁移仍难被打败**；State 微调社区实测仅 +0.04。
+
+| 档位 | v2 定位 | 说明 |
+|------|---------|------|
+| L0 | 密度帽合规版上下文均值 | 第一个提交，打通链路+实测 naive 分数（校准 0.85 传闻） |
+| **L1（升为主力骨架）** | 伪批量 logFC 签名迁移 | scPerturb 池（K562 gwps/essential、rpe1、Nadig hepg2/jurkat、Norman、Adamson）→ 同基因跨宿主签名加权聚合 → 映射目标上下文；Δ 幅度先验 = basal 表达 × DepMap 必需性 × guide 效率 |
+| L1.5（新增） | 上下文条件化轻量回归 | L1 特征 + 上下文指纹（NTC 伪批量/通路活性/周期应激签名）→ 岭回归/GBDT/浅 MLP 预测 Δ 的缩放与方向修正；对标 TransPert/Turbine |
+| L2 | State 零样本（SE/ST 正确 checkpoint） | baseline+集成成员，微调降级为可选（预期收益低） |
+| L3 | L1.5 骨干 + 生成式叠加 | flow matching 头建模 Δ 分布（对标 PRiMeFlow 但在 Δ 空间），统计/生成两分支不确定性融合 |
+| L4 | 六指标逐项校准 + 集成 | λ 全局缩放（pds/mse 权衡）、DE 锐化温度（fid/reach/jac）、clip 到 [0, max(NTC)] |
+
+输出层统一：`pred(g, ctx) = NTC采样(按UMI深度) ⊕ λ(ctx,g)·Δ̂(g,ctx)`，天然满足 counts 约束；训练/评测全程 pseudo-bulk 层面。
+
+## C. 时间表重排（9/28 实况：进度落后原计划 4 周）
+
+| 窗口 | 里程碑 | 执行方式 |
+|------|--------|----------|
+| 9/28（今天） | 数据池后台下载；环境冻结（py3.11+vcc-cli+cell-eval2+arc-state）；vcc skill install 学习官方约定；L0 代码 | 白天搭建，夜间免费窗口调试 |
+| 9/29–9/30 | **L0 上榜**（合规版）；VCC2025 自测集跑通 cell-eval2 本地打分；LOCO v0（Nadig hepg2/jurkat 做伪 D/E/F） | 夜间迭代 + 白天 nohup 评测 |
+| 10/1–10/4 | L1 签名库构建 + 上榜；DepMap/MSigDB 特征入库；每夜 2 发探 naive/L1 实际分差 | 夜间窗口集中迭代 |
+| 10/5–10/7（窗口截止） | L1.5 轻量回归上线；LOCO v1 三宿主；State 零样本（L2）上榜 | 窗口收官目标：三条提交线齐备 |
+| 10/8–10/21 | L3 生成式叠加 + 校准搜索 + 集成；10/13 冻结一键管线，dry-run D/E/F | 付费时段（每夜 ~4h 有效窗口） |
+| 10/22–11/4 | 24h 内交首版（L1 兜底+当日最强）；集中推理 D/E/F；11/4 前锁定最终提交 | 同原方案 |
+
+## D. 研发运作方式（窗口经济学）
+
+- **免费窗口（23:00–09:00，至 10/7）**：方案设计、代码迭代、专家评审、短测试——LLM 密集型工作全部排在夜里。
+- **付费时段**：长运算（下载、预处理、State 推理、训练、LOCO 批量评测）用 `nohup`/SLURM 挂后台，不占 LLM 交互。
+- **快测试、快失败、快迭代**：每轮迭代 = 明确假设 → 分钟级 smoke test → 评审 → 存档；迭代日志与指标快照强制落盘（见 CONTRIBUTING）。
+- **团队 skill**：`.agents/skills/vcc-team/`——PI（会话）+ ML 专家 + 计算生物学家 + 免疫学家串行协作，独立审核专家在提交前红队评审，直接向用户报告。
