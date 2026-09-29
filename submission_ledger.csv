@@ -1,1 +1,2 @@
 date,submitter,pred_file,git_commit,loco_score,online_score_per_metric,quota_use,notes
+2026-09-29,wsx,20260928_l0_context-mean_v1,c071ec4,NA,"pds=-8.3e-17;mse=0;nmae=-6;fid=-0.0464;reach=0.0139;jac=0.0015;overall=-1.0051;rank=1215",daily-best,L0锚点校准:0锚点仅对pds/mse成立;DE指标无信号nmae触底-6;naive-0.85传闻证伪
