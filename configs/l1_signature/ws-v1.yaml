@@ -1,0 +1,12 @@
+# L1 签名迁移 v1（ws = Shixiang Wang）
+# 假设: CRISPRi 敲低的 logFC 方向跨细胞系共享，K562 gwps(272/300 覆盖) 经 λ 衰减迁移
+# 效应方向仍有信号; 未覆盖 25 靶用 gwps 全局应激签名兜底
+datasets: [gwps, norman]      # 其余 essential 系覆盖为 0，暂不聚合
+lambda_real: 0.5              # 真实签名 logFC 衰减系数（跨细胞系迁移折半）
+lambda_generic: 0.15          # 通用兜底签名系数
+max_abs_delta: 4.0            # logFC 截断
+max_fold: 8.0                 # 相对 NTC 均值的最大倍数
+min_mean_cpm: 0.05            # 同 L0（均值 ≥1 count）
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20260929_l1_signature_v1
