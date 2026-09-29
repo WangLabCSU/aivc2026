@@ -36,7 +36,8 @@ def ntc_mean_profile(a: ad.AnnData) -> np.ndarray:
 def build_pred(a: ad.AnnData, mean: np.ndarray, dmap: pd.Series | None,
                lam: float, max_fold: float = 8.0) -> ad.AnnData:
     tg = a.obs["target_gene"].astype(str)
-    perts = [p for p in tg.unique() if p != CONTROL]
+    # cell-eval2 要求 pred/real 扰动集合一致（含对照），NTC 预测=均值行
+    perts = list(tg.unique())
     panel = pd.Index(a.var_names.astype(str))
     blocks = []
     for p in perts:
@@ -86,7 +87,7 @@ def main() -> None:
     sig = pd.read_parquet(SIG)
     sig = sig[sig["gene"].isin(panel)]
     sig_g = sig.groupby(["target_gene", "gene"], sort=False)["logfc"].mean()
-    hits = len(set(perts) & set(sig.index.get_level_values(0)))
+    hits = len(set(perts) & set(sig_g.index.get_level_values(0)))
     print(f"[info] test perts={len(perts)}, gwps coverage={hits}", flush=True)
 
     results = {"lambda_real": args.lambda_real, "n_test_perts": len(perts),
