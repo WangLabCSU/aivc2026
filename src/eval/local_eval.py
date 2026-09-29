@@ -34,20 +34,33 @@ def ntc_mean_profile(a: ad.AnnData) -> np.ndarray:
 
 
 def build_pred(a: ad.AnnData, mean: np.ndarray, dmap: pd.Series | None,
-               lam: float, max_fold: float = 8.0) -> ad.AnnData:
+               lam: float, max_fold: float = 8.0, sampled: bool = False,
+               seed: int = 0) -> ad.AnnData:
     tg = a.obs["target_gene"].astype(str)
     # cell-eval2 要求 pred/real 扰动集合一致（含对照），NTC 预测=均值行
     perts = list(tg.unique())
     panel = pd.Index(a.var_names.astype(str))
+    rng = np.random.default_rng(seed)
+    Xntc = None
+    if sampled:
+        mask = tg.to_numpy() == CONTROL
+        Xntc = sp.csr_matrix(a[mask].X)
+        n_ntc = Xntc.shape[0]
     blocks = []
     for p in perts:
-        row = mean.copy()
+        if sampled:
+            idx = rng.choice(n_ntc, size=N_CELLS, replace=True)
+            M = Xntc[idx].copy()
+        else:
+            M = sp.csr_matrix(np.tile(mean, (N_CELLS, 1)))
         if dmap is not None and p in dmap.index.get_level_values(0):
             d = dmap.loc[p]
             d = d.reindex(panel).to_numpy()
-            factor = np.power(2.0, lam * np.nan_to_num(d, nan=0.0))
-            row = np.rint(np.clip(mean * factor, 0.0, max_fold * np.maximum(mean, 1.0)))
-        blocks.append(sp.csr_matrix(np.tile(row, (N_CELLS, 1))))
+            factor = np.power(2.0, lam * np.nan_to_num(d, nan=0.0)).astype(np.float32)
+            M = M.multiply(factor.reshape(1, -1)).tocsr()
+            M.data = np.clip(np.rint(M.data), 0, None).astype(np.float32)
+            M.eliminate_zeros()
+        blocks.append(M)
     X = sp.vstack(blocks, format="csr").astype(np.float32)
     X.eliminate_zeros()
     obs = pd.DataFrame(
@@ -74,6 +87,7 @@ def run_celleval(pred: Path, tag: str) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--lambda-real", type=float, default=0.5)
+    ap.add_argument("--sampled", action="store_true", help="NTC 真实细胞采样（保留组内方差）")
     ap.add_argument("--skip-l0", action="store_true")
     args = ap.parse_args()
     OUTBASE.mkdir(parents=True, exist_ok=True)
@@ -90,14 +104,15 @@ def main() -> None:
     hits = len(set(perts) & set(sig_g.index.get_level_values(0)))
     print(f"[info] test perts={len(perts)}, gwps coverage={hits}", flush=True)
 
-    results = {"lambda_real": args.lambda_real, "n_test_perts": len(perts),
-               "gwps_coverage": hits}
+    results = {"lambda_real": args.lambda_real, "sampled": args.sampled,
+               "n_test_perts": len(perts), "gwps_coverage": hits}
 
     # L1
-    pred = build_pred(a, mean, sig_g, args.lambda_real)
-    p1 = OUTBASE / f"l1_lam{args.lambda_real}.h5ad"
+    tag = f"l1_lam{args.lambda_real}" + ("_sampled" if args.sampled else "")
+    pred = build_pred(a, mean, sig_g, args.lambda_real, sampled=args.sampled)
+    p1 = OUTBASE / f"{tag}.h5ad"
     pred.write_h5ad(p1, compression="gzip")
-    results["l1"] = run_celleval(p1, f"l1_lam{args.lambda_real}")
+    results["l1"] = run_celleval(p1, tag)
 
     # L0 锚点
     if not args.skip_l0:
