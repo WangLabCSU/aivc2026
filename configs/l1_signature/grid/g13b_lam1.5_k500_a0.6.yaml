@@ -1,0 +1,14 @@
+# L1.3 wave2: combo: K500 + stress 0.6
+datasets: [gwps, norman]
+lambda_real: 1.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 8.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+top_k: 500
+stress_alpha: 0.6
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: g13b_lam1.5_k500_a0.6

@@ -25,17 +25,41 @@ from src.models.l0_context_mean.make_predictions import (  # noqa: E402
 
 
 def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataFrame, dict]:
-    """聚合各数据集签名为每靶基因的 Δ 长表 [target_gene, gene, delta]；返回 (长表, 报告)。"""
+    """聚合各数据集签名为每靶基因的 Δ 长表 [target_gene, gene, delta]；返回 (长表, 报告)。
+
+    L1.3 新增（向后兼容: 键缺省时行为与 L1.2 完全一致）:
+    - stress_alpha (float, 默认 0.0): 每个签名先减去 stress_alpha × 全局应激 logFC
+      （gwps 全扰动 groupby gene 均值）。假设跨细胞系共享的全基因组应激成分是
+      fid 方向错误的来源，减掉后剩余"特异性响应"更可迁移。
+    - top_k (int|null, 默认 null): 每靶基因按 |delta| 只保留前 K 个基因（含 generic 兜底行），
+      其余丢弃（等价于置 0，预测时 factor=1）。稀疏化让预测 DE 集变窄变准，救 fid/jac。
+    """
     sig_dir = ROOT / "data/interim/signatures"
     per_ds = {}
+    raws = {}
     report = {"datasets": {}}
+    stress_alpha = float(cfg.get("stress_alpha") or 0.0)
+    top_k = cfg.get("top_k")
     for name in cfg["datasets"]:
         f = sig_dir / f"{name}.parquet"
         if not f.exists():
             continue
-        df = pd.read_parquet(f)
+        raws[name] = pd.read_parquet(f)
+
+    # 全局应激签名（gwps 全扰动 groupby gene 均值）
+    stress = None
+    if stress_alpha > 0:
+        gw_all = raws.get("gwps")
+        if gw_all is None and (sig_dir / "gwps.parquet").exists():
+            gw_all = pd.read_parquet(sig_dir / "gwps.parquet")
+        if gw_all is not None:
+            stress = gw_all.groupby("gene", sort=False)["logfc"].mean()
+
+    for name, df in raws.items():
         df = df[df["gene"].isin(panel)]
         g = df.groupby(["target_gene", "gene"], sort=False)["logfc"].mean().reset_index()
+        if stress is not None:
+            g["logfc"] = g["logfc"] - stress_alpha * stress.reindex(g["gene"]).fillna(0.0).to_numpy()
         per_ds[name] = g
         report["datasets"][name] = {"perts": int(df["target_gene"].nunique()),
                                     "genes_in_panel": int(g["gene"].nunique())}
@@ -54,9 +78,15 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
     # 兜底: gwps 全局均值签名（通用应激响应）
     uncovered = [t for t in targets if t not in covered]
     if uncovered and (sig_dir / "gwps.parquet").exists() and cfg["lambda_generic"] > 0:
-        gw = pd.read_parquet(sig_dir / "gwps.parquet")
+        gw = raws.get("gwps")
+        if gw is None:
+            gw = pd.read_parquet(sig_dir / "gwps.parquet")
         generic = gw.groupby("gene", sort=False)["logfc"].mean().reset_index()
         generic = generic[generic["gene"].isin(panel)]
+        if stress is not None:
+            # generic 本身就是应激签名，减后等价于 (1-stress_alpha)·stress
+            generic["logfc"] = generic["logfc"] - stress_alpha * stress.reindex(
+                generic["gene"]).fillna(0.0).to_numpy()
         gen = pd.DataFrame({
             "target_gene": np.repeat(uncovered, len(generic)),
             "gene": np.tile(generic["gene"].to_numpy(), len(uncovered)),
@@ -64,9 +94,18 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
         })
         real = pd.concat([real, gen], ignore_index=True)
 
+    if top_k is not None:
+        k = int(top_k)
+        real = (real.assign(_abs=real["delta"].abs())
+                .sort_values("_abs", ascending=False)
+                .groupby("target_gene", sort=False)
+                .head(k)
+                .drop(columns="_abs"))
+
     real["delta"] = real["delta"].clip(-cfg["max_abs_delta"], cfg["max_abs_delta"])
     report.update({"covered_targets": len(covered), "uncovered_targets": len(uncovered),
-                   "delta_rows": len(real)})
+                   "delta_rows": len(real), "top_k": top_k, "stress_alpha": stress_alpha,
+                   "stress_genes": int(len(stress)) if stress is not None else 0})
     return real, report
 
 

@@ -1,0 +1,14 @@
+# L1.3 网格: Δ 稀疏化 (top_k), stress_alpha=0; cell_sampling 保持与 L1.2 一致
+datasets: [gwps, norman]
+lambda_real: 1.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 8.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+top_k: 150
+stress_alpha: 0.0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: g13_lam1.0_k150

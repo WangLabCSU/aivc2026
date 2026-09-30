@@ -1,0 +1,14 @@
+# L1.3 wave2: lambda probe 2.0, no sparse
+datasets: [gwps, norman]
+lambda_real: 2.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 8.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+top_k: null
+stress_alpha: 0.0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20260930_l13-sampled_lam20
