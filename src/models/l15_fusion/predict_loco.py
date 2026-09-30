@@ -25,9 +25,9 @@ def predict_xgb(cfg, cache, X: np.ndarray, stage: int) -> np.ndarray:
 
 
 def predict_mlp(cfg, cache, X: np.ndarray, stage: int, gpos: np.ndarray,
-                tpos: np.ndarray, device: str) -> np.ndarray:
+                tpos: np.ndarray, device: str, pt_tag: str | None = None) -> np.ndarray:
     import torch
-    tag = f"s{stage}"
+    tag = pt_tag or f"s{stage}"
     ck = torch.load(cache / f"mlp_{tag}.pt", map_location=device, weights_only=False)
     mu, sd = ck["mu"], ck["sd"]
     sd = np.where(sd < 1e-6, 1.0, sd)
@@ -70,6 +70,7 @@ def main() -> None:
     ap.add_argument("--alpha", type=float, default=0.5)
     ap.add_argument("--tag", required=True)
     ap.add_argument("--clip", type=float, default=4.0)
+    ap.add_argument("--mlp-pt", default=None, help="MLP checkpoint tag, 如 s1_noemb")
     args = ap.parse_args()
     cfg = load_cfg()
     cache = work_dir(cfg)
@@ -89,7 +90,7 @@ def main() -> None:
         if m == "xgb":
             preds["xgb"] = predict_xgb(cfg, cache, X, args.stage)
         elif m == "mlp":
-            preds["mlp"] = predict_mlp(cfg, cache, X, args.stage, gpos, tpos, device)
+            preds["mlp"] = predict_mlp(cfg, cache, X, args.stage, gpos, tpos, device, args.mlp_pt)
         print(f"  pred[{m}] done ({time.time()-t:.0f}s)", flush=True)
     if len(preds) == 2:
         preds["fused"] = (args.alpha * preds["xgb"]

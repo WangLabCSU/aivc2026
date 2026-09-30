@@ -136,6 +136,8 @@ def module_flags(vocab: pd.Index, cfg: dict) -> np.ndarray:
     genes = np.asarray(vocab.tolist())
     for i, m in enumerate(names):
         spec = ms[m]
+        if isinstance(spec, list):
+            spec = {"genes": spec}
         hit = np.zeros(len(vocab), bool)
         for pre in spec.get("prefix", []):
             hit |= np.char.startswith(genes, pre)

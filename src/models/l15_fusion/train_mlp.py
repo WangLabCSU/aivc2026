@@ -31,7 +31,7 @@ def load_embeddings(cfg, cache, n_vocab: int):
 
 
 def train(X, y, ctx, gpos, E, mc: dict, tr: np.ndarray, va: np.ndarray, tag: str,
-          cache, device: str) -> dict:
+          cache, device: str, tpos_rows: np.ndarray) -> dict:
     import torch
     import torch.nn as nn
     t0 = time.time()
@@ -163,7 +163,7 @@ def main() -> None:
     if E is not None and len(E) < nv:
         E = np.concatenate([E, np.zeros((nv - len(E), E.shape[1]), np.float32)])
         print("  padded E to vocab", flush=True)
-    res = train(X, y, ctx, gpos, E, cfg["mlp"], tr, va, tag, cache, device)
+    res = train(X, y, ctx, gpos, E, cfg["mlp"], tr, va, tag, cache, device, tpos_rows)
     res["emb_used"] = used
     (cache / f"mlp_{tag}_result.json").write_text(json.dumps(res))
     print(f"train_mlp {tag} complete: {res} ({time.time()-t0:.0f}s)", flush=True)
