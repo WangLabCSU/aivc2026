@@ -33,6 +33,11 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
       fid 方向错误的来源，减掉后剩余"特异性响应"更可迁移。
     - top_k (int|null, 默认 null): 每靶基因按 |delta| 只保留前 K 个基因（含 generic 兜底行），
       其余丢弃（等价于置 0，预测时 factor=1）。稀疏化让预测 DE 集变窄变准，救 fid/jac。
+    - confidence (dict|null, 默认 null): L1.7 方向置信度加权。enabled 时 Δ 乘 w_g
+      （在 top_k/clip 之前，即定显著集之前）。键: enabled, sig_threshold(0.25),
+      beta(0.5), exclude_datasets([])（LOCO: 评测上下文对应的数据集签名不参与投票），
+      vote_datasets(默认 norman,k562_ess,rpe1,hepg2,jurkat；gwps 为 Δ 源不投票)。
+      基因不在权重表 → w'=beta。
     """
     sig_dir = ROOT / "data/interim/signatures"
     per_ds = {}
@@ -93,6 +98,28 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
             "delta": np.tile(generic["logfc"].to_numpy(), len(uncovered)),
         })
         real = pd.concat([real, gen], ignore_index=True)
+
+    conf = cfg.get("confidence") or {}
+    if conf.get("enabled"):
+        from src.models.l1_signature.confidence import compute_direction_confidence, vote_datasets
+        invert = bool(conf.get("invert", False))
+        w = compute_direction_confidence(
+            vote_datasets(conf.get("vote_datasets")), gene_panel=panel,
+            sig_threshold=float(conf.get("sig_threshold", 0.25)),
+            beta=float(conf.get("beta", 0.5)),
+            exclude_datasets=list(conf.get("exclude_datasets") or []),
+            invert=invert)
+        beta = float(conf.get("beta", 0.5))
+        neutral = 1.0 if invert else beta  # invert 诊断模式下无票基因=中性满权
+        wv = real["gene"].map(w).fillna(neutral).to_numpy()
+        real["delta"] = real["delta"] * wv
+        report["confidence"] = {"enabled": True, "beta": beta, "invert": invert,
+                                "sig_threshold": float(conf.get("sig_threshold", 0.25)),
+                                "exclude_datasets": list(conf.get("exclude_datasets") or []),
+                                "genes_in_weight_table": int(len(w)),
+                                "delta_rows_weighted": int(len(real)),
+                                "mean_w_applied": float(np.mean(wv)) if len(wv) else None,
+                                "frac_at_beta": float(np.mean(wv == beta)) if len(wv) else None}
 
     if top_k is not None:
         k = int(top_k)
