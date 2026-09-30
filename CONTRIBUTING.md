@@ -53,3 +53,9 @@ date,submitter,pred_file,git_commit,loco_score,online_score_per_metric,quota_use
 
 - 会议纪要进 `docs/meetings/YYYY-MM-DD_主题.md`，决议项列表化（谁、做什么、何时）。
 - 方案变更（技术路线调整、指标取舍）更新 `docs/Arc虚拟细胞竞赛_第二届竞赛方案.md` 并在纪要中引用。
+
+## 8. 校准/消融提交豁免条款（2026-09-30 REV 审计后增补）
+
+每日第 2 发可用于**校准实验**，豁免"LOCO 不劣于线上最优"gate，但必须**预登记**三要素于
+`docs/iterations/<date>_<tag>-preregistration.md`：①假设；②预期读数（含数值区间）；
+③决策规则（每种读数区间对应的下一步动作）。台账 `quota_use=calibration` 仅对已预登记者有效。
