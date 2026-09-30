@@ -78,8 +78,9 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--score", action="store_true", help="跑 bench_score 归一化(Q_HepG2)")
     args = ap.parse_args()
+    from src.models.l15_fusion.common import load_cfg, work_dir
     cfgd = {"n_cells": 400}
-    delta_path = ROOT / "data/interim/l15_fusion" / f"pred_{args.pred_tag}.parquet"
+    delta_path = work_dir(load_cfg()) / f"pred_{args.pred_tag}.parquet"
     tag = args.bench_tag
     outdir = OUT / tag
     pp = build_pred(args.ctx, delta_path, args.lam, outdir, args.seed,

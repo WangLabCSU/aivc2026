@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -9,7 +10,7 @@ import pandas as pd
 import yaml
 
 ROOT = Path("/data/resource/wanglab/aivc/aivc2026")
-CFG_PATH = ROOT / "configs/l15_fusion/v0.yaml"
+CFG_PATH = Path(os.environ.get("L15_CFG") or ROOT / "configs/l15_fusion/v0.yaml")
 ALL_CONTEXTS = ["gwps", "k562_ess", "rpe1", "jurkat", "hepg2"]
 
 
@@ -100,15 +101,26 @@ def sig_lookup(store: dict, targets: np.ndarray, gpos: np.ndarray) -> np.ndarray
 
 # ------------------------------------------------------------------- basals
 def load_basal(context: str, vocab: pd.Index, cache_dir: Path) -> np.ndarray:
-    """NTC 基线表达：raw counts 均值 → CPM → log1p（词表对齐，缺失=0）。"""
+    """NTC 基线表达：raw counts 均值 → CPM → log1p（词表对齐，缺失=0）。
+
+    basal_h5ad 条目为 str（用全局 pert_col/control）或 dict（含 pert_col/control 覆盖，
+    用于竞赛 context_{A,B,C}.h5ad，其 obs 列为 target_gene）。
+    """
     p = cache_dir / f"basal_{context}.npy"
     if p.exists():
         return np.load(p)
     import anndata as ad
     import scipy.sparse as sp
     cfg = load_cfg()
-    a = ad.read_h5ad(ROOT / cfg["basal_h5ad"][context], backed="r")
-    mask = np.asarray(a.obs[cfg["pert_col"]].astype(str) == cfg["control"])
+    spec = cfg["basal_h5ad"][context]
+    if isinstance(spec, str):
+        path, pcol, ctrl = ROOT / spec, cfg["pert_col"], cfg["control"]
+    else:
+        path = ROOT / spec["h5ad"]
+        pcol = spec.get("pert_col", cfg["pert_col"])
+        ctrl = spec.get("control", cfg["control"])
+    a = ad.read_h5ad(path, backed="r")
+    mask = np.asarray(a.obs[pcol].astype(str) == ctrl)
     idx = np.where(mask)[0]
     acc = np.zeros(a.n_vars, np.float64)
     CH = 20000
@@ -189,8 +201,8 @@ class FeatureBuilder:
         self.vocab = vocab
         self.all_sources = list(cfg["train_contexts"])
         self._stores: dict[str, dict] = {}
-        self.basal = {c: load_basal(c, vocab, cache_dir)
-                      for c in cfg["train_contexts"] + ["hepg2"]}
+        # 全部 basal（训练 5 上下文 + 竞赛 a/b/c），按 basal_h5ad 键加载
+        self.basal = {c: load_basal(c, vocab, cache_dir) for c in cfg["basal_h5ad"]}
         self.modules = module_flags(vocab, cfg)
 
     def _store(self, ctx: str) -> dict:
