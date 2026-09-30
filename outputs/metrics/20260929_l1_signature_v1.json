@@ -1,0 +1,49 @@
+{
+  "datasets": {
+    "gwps": {
+      "perts": 9866,
+      "genes_in_panel": 7679
+    },
+    "norman": {
+      "perts": 3,
+      "genes_in_panel": 8579
+    }
+  },
+  "covered_targets": 9866,
+  "uncovered_targets": 28,
+  "delta_rows": 2302146,
+  "contexts": {
+    "A": {
+      "n_cells": 18400,
+      "median_lib_size": 20109.0,
+      "genes_kept": 5620,
+      "genes_total": 18533,
+      "kept_fraction_of_mass": 0.8881618373809936
+    },
+    "B": {
+      "n_cells": 18400,
+      "median_lib_size": 19946.0,
+      "genes_kept": 4820,
+      "genes_total": 18533,
+      "kept_fraction_of_mass": 0.8790921881483427
+    },
+    "C": {
+      "n_cells": 18400,
+      "median_lib_size": 20034.0,
+      "genes_kept": 5201,
+      "genes_total": 18533,
+      "kept_fraction_of_mass": 0.8798699244627768
+    }
+  },
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 1876920000,
+    "entries_per_cell_avg": 5213.7,
+    "density_margin": 0.6049,
+    "max_per_cell_counts": 18820.0,
+    "integer_valued": true
+  }
+}

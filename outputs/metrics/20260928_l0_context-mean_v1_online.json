@@ -1,0 +1,17 @@
+{
+  "entry_id": "zSDfx949uyu8mjM6vuEu",
+  "submitted_utc": "2026-09-29T14:51:32Z",
+  "partition": "val", "panel": "vcc2026-val-1",
+  "anchor_set": "vcc2026-valA-r4+vcc2026-valB-r4+vcc2026-valC-r4",
+  "rank": 1215,
+  "overall": -1.005148931750614,
+  "per_metric": {
+    "pds": -8.318507193513774e-17,
+    "mse": 0.0,
+    "nmae": -6.0,
+    "fid": -0.046336361866966526,
+    "reach": 0.013907882325155227,
+    "jac": 0.001534889038127715
+  },
+  "interpretation": "上下文均值(无Δ)在pds/mse上=0锚点符合定义,但DE四指标无任何信号:nmae被罚帽-6,fid/reach/jac近零。Overall=-1.005=(0+0-6-0.046+0.014+0.002)/6。官方'naive≈0.85'传闻证伪;任何真实Δ预测都将大幅超越该地板。"
+}

@@ -1,0 +1,91 @@
+{
+  "stem": "20261001_l15fusion_v1",
+  "model": "l15_fusion v1 (all-5 retrain)",
+  "alpha": 0.5,
+  "panel_genes_predicted": null,
+  "delta_sanity": {
+    "lambda_applied": 1.5,
+    "sig_threshold": 0.25,
+    "contexts": {
+      "A": {
+        "n_rows": 3288600,
+        "sig_genes_per_target": {
+          "median": 3.0,
+          "p25": 1.0,
+          "p75": 7.25,
+          "min": 0,
+          "max": 145,
+          "mean": 7.1066666666666665
+        },
+        "dir_agreement_vs_gwps_hi0.25": 0.8928774928774929,
+        "dir_agreement_per_target_median": 1.0,
+        "n_targets_with_gwps": 224,
+        "delta_absmean": 0.022464869543910027
+      },
+      "B": {
+        "n_rows": 3288600,
+        "sig_genes_per_target": {
+          "median": 3.0,
+          "p25": 1.0,
+          "p75": 8.0,
+          "min": 0,
+          "max": 134,
+          "mean": 6.9366666666666665
+        },
+        "dir_agreement_vs_gwps_hi0.25": 0.8803418803418803,
+        "dir_agreement_per_target_median": 1.0,
+        "n_targets_with_gwps": 224,
+        "delta_absmean": 0.0218364205211401
+      },
+      "C": {
+        "n_rows": 3288600,
+        "sig_genes_per_target": {
+          "median": 3.0,
+          "p25": 1.0,
+          "p75": 7.0,
+          "min": 0,
+          "max": 117,
+          "mean": 5.946666666666666
+        },
+        "dir_agreement_vs_gwps_hi0.25": 0.8883190883190883,
+        "dir_agreement_per_target_median": 1.0,
+        "n_targets_with_gwps": 224,
+        "delta_absmean": 0.02155200019478798
+      }
+    }
+  },
+  "submission": {
+    "contexts": {
+      "A": {
+        "n_cells": 18400,
+        "median_lib_size": 20109.0,
+        "mode": "sampled_ntc_bootstrap",
+        "seconds": 18.1
+      },
+      "B": {
+        "n_cells": 18400,
+        "median_lib_size": 19946.0,
+        "mode": "sampled_ntc_bootstrap",
+        "seconds": 16.0
+      },
+      "C": {
+        "n_cells": 18400,
+        "median_lib_size": 20034.0,
+        "mode": "sampled_ntc_bootstrap",
+        "seconds": 16.9
+      }
+    }
+  },
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 2084989602,
+    "entries_per_cell_avg": 5791.6,
+    "density_margin": 0.5611,
+    "max_per_cell_counts": 52925.0,
+    "integer_valued": true
+  },
+  "h5ad": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20261001_l15fusion_v1.h5ad"
+}

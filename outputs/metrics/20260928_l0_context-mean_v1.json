@@ -1,0 +1,41 @@
+{
+  "contexts": {
+    "A": {
+      "n_cells": 18400,
+      "median_lib_size": 20109.0,
+      "genes_kept": 5620,
+      "genes_total": 18533,
+      "kept_fraction_of_mass": 0.8881618373809936,
+      "seconds": 5.3
+    },
+    "B": {
+      "n_cells": 18400,
+      "median_lib_size": 19946.0,
+      "genes_kept": 4820,
+      "genes_total": 18533,
+      "kept_fraction_of_mass": 0.8790921881483424,
+      "seconds": 5.0
+    },
+    "C": {
+      "n_cells": 18400,
+      "median_lib_size": 20034.0,
+      "genes_kept": 5201,
+      "genes_total": 18533,
+      "kept_fraction_of_mass": 0.8798699244627768,
+      "seconds": 5.3
+    }
+  },
+  "min_mean_cpm": 0.05,
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 1876920000,
+    "entries_per_cell_avg": 5213.7,
+    "density_margin": 0.6049,
+    "max_per_cell_counts": 18770.0,
+    "integer_valued": true
+  },
+  "h5ad": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20260928_l0_context-mean_v1.h5ad"
+}

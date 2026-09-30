@@ -1,5 +1,5 @@
 date,submitter,pred_file,git_commit,loco_score,online_score_per_metric,quota_use,notes
 2026-09-29,wsx,20260928_l0_context-mean_v1,c071ec4,NA,"pds=-8.3e-17;mse=0;nmae=-6;fid=-0.0464;reach=0.0139;jac=0.0015;overall=-1.0051;rank=1215",daily-best,L0锚点校准:0锚点仅对pds/mse成立;DE指标无信号nmae触底-6;naive-0.85传闻证伪
-2026-09-29,wsx,20260929_l1_signature_v1,see-git-fd683e8,NA,"pds=0.0009;mse=0;nmae=-6;fid=-0.0463;reach=0.0162;jac=0.0015;overall=-1.0046;rank=1216",daily-best,L1v1:Δ生效但400行恒定向量致单细胞Wilcoxon退化,DE四指标全趴;iter003改采样
+2026-09-29,wsx,20260929_l1_signature_v1,fd683e8,NA,"pds=0.0009;mse=0;nmae=-6;fid=-0.0463;reach=0.0162;jac=0.0015;overall=-1.0046;rank=1216",daily-best,L1v1:Δ生效但400行恒定向量致单细胞Wilcoxon退化,DE四指标全趴;iter003改采样
 2026-09-30,wsx,20260930_l11-sampled_lam15,7157dc1,NA,"pds=0.1537;mse=0;nmae=0.0278;fid=-0.8383;reach=0.0373;jac=-0.0391;overall=-0.1098;rank=969",daily-best,采样+λ1.5大幅转正+0.895;新瓶颈fid方向错误;iter003做Δ稀疏化+置信衰减
-2026-09-30,wsx,20260930_l15-sampled_lam05,see-git-dfbacc2,NA,"pds=0.0211;mse=0;nmae=0.0019;fid=-1.6614;reach=0.0027;jac=-0.0737;overall=-0.2849;rank=1070",calibration,预登记校准:H1(负斜率)否决——fid随λ正向改善(+0.82/λ),与本地方向一致;冻结规则触发转REV
+2026-09-30,wsx,20260930_l15-sampled_lam05,dfbacc2,NA,"pds=0.0211;mse=0;nmae=0.0019;fid=-1.6614;reach=0.0027;jac=-0.0737;overall=-0.2849;rank=1070",calibration,预登记校准:H1(负斜率)否决——fid随λ正向改善(+0.82/λ),与本地方向一致;冻结规则触发转REV
