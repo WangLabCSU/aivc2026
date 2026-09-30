@@ -1,0 +1,10 @@
+{
+  "entry_id": "CpIWqlkpNPKCQLhLSxjZ",
+  "submitted_utc": "2026-09-30T10:54:26Z",
+  "rank": 1070, "overall": -0.28488335244061047,
+  "per_metric": {"pds": 0.021088685012062968, "mse": 0.0, "nmae": 0.0019270689664412737,
+                 "fid": -1.6613656524380256, "reach": 0.002735486232294091,
+                 "jac": -0.0736857024164353},
+  "preregistration": "docs/iterations/2026-09-30_lam05-calibration-preregistration.md",
+  "verdict": "H1(负斜率)否决——fid随λ正向改善+0.82/单位λ, 与本地方向一致; 机制修正为弱信号下显著集被噪声支配; 外推λ2.5≈-0.2~-0.4"
+}
