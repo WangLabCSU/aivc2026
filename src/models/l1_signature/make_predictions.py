@@ -149,7 +149,10 @@ def build_submission(cfg: dict) -> tuple["ad.AnnData", dict]:  # noqa: F821
                     dv = d.reindex(panel).to_numpy()
                     factor = np.power(2.0, cfg["lambda_real"] * np.nan_to_num(dv, nan=0.0)
                                       ).astype(np.float32)
-                    blk = blk.multiply(factor.reshape(1, -1)).tocsr()
+                    orig = blk.data.copy()
+                    scaled = blk.data * factor[blk.indices]  # 按列索引缩放，保持 CSR 顺序
+                    # 逐元素上限 = max_fold × 该细胞原始计数（防 λ 高时无帽过冲，保留采样方差）
+                    blk.data = np.minimum(scaled, cfg["max_fold"] * orig)
                 blk.data = np.clip(np.rint(blk.data), 0, None).astype(np.float32)
                 blk.eliminate_zeros()
                 pert_blocks.append(blk)
