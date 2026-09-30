@@ -12,6 +12,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, "/data/resource/wanglab/aivc/aivc2026")
+
 import anndata as ad
 import numpy as np
 import pandas as pd
