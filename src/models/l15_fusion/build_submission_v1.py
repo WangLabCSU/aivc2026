@@ -52,6 +52,11 @@ def predict_abc(cfg, cache, vocab, steps: list[str]) -> dict:
     out = {}
     for cx in CONTEXTS:
         t0 = time.time()
+        dp = cache / f"delta_submit_{cx}.parquet"
+        if "predict" not in steps and dp.exists():
+            out[cx] = pd.read_parquet(dp)   # λ 变体: Δ̂ 缓存直载, 仅重建采样载体
+            print(f"[{cx}] delta loaded from cache rows={len(out[cx])}", flush=True)
+            continue
         fp = cache / f"feat_submit_{cx}.npz"
         if (fp.exists() or "predict" not in steps) and fp.exists():
             z = np.load(fp, allow_pickle=False)
