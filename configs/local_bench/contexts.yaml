@@ -24,12 +24,12 @@ contexts:
     n_perts: 100
     seed: 0
   S_HCT116:
-    h5ad: data/public/xatlas/HCT116_3batches.h5ad
+    h5ad: data/public/xatlas/HCT116_pooled.h5ad
     pert_col: target_gene
     control: Non-Targeting
     n_perts: 100
     seed: 0
-    min_cells_per_pert: 50
+    min_cells_per_pert: 30
 n_cells_per_pert: 400
 n_ntc_ref: 2000
 datasets:
