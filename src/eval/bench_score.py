@@ -41,8 +41,15 @@ SHORT = {"pds_cosine": "pds", "expr_mse_unbiased_capped_norm": "mse",
          "de_wilcoxon_direction_fidelity_yield_raw": "fid",
          "de_wilcoxon_direction_reach_raw": "reach",
          "de_wilcoxon_sig_jaccard": "jac"}
-CFG = ["--preset", "vcc2026", "--pert-col", "target_gene", "--control", "non-targeting",
+CFG = ["--preset", "vcc2026", "--pert-col", "target_gene",
        "--input-type", "counts", "--set", "de.backend=pdex"]
+
+
+def _cfg_for(ctx: str) -> list[str]:
+    """每上下文 control 标签可不同（如 HCT116 为 'Non-Targeting'）。"""
+    import yaml
+    ccfg = yaml.safe_load(open(ROOT / "configs/local_bench/contexts.yaml"))["contexts"][ctx]
+    return CFG + ["--control", ccfg["control"]]
 
 
 def _run(cmd: list[str]) -> None:
@@ -58,12 +65,12 @@ def build_bundle(ctx: str, n_perts: int = 100) -> Path:
     ref = BENCH_DIR / ctx / "ref.h5ad"
     build = OUT_DIR / "bundle_build"
     build.mkdir(parents=True, exist_ok=True)
-    _run([str(ENV_BIN / "cell-eval2"), "baseline", "-ar", str(ref), *CFG,
+    _run([str(ENV_BIN / "cell-eval2"), "baseline", "-ar", str(ref), *_cfg_for(ctx),
           "-o", str(build / f"{ctx}_baseline"),
           "--save-pred", str(build / f"{ctx}_baseline_pred.h5ad")])
     _run([str(ENV_BIN / "cell-eval2"), "prep-real-bundle", "--real", str(ref),
           "--baseline", str(build / f"{ctx}_baseline_pred.h5ad"),
-          "-o", str(bundle), "--id", f"{ctx}_local", *CFG])
+          "-o", str(bundle), "--id", f"{ctx}_local", *_cfg_for(ctx)])
     return bundle
 
 
