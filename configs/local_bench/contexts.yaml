@@ -1,8 +1,3 @@
-# 本地独立评测面板（模拟 val A/B/C）
-# P_H1: VCC2025 test (H1 hESC) —— 干性上下文
-# Q_HepG2: Nadig2024 —— 肝癌细胞系上下文
-# R_Jurkat: Nadig2024 —— T 细胞白血病上下文
-# S_RPE1: Replogle —— p53 有功能的非转化上皮样（IMM 失效场景压力测试；注意对 fusion 是 in-sample）
 contexts:
   P_H1:
     h5ad: data/public/vcc2025/adata_Test.h5ad
@@ -28,6 +23,14 @@ contexts:
     control: non-targeting
     n_perts: 100
     seed: 0
+  S_HCT116:
+    h5ad: data/public/xatlas/HCT116_3batches.h5ad
+    pert_col: target_gene
+    control: Non-Targeting
+    n_perts: 100
+    seed: 0
 n_cells_per_pert: 400
 n_ntc_ref: 2000
-datasets: [gwps, norman]      # 签名源（与 L1 一致）
+datasets:
+- gwps
+- norman
