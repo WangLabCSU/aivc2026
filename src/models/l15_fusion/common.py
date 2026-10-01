@@ -120,8 +120,12 @@ def load_basal(context: str, vocab: pd.Index, cache_dir: Path) -> np.ndarray:
         pcol = spec.get("pert_col", cfg["pert_col"])
         ctrl = spec.get("control", cfg["control"])
     a = ad.read_h5ad(path, backed="r")
-    mask = np.asarray(a.obs[pcol].astype(str) == ctrl)
+    # 大小写不敏感匹配控制标签（xatlas HCT116 用 'Non-Targeting'）
+    obs_p = a.obs[pcol].astype(str).str.strip().str.lower()
+    mask = np.asarray(obs_p == str(ctrl).strip().lower())
     idx = np.where(mask)[0]
+    if len(idx) == 0:
+        raise ValueError(f"load_basal: {path} 无控制细胞 (pert_col={pcol}, control={ctrl})")
     acc = np.zeros(a.n_vars, np.float64)
     CH = 20000
     for s in range(0, len(idx), CH):
