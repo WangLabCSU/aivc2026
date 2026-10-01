@@ -29,6 +29,7 @@ contexts:
     control: Non-Targeting
     n_perts: 100
     seed: 0
+    min_cells_per_pert: 50
 n_cells_per_pert: 400
 n_ntc_ref: 2000
 datasets:

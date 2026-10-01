@@ -46,10 +46,19 @@ def prepare_reference(ctx: str, ccfg: dict, n_cells: int, n_ntc: int) -> Path:
     tg = a.obs[ccfg["pert_col"]].astype(str)
     rng = np.random.default_rng(ccfg["seed"])
     perts = sorted(set(tg.unique()) - {ccfg["control"]})
-    chosen = list(rng.choice(perts, size=min(ccfg["n_perts"], len(perts)), replace=False))
+    # 资格校验(ML专家B): 每靶可用细胞数必须 ≥ min_cells_per_pert, 否则 DE gate 会静默清空
+    min_cells = int(ccfg.get("min_cells_per_pert", 50))
+    tg_np = tg.to_numpy()
+    counts = pd.Series(tg_np).value_counts()
+    eligible = [p for p in perts if counts.get(p, 0) >= min_cells]
+    dropped = len(perts) - len(eligible)
+    if dropped:
+        print(f"[{ctx}] eligibility gate: {len(eligible)}/{len(perts)} perts have >= {min_cells} cells "
+              f"({dropped} dropped)", flush=True)
+    chosen = list(rng.choice(eligible, size=min(ccfg["n_perts"], len(eligible)), replace=False))
     keep_idx = []
     for p in chosen + [ccfg["control"]]:
-        idx = np.where(tg.to_numpy() == p)[0]
+        idx = np.where(tg_np == p)[0]
         take = rng.choice(idx, size=min(n_cells if p != ccfg["control"] else n_ntc, len(idx)),
                           replace=False)
         keep_idx.extend(take.tolist())
