@@ -80,8 +80,17 @@ def tahoe(vocab: np.ndarray, dim: int, cache: Path, cfg: dict) -> None:
     import pandas as pd
     cfg2 = load_cfg()
     sym2ensg: dict[str, str] = {}
-    for f in set(list(cfg2["basal_h5ad"].values())):
+    specs = []
+    for spec in cfg2["basal_h5ad"].values():
+        f = spec if isinstance(spec, str) else spec["h5ad"]
+        if f not in specs:
+            specs.append(f)
+    for f in specs:
         a = ad.read_h5ad(ROOT / f, backed="r")
+        if "ensembl_id" not in a.var.columns:
+            print(f"  [map] {f}: no ensembl_id col, skipped", flush=True)
+            a.file.close()
+            continue
         vd = a.var[["ensembl_id"]].astype(str)
         vd = vd[vd.index.isin(set(syms)) & vd["ensembl_id"].str.startswith("ENSG")]
         m = dict(zip(vd.index.tolist(), vd["ensembl_id"].tolist()))

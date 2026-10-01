@@ -161,15 +161,20 @@ def build_submission(dfs: dict[str, pd.DataFrame], stem: str) -> tuple["ad.AnnDa
 
 
 def main() -> None:
+    global LAMBDA
     ap = argparse.ArgumentParser()
     ap.add_argument("--steps", default="predict,stats,build")
     ap.add_argument("--out-stem", default="20261001_l15fusion_v1")
+    ap.add_argument("--lam", type=float, default=None,
+                    help="应用 λ（默认沿用文件内 LAMBDA=1.5）")
     args = ap.parse_args()
+    if args.lam is not None:
+        LAMBDA = float(args.lam)
     steps = args.steps.split(",")
     cfg = load_cfg()
     cache = work_dir(cfg)
     vocab = build_vocab(cfg)
-    print(f"vocab={len(vocab)} workdir={cache}", flush=True)
+    print(f"vocab={len(vocab)} workdir={cache} LAMBDA={LAMBDA}", flush=True)
 
     dfs = predict_abc(cfg, cache, vocab, steps)
     report = {"stem": args.out_stem, "model": "l15_fusion v1 (all-5 retrain)",

@@ -11,7 +11,7 @@ import yaml
 
 ROOT = Path("/data/resource/wanglab/aivc/aivc2026")
 CFG_PATH = Path(os.environ.get("L15_CFG") or ROOT / "configs/l15_fusion/v0.yaml")
-ALL_CONTEXTS = ["gwps", "k562_ess", "rpe1", "jurkat", "hepg2"]
+ALL_CONTEXTS = ["gwps", "k562_ess", "rpe1", "jurkat", "hepg2", "hct116"]
 
 
 def load_cfg() -> dict:

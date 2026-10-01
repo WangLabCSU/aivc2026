@@ -1,0 +1,81 @@
+# L1.5-fusion v2: 6 上下文（加入 hct116 p53-WT 结直肠癌, xatlas 3batches）。
+# 超参沿用 v0/v1 冻结值（α=0.5, mlp no-emb）；应用 λ 由 v1 Δ̂ 扫描 + v2 LOCO 复核决定。
+train_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116]   # stage2 全量
+stage1_holdout: hepg2                                          # LOCO-HepG2 验证臂
+locos:
+  jurkat: {h5ad: data/public/scperturb/Nadig2024_jurkat.h5ad, sig: data/interim/signatures/jurkat_all.parquet}
+  hepg2: {h5ad: data/public/scperturb/Nadig2024_hepg2.h5ad, sig: data/interim/signatures/hepg2_all.parquet}
+basal_h5ad:
+  gwps: data/public/scperturb/Replogle2022_K562_gwps.h5ad
+  k562_ess: data/public/scperturb/Replogle2022_K562_essential.h5ad
+  rpe1: data/public/scperturb/Replogle2022_rpe1.h5ad
+  jurkat: data/public/scperturb/Nadig2024_jurkat.h5ad
+  hepg2: data/public/scperturb/Nadig2024_hepg2.h5ad
+  hct116: {h5ad: data/public/xatlas/HCT116_3batches.h5ad, pert_col: target_gene, control: non-targeting}
+  a: {h5ad: data/raw/controls/context_A.h5ad, pert_col: target_gene, control: non-targeting}
+  b: {h5ad: data/raw/controls/context_B.h5ad, pert_col: target_gene, control: non-targeting}
+  c: {h5ad: data/raw/controls/context_C.h5ad, pert_col: target_gene, control: non-targeting}
+pert_col: gene
+control: non-targeting
+
+sampling:
+  top_k: 500          # 每 (c,g) 保留 |logfc| top-K
+  rand_k: 500         # 再随机 K 个零/小 logfc 基因
+  gwps_target_cap: 4000   # gwps 9866 靶下采样, 控制训练规模
+  seed: 0
+
+features:
+  module_sets:
+    mt: {prefix: [MT-]}
+    ribo: {prefix: [RPS, RPL]}
+    e2f: [MKI67, TOP2A, PCNA, MCM2, MCM3, MCM4, MCM5, MCM6, MCM7, E2F1, E2F2, AURKA, BIRC5, CCNB1, CCNE1, TYMS, FEN1, RRM2, UBE2C, CDC20, CENPF, HMGB2, NUSAP1, PRC1, ASPM]
+    p53: [CDKN1A, BBC3, MDM2, TP53, GADD45A, GADD45B, DDB2, SESN1, SESN2, RRM2B, PMAIP1, BAX, PERP, ZMAT3, TRIAP1, PLK3, EI24]
+    ifn: [ISG15, IFIT1, IFIT2, IFIT3, IFI6, IFI44, IFI44L, IFITM1, IFITM3, OAS1, OAS2, OASL, MX1, MX2, IRF7, IRF1, RSAD2, DDX58, IFIH1, CXCL10, STAT1, STAT2]
+    myc: [MYC, NPM1, ODC1, CAD, LDHA, PDK1, SLC1A5, GLS, CDK4, TERT]
+
+embeddings:
+  se600m: data/public/models/SE-600M/protein_embeddings.pt
+  tahoe_dir: data/public/models/Tahoe-x1/70m-model
+  pca_dim: 128
+  use_tahoe: true
+
+xgb:
+  objective: reg:pseudohubererror   # logfc 重尾, huber 稳健
+  max_depth: 9
+  n_estimators: 400
+  learning_rate: 0.08
+  subsample: 0.6
+  colsample_bytree: 0.7
+  tree_method: hist
+  early_stopping_rounds: 40
+  label_clip: 4.0
+  n_jobs: 40
+
+mlp:
+  hidden: [256, 128]
+  dropout: 0.1
+  lr: 0.002
+  weight_decay: 0.01
+  batch_size: 262144
+  max_epochs: 12
+  patience: 2
+  label_clip: 4.0
+  huber_beta: 0.5
+
+fusion:
+  alpha_grid: [0.0, 0.25, 0.5, 0.75, 1.0]
+  lambda_grid: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+
+bench:   # 与 src/eval/local_bench.py 对齐
+  n_cells_per_pert: 400
+  n_ntc_ref: 2000
+  n_perts: 100
+  lambda_generic: 0.15
+  max_abs_delta: 4.0
+  max_fold: 8.0
+  cell_sampling: true
+  seed: 0
+
+paths:
+  workdir: data/interim/l15_fusion/v2
+  outdir: outputs/metrics/local_bench/l15_fusion_v2
