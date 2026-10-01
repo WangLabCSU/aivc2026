@@ -1,0 +1,14 @@
+# L1.1 签名迁移 + 细胞采样（iter003）
+# 教训: L1v1 每扰动 400 行相同向量→组内零方差→官方单细胞 Wilcoxon DE 退化（nmae 触 -6 罚帽）
+# 改为从 18,400 个 NTC 真实细胞 bootstrap 采样 400 细胞 ⊕ Δ，保留真实组内方差
+datasets: [gwps, norman]
+lambda_real: 3.5              # v1 的 0.5 衰减过弱（mse 恒 0），提到 1.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 8.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261001_l16-sampled_lam25
