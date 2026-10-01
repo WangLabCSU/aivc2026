@@ -29,3 +29,22 @@ slurm-*.out
 .idea/
 .DS_Store
 *.swp
+
+# --- 例外: 小体积产物入 git（提交分数快照/校准框架，大文件 h5ad/vcc 仍不入）---
+!outputs/metrics/
+outputs/metrics/*
+!outputs/metrics/*.json
+!outputs/metrics/local_bench/
+outputs/metrics/local_bench/*
+!outputs/metrics/local_bench/*.json
+!outputs/metrics/local_bench/*.md
+!outputs/metrics/local_bench/*_scored.csv
+outputs/metrics/local_bench/*_pred.h5ad
+outputs/metrics/local_bench/*_eval/
+outputs/metrics/local_bench/bundles/
+outputs/metrics/local_bench/bundle_build/
+outputs/metrics/local_bench/*_lam*_sampled.h5ad
+outputs/metrics/local_bench/l0_anchor.h5ad
+outputs/metrics/local_bench/l1_lam0.5.h5ad
+outputs/metrics/local_bench/state_zh_hepg2/
+outputs/metrics/local_bench/official_baseline/

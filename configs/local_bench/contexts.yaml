@@ -2,7 +2,7 @@
 # P_H1: VCC2025 test (H1 hESC) —— 干性上下文
 # Q_HepG2: Nadig2024 —— 肝癌细胞系上下文
 # R_Jurkat: Nadig2024 —— T 细胞白血病上下文
-# 三个上下文组织来源多样, 与 gwps(K562)/norman 签名源不同细胞系(无泄漏)
+# S_RPE1: Replogle —— p53 有功能的非转化上皮样（IMM 失效场景压力测试；注意对 fusion 是 in-sample）
 contexts:
   P_H1:
     h5ad: data/public/vcc2025/adata_Test.h5ad
@@ -18,6 +18,12 @@ contexts:
     seed: 0
   R_Jurkat:
     h5ad: data/public/scperturb/Nadig2024_jurkat.h5ad
+    pert_col: gene
+    control: non-targeting
+    n_perts: 100
+    seed: 0
+  S_RPE1:
+    h5ad: /tmp/Replogle2022_rpe1.h5ad
     pert_col: gene
     control: non-targeting
     n_perts: 100
