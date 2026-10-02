@@ -31,12 +31,15 @@ def load_embeddings(cfg, cache, n_vocab: int):
 
 
 def train(X, y, ctx, gpos, E, mc: dict, tr: np.ndarray, va: np.ndarray, tag: str,
-          cache, device: str, tpos_rows: np.ndarray) -> dict:
+          cache, device: str, tpos_rows: np.ndarray, w: np.ndarray | None = None,
+          auxc: dict | None = None) -> dict:
     import torch
     import torch.nn as nn
     t0 = time.time()
     clip, beta = mc["label_clip"], mc["huber_beta"]
     y = np.clip(y, -clip, clip)
+    w = np.ones(len(y), np.float32) if w is None else w.astype(np.float32)
+    auxc = auxc or {}
     # 基特征标准化（NaN→0）
     mu = np.nanmean(X[tr], axis=0)
     sd = np.nanstd(X[tr], axis=0)
@@ -55,16 +58,47 @@ def train(X, y, ctx, gpos, E, mc: dict, tr: np.ndarray, va: np.ndarray, tag: str
     opt = torch.optim.AdamW(net.parameters(), lr=mc["lr"], weight_decay=mc["weight_decay"])
     total_epochs = mc["max_epochs"]
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=total_epochs)
-    huber = nn.HuberLoss(delta=beta)
+    huber = nn.HuberLoss(delta=beta, reduction="none")
     bs = mc["batch_size"]
     best, best_state, bad = 1e9, None, 0
     hist = []
     tr_rows = np.where(tr)[0]
     va_rows = np.where(va)[0]
+
+    # ---- v3.5 warm-up: 仅主行（ctx < n_main_ctx）先训 warmup_steps 步（warmup 批次可更小），
+    #      5k 步 @batch262k≈43 epoch 超预算 → 以 warmup_batch_size（默认 batch/4）实现 5k 步 ≈ 5 epoch
+    n_main = int(auxc.get("n_main_ctx", 6))
+    warmup_steps = int(auxc.get("warmup_steps", 0))
+    if warmup_steps > 0:
+        wbs = int(auxc.get("warmup_batch_size", bs // 4))
+        main_rows = tr_rows[ctx[tr_rows] < n_main]
+        wm = main_rows[np.random.default_rng(0).permutation(len(main_rows))]
+        wi = 0
+        net.train()
+        for step in range(warmup_steps):
+            if wi + wbs > len(wm):  # 重采样续批
+                wm = main_rows[np.random.default_rng(step).permutation(len(main_rows))]
+                wi = 0
+            rows = wm[wi:wi + wbs]
+            wi += wbs
+            Xb = torch.from_numpy(Xn[rows]).to(device)
+            x = Xb
+            if E is not None:
+                x = torch.cat([Xb, torch.from_numpy(E[gpos[rows]]).to(device),
+                               torch.from_numpy(E[tpos_rows[rows]]).to(device)], dim=1)
+            yb = torch.from_numpy(y[rows]).to(device)
+            opt.zero_grad()
+            loss = huber(net(x).squeeze(-1), yb).mean()
+            loss.backward()
+            opt.step()
+        print(f"  warmup {warmup_steps} steps (main-only, bs={wbs}) done "
+              f"({time.time()-t0:.0f}s)", flush=True)
+
     for ep in range(total_epochs):
         net.train()
         perm = np.random.default_rng(ep).permutation(tr_rows)
         tot = 0.0
+        wtot = 0.0
         for s in range(0, len(perm), bs):
             rows = perm[s:s + bs]
             Xb = torch.from_numpy(Xn[rows]).to(device)
@@ -74,11 +108,14 @@ def train(X, y, ctx, gpos, E, mc: dict, tr: np.ndarray, va: np.ndarray, tag: str
                 eg = torch.from_numpy(E[tpos_rows[rows]]).to(device)
                 x = torch.cat([Xb, ej, eg], dim=1)
             yb = torch.from_numpy(y[rows]).to(device)
+            wb = torch.from_numpy(w[rows]).to(device)
             opt.zero_grad()
-            loss = huber(net(x).squeeze(-1), yb)
+            lossv = huber(net(x).squeeze(-1), yb)
+            loss = (lossv * wb).sum() / wb.sum()
             loss.backward()
             opt.step()
-            tot += float(loss) * len(rows)
+            tot += float(loss) * float(wb.sum())
+            wtot += float(wb.sum())
         sched.step()
         net.eval()
         with torch.no_grad():
@@ -88,9 +125,9 @@ def train(X, y, ctx, gpos, E, mc: dict, tr: np.ndarray, va: np.ndarray, tag: str
                                 torch.from_numpy(E[tpos_rows[va_rows]]).to(device)], dim=1)
                 vx = torch.cat([vx, ve], dim=1)
             vy = torch.from_numpy(y[va_rows]).to(device)
-            vl = float(huber(net(vx).squeeze(-1), vy))
-        hist.append({"epoch": ep, "train": tot / len(perm), "val": vl})
-        print(f"  ep{ep}: train={tot/len(perm):.4f} val={vl:.4f} ({time.time()-t0:.0f}s)",
+            vl = float(huber(net(vx).squeeze(-1), vy).mean())
+        hist.append({"epoch": ep, "train": tot / max(wtot, 1), "val": vl})
+        print(f"  ep{ep}: train={tot/max(wtot,1):.4f} val={vl:.4f} ({time.time()-t0:.0f}s)",
               flush=True)
         if vl < best - 1e-5:
             best, bad = vl, 0
@@ -124,6 +161,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", type=int, default=1)
     ap.add_argument("--no-emb", action="store_true")
+    ap.add_argument("--model-tag", default=None, help="默认 s{stage}[_noemb]")
     args = ap.parse_args()
     cfg = load_cfg()
     cache = work_dir(cfg)
@@ -132,7 +170,8 @@ def main() -> None:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     z = np.load(cache / "feat_train.npz", allow_pickle=False)
     X, y, ctx, gpos = z["X"], z["y"], z["ctx"], z["gpos"]
-    # target-as-gene 词表位置：由任务表重取（缓存 tpos 避免）
+    w = z["w"] if "w" in z.files else np.ones(len(y), np.float32)
+    # target-as-gene 词表位置：assemble 现统一写 tpos_train.npy（含 aux 占位 0）
     tp_path = cache / "tpos_train.npy"
     if tp_path.exists():
         tpos_rows = np.load(tp_path)
@@ -147,23 +186,29 @@ def main() -> None:
         np.save(tp_path, tpos_rows)
     jidx = cfg["train_contexts"].index(cfg["stage1_holdout"])
     if args.stage == 1:
-        tr, va, tag = ctx != jidx, ctx == jidx, "s1" + ("_noemb" if args.no_emb else "")
+        tr, va = ctx != jidx, ctx == jidx
+        tag = (args.model_tag or f"s{args.stage}") + ("_noemb" if args.no_emb else "")
     else:
         rng = np.random.default_rng(0)
         u = rng.random(len(y))
         va = u < 0.02
         tr = ~va
-        tag = "s2" + ("_noemb" if args.no_emb else "")
+        tag = (args.model_tag or f"s{args.stage}") + ("_noemb" if args.no_emb else "")
     E, used = (None, []) if args.no_emb else load_embeddings(cfg, cache, int(z["gpos"].max()) + 1)
-    print(f"[{time.time()-t0:.0f}s] train={tr.sum()} val={va.sum()} emb={used} dev={device}",
-          flush=True)
+    auxc = dict(cfg.get("aux") or {})
+    auxc["n_main_ctx"] = len(cfg["train_contexts"])
+    has_aux = bool(auxc.get("contexts")) and "w" in z.files
+    print(f"[{time.time()-t0:.0f}s] train={tr.sum()} val={va.sum()} emb={used} dev={device} "
+          f"aux={'on' if has_aux else 'off'} (w={auxc.get('weight')}, "
+          f"warmup_steps={auxc.get('warmup_steps', 0) if has_aux else 0})", flush=True)
     # gpos.max 可能小于词表长（未覆盖尾部基因），E 按 vocab 长构造
     from src.models.l15_fusion.common import build_vocab
     nv = len(build_vocab(cfg))
     if E is not None and len(E) < nv:
         E = np.concatenate([E, np.zeros((nv - len(E), E.shape[1]), np.float32)])
         print("  padded E to vocab", flush=True)
-    res = train(X, y, ctx, gpos, E, cfg["mlp"], tr, va, tag, cache, device, tpos_rows)
+    res = train(X, y, ctx, gpos, E, cfg["mlp"], tr, va, tag, cache, device, tpos_rows,
+                w=w if has_aux else None, auxc=auxc if has_aux else None)
     res["emb_used"] = used
     (cache / f"mlp_{tag}_result.json").write_text(json.dumps(res))
     print(f"train_mlp {tag} complete: {res} ({time.time()-t0:.0f}s)", flush=True)

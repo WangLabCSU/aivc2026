@@ -21,3 +21,10 @@ Expert E 发现浅版 hct116_all.parquet 构建器致命 bug（靶码未按 list
   S_HCT116 in-sample +0.151 打折后预期 official -0.10~+0.02；重点读 fid/pds 方向。
 - λ4.5 阶梯检验延后（需用深度签名重建后再发）。
 - 判读规则沿用：第 1 发 vs +0.0247 定双源去留；第 2 发 fid/pds 方向定 v3 保守化路线。
+
+## 二次修订（Expert E 交付 fusion v3.5 后）：第 2 发改 fusion v3.5
+
+- fusion v3.5（tahoe 药扰辅助多任务，w=0.3+has_sig）：LOCO-HepG2 **0.3313** vs v3 0.3214（+0.0099 过 gate 未稀释）；
+- **pds 0.658 反超 v2（0.617）**——直击官方 pds 短板（fusion v2 官方 pds 0.151）；
+- 资产纠错：basal_sw480 实为 CVCL_0546（SW620 转移株）已注明；
+- **第 2 发改 fusion v3.5 @λ2.5**（取代 fusion v3——LOCO 更高且 pds 修复）；fusion v3 保留为消融记录。

@@ -17,10 +17,10 @@ sys.path.insert(0, "/data/resource/wanglab/aivc/aivc2026")
 from src.models.l15_fusion.common import build_vocab, load_cfg, work_dir
 
 
-def predict_xgb(cfg, cache, X: np.ndarray, stage: int) -> np.ndarray:
+def predict_xgb(cfg, cache, X: np.ndarray, stage: int, model_tag: str | None = None) -> np.ndarray:
     import xgboost as xgb
     b = xgb.Booster()
-    b.load_model(str(cache / f"xgb_s{stage}.json"))
+    b.load_model(str(cache / f"xgb_{model_tag or f's{stage}'}.json"))
     return b.predict(xgb.DMatrix(X))
 
 
@@ -71,6 +71,7 @@ def main() -> None:
     ap.add_argument("--tag", required=True)
     ap.add_argument("--clip", type=float, default=4.0)
     ap.add_argument("--mlp-pt", default=None, help="MLP checkpoint tag, 如 s1_noemb")
+    ap.add_argument("--xgb-model", default=None, help="XGB 模型名, 默认 xgb_s{stage}")
     args = ap.parse_args()
     cfg = load_cfg()
     cache = work_dir(cfg)
@@ -88,7 +89,7 @@ def main() -> None:
     for m in args.models.split(","):
         t = time.time()
         if m == "xgb":
-            preds["xgb"] = predict_xgb(cfg, cache, X, args.stage)
+            preds["xgb"] = predict_xgb(cfg, cache, X, args.stage, args.xgb_model)
         elif m == "mlp":
             preds["mlp"] = predict_mlp(cfg, cache, X, args.stage, gpos, tpos, device, args.mlp_pt)
         print(f"  pred[{m}] done ({time.time()-t:.0f}s)", flush=True)

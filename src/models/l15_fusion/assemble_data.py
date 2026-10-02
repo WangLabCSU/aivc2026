@@ -39,8 +39,11 @@ def build_train(cfg, fb, vocab, cache) -> None:
     if p.exists():
         print("feat_train exists", flush=True)
         return
-    Xs, ys, ctxs, gps = [], [], [], []
+    Xs, ys, ctxs, gps, tps, ws = [], [], [], [], [], []
     names = None
+    aux = cfg.get("aux") or {}
+    aux_w = float(aux.get("weight", 0.3))
+    aux_ctxs = list(aux.get("contexts", []))
     for c in cfg["train_contexts"]:
         t = time.time()
         tb = build_task_table(c, cfg, vocab, cache)
@@ -51,13 +54,33 @@ def build_train(cfg, fb, vocab, cache) -> None:
         ys.append(tb["logfc"].to_numpy(np.float32))
         ctxs.append(np.full(len(tb), cfg["train_contexts"].index(c), np.int8))
         gps.append(vocab.get_indexer(pd.Index(gn)))
+        tps.append(vocab.get_indexer(pd.Index(tg)))
+        ws.append(np.ones(len(tb), np.float32))
         print(f"  train[{c}]: {X.shape} ({time.time()-t:.0f}s)", flush=True)
+    for i, c in enumerate(aux_ctxs):  # v3.5: tahoe 药扰辅助行（权重 aux_w, has_sig=0）
+        t = time.time()
+        tb = pd.read_parquet(cache / f"tasks_{c}.parquet")
+        tg = tb["target_gene"].to_numpy()
+        gn = tb["gene"].to_numpy()
+        X = _chunked_transform(fb, c, tg, gn)
+        Xs.append(X)
+        ys.append(tb["logfc"].to_numpy(np.float32))
+        ctxs.append(np.full(len(tb), len(cfg["train_contexts"]) + i, np.int8))
+        gps.append(vocab.get_indexer(pd.Index(gn)))
+        tps.append(np.zeros(len(tb), np.int64))  # 药扰组不是基因 → E 查表占位 0
+        ws.append(np.full(len(tb), aux_w, np.float32))
+        print(f"  train[aux:{c}]: {X.shape} w={aux_w} ({time.time()-t:.0f}s)", flush=True)
     X = np.concatenate(Xs)
     gene_pos_all = np.concatenate(gps)
     np.savez(p, X=X, y=np.concatenate(ys), ctx=np.concatenate(ctxs),
-             gpos=gene_pos_all.astype(np.int32), names=np.array(fb.names()))
+             gpos=gene_pos_all.astype(np.int32), names=np.array(fb.names()),
+             w=np.concatenate(ws).astype(np.float32),
+             tpos=np.concatenate(tps).astype(np.int32))
+    np.save(cache / "tpos_train.npy", np.concatenate(tps).astype(np.int32))
     del Xs
-    print(f"feat_train saved: {X.shape} ({time.time()-t:.0f}s total)", flush=True)
+    n_aux = sum(int((np.concatenate(ctxs) == len(cfg["train_contexts"]) + i).sum())
+                for i in range(len(aux_ctxs)))
+    print(f"feat_train saved: {X.shape} aux_rows={n_aux} ({time.time()-t:.0f}s total)", flush=True)
 
 
 def build_proxy(cfg, fb, vocab, cache, ctx: str) -> None:

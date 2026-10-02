@@ -39,7 +39,8 @@ CLIP = 4.0
 CTX_KEY = {"A": "a", "B": "b", "C": "c"}
 
 
-def predict_abc(cfg, cache, vocab, steps: list[str]) -> dict:
+def predict_abc(cfg, cache, vocab, steps: list[str], xgb_tag: str = "s2",
+                mlp_pt: str = "s2_noemb") -> dict:
     """对 A/B/C 构建特征并产出融合 Δ̂ 长表（存 v1 workdir）。"""
     import anndata as ad
     panel = pd.read_csv(CONTROLS / "gene_names.csv")["gene_name"].astype(str)
@@ -74,8 +75,8 @@ def predict_abc(cfg, cache, vocab, steps: list[str]) -> dict:
             continue
         import torch
         dev = "cuda" if torch.cuda.is_available() else "cpu"
-        px = predict_xgb(cfg, cache, X, 2)
-        pm = predict_mlp(cfg, cache, X, 2, gpos, tpos, dev, pt_tag="s2_noemb")
+        px = predict_xgb(cfg, cache, X, 2, model_tag=xgb_tag)
+        pm = predict_mlp(cfg, cache, X, 2, gpos, tpos, dev, pt_tag=mlp_pt)
         pf = (ALPHA * px + (1 - ALPHA) * pm).astype(np.float32)
         df = pd.DataFrame({"target_gene": target, "gene": gene,
                            "delta": np.clip(np.nan_to_num(pf, nan=0.0), -CLIP, CLIP)})
@@ -172,6 +173,9 @@ def main() -> None:
     ap.add_argument("--out-stem", default="20261001_l15fusion_v1")
     ap.add_argument("--lam", type=float, default=None,
                     help="应用 λ（默认沿用文件内 LAMBDA=1.5）")
+    ap.add_argument("--xgb-tag", default="s2", help="XGB 模型名（workdir 内 xgb_{tag}.json）")
+    ap.add_argument("--mlp-pt", default="s2_noemb", help="MLP checkpoint tag")
+    ap.add_argument("--model-label", default="l15_fusion v1 (all-5 retrain)")
     args = ap.parse_args()
     if args.lam is not None:
         LAMBDA = float(args.lam)
@@ -181,8 +185,8 @@ def main() -> None:
     vocab = build_vocab(cfg)
     print(f"vocab={len(vocab)} workdir={cache} LAMBDA={LAMBDA}", flush=True)
 
-    dfs = predict_abc(cfg, cache, vocab, steps)
-    report = {"stem": args.out_stem, "model": "l15_fusion v1 (all-5 retrain)",
+    dfs = predict_abc(cfg, cache, vocab, steps, xgb_tag=args.xgb_tag, mlp_pt=args.mlp_pt)
+    report = {"stem": args.out_stem, "model": args.model_label,
               "alpha": ALPHA, "panel_genes_predicted": None}
     if "stats" in steps:
         report["delta_sanity"] = delta_stats(dfs)

@@ -51,16 +51,31 @@ def build_vocab(cfg: dict) -> pd.Index:
     return vocab
 
 
+def sig_store_exists(context: str) -> bool:
+    """aux 上下文（tahoe 药扰）无 CRISPRi 签名文件——此判断避免 sig_file 的 gwps 回退污染。"""
+    return (ROOT / f"data/interim/signatures/{context}_all.parquet").exists()
+
+
 # ------------------------------------------------------- signature CSR store
-def build_sig_store(context: str, vocab: pd.Index, cache_dir: Path) -> dict:
+def build_sig_store(context: str, vocab: pd.Index, cache_dir: Path,
+                    allow_missing: bool = False) -> dict:
     """签名 → 向量化可查 store：keys = target_row*V + gene_pos（全局有序 int64）。
 
     同一 (target, gene) 多行取均值；gene 不在词表丢弃。缓存 npz。
+    allow_missing: 签名文件不存在时返回空 store（不缓存）——用于 aux 上下文，
+    避免 sig_file 的 gwps 回退把 gwps 签名错当成本上下文签名。
     """
     p = cache_dir / f"sigstore_{context}.npz"
     if p.exists():
         z = np.load(p, allow_pickle=False)
         return {k: z[k] for k in z.files}
+    if not sig_store_exists(context):
+        if allow_missing:
+            return {"keys": np.zeros(0, np.int64), "data": np.zeros(0, np.float32),
+                    "target_names": np.zeros(0, dtype="U1"),
+                    "n_vocab": np.int64(len(vocab))}
+        raise FileNotFoundError(
+            f"build_sig_store: {context} 无签名文件 (sig_file 会回退 gwps——若确需空 store 请 allow_missing=True)")
     df = pd.read_parquet(sig_file(context))
     df = df[df["gene"].isin(vocab)]
     g = df.groupby(["target_gene", "gene"], sort=False)["logfc"].mean().reset_index()
@@ -88,6 +103,8 @@ def sig_lookup(store: dict, targets: np.ndarray, gpos: np.ndarray) -> np.ndarray
     """批量查 (target, gene_pos) 签名值；target 缺失或 gene 缺失 → NaN。全向量化。"""
     V = int(store["n_vocab"])
     tn = store["target_names"]
+    if len(tn) == 0 or len(store["keys"]) == 0:  # 空 store（aux 上下文）
+        return np.full(len(targets), np.nan, np.float32)
     rows = np.searchsorted(tn, targets.astype(tn.dtype))
     rows_c = np.clip(rows, 0, len(tn) - 1)
     found_t = (tn[rows_c] == targets.astype(tn.dtype)) & (gpos >= 0)
@@ -198,20 +215,34 @@ def build_task_table(context: str, cfg: dict, vocab: pd.Index, cache_dir: Path) 
 
 # ------------------------------------------------------------------ features
 class FeatureBuilder:
-    """逐批构建特征矩阵（float32, NaN=缺签名）。输入: 行上下文 + (target, gene) 数组。"""
+    """逐批构建特征矩阵（float32, NaN=缺签名）。输入: 行上下文 + (target, gene) 数组。
+
+    aux 上下文（tahoe 药扰, cfg["aux"]["contexts"]）: 无跨上下文 CRISPRi 签名可用 →
+    行的 6 个 sig 列与 cross 统计置 0 + has_sig=0；basal 用 aux 上下文自身
+    （cache_dir/basal_{ctx}.npy, 须由 build_tasks --aux-tahoe 预先 reindex 落盘）。
+    """
 
     def __init__(self, cfg: dict, vocab: pd.Index, cache_dir: Path):
         self.cfg = cfg
         self.vocab = vocab
         self.all_sources = list(cfg["train_contexts"])
+        self.aux_contexts = set((cfg.get("aux") or {}).get("contexts", []))
         self._stores: dict[str, dict] = {}
         # 全部 basal（训练 5 上下文 + 竞赛 a/b/c），按 basal_h5ad 键加载
         self.basal = {c: load_basal(c, vocab, cache_dir) for c in cfg["basal_h5ad"]}
+        for c in sorted(self.aux_contexts):  # aux basal: 直接吃缓存 npy（无 h5ad spec）
+            p = cache_dir / f"basal_{c}.npy"
+            if not p.exists():
+                raise FileNotFoundError(
+                    f"FeatureBuilder: aux basal 缓存缺失 {p}（先跑 build_tasks.py --aux-tahoe）")
+            self.basal[c] = np.load(p)
         self.modules = module_flags(vocab, cfg)
 
     def _store(self, ctx: str) -> dict:
         if ctx not in self._stores:
-            self._stores[ctx] = build_sig_store(ctx, self.vocab, work_dir(self.cfg))
+            self._stores[ctx] = build_sig_store(
+                ctx, self.vocab, work_dir(self.cfg),
+                allow_missing=ctx in self.aux_contexts)
         return self._stores[ctx]
 
     def names(self, row_ctx: str | None = None) -> list[str]:
@@ -219,7 +250,7 @@ class FeatureBuilder:
         n = (["cross_mean", "cross_std", "cross_maxabs", "basal_j", "basal_j_zero",
               "basal_g", "basal_g_zero"] + [f"sig_{s}" for s in self.all_sources]
              + [f"mod_{m}" for m in self.cfg["features"]["module_sets"].keys()]
-             + ["x_sign_mean_basal", "x_absmean_basal"])
+             + ["x_sign_mean_basal", "x_absmean_basal", "has_sig"])
         return n
 
     def transform(self, row_ctx: str, targets: np.ndarray, genes: np.ndarray) -> np.ndarray:
@@ -227,6 +258,7 @@ class FeatureBuilder:
         genes = np.asarray(genes, dtype="U")
         gpos = self.vocab.get_indexer(pd.Index(genes))
         tpos = self.vocab.get_indexer(pd.Index(targets))
+        is_aux = row_ctx in self.aux_contexts
         src = list(self.all_sources)
         sig = {s: sig_lookup(self._store(s), targets, gpos) for s in src}
         for s in src:  # 行自身上下文的签名是标签的镜像 → 置 NaN 防泄漏
@@ -241,6 +273,11 @@ class FeatureBuilder:
         mean = np.where(npres > 0, mean, 0.0).astype(np.float32)
         std = np.where(npres > 1, std, 0.0).astype(np.float32)
         mx = np.where(npres > 0, mx, 0.0).astype(np.float32)
+        if is_aux:  # 药扰行无 CRISPRi 签名证据 → 显式置零（has_sig=0 让模型可分）
+            mean[:] = 0.0
+            std[:] = 0.0
+            mx[:] = 0.0
+            S[:] = 0.0
         bj_full = self.basal[row_ctx]
         bj = np.where(gpos >= 0, bj_full[np.maximum(gpos, 0)], 0.0)
         bz = (gpos < 0) | (bj <= 0.0)
@@ -249,10 +286,14 @@ class FeatureBuilder:
         bgz = (tpos < 0) | (bg <= 0.0)
         bg = np.where(bgz, 0.0, bg).astype(np.float32)
         cols = [mean, std, mx, bj, bz.astype(np.float32), bg, bgz.astype(np.float32)]
-        cols += [sig[s] for s in src]
+        if is_aux:
+            cols += [np.zeros(len(gpos), np.float32) for _ in src]
+        else:
+            cols += [sig[s] for s in src]
         ok = gpos >= 0
         mods = self.modules[:, np.maximum(gpos, 0)] * ok[None, :]
         cols += [mods[i] for i in range(self.modules.shape[0])]
         cols += [(np.sign(mean) * bj).astype(np.float32),
-                 (np.abs(mean) * bj).astype(np.float32)]
+                 (np.abs(mean) * bj).astype(np.float32),
+                 np.full(len(gpos), 0.0 if is_aux else 1.0, np.float32)]
         return np.stack(cols, axis=1).astype(np.float32)

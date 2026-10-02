@@ -94,3 +94,39 @@ A/B/C 提交特征不受该 bug 影响（basal 用 context_{A,B,C} 自身，v1 �
 2. 主任务不变：6 上下文 CRISPRi 迁移（权重 1.0）——多任务共享骨干，期望药扰行教会 p53/IFN/EMT 模块的方向先验；
 3. 训练顺序：先主任务 warm-up 5k steps → 加辅助行混训 → early stop on LOCO-HepG2。
 **风险**：药扰行分布偏移可能稀释主任务（缓解：权重 0.3 + has_sig 标志位让模型可分）；**收益**：fid 模块缺口（p53/IFN）的唯一新信号源。
+
+## fusion v3.5（Tahoe 药扰辅助多任务）实现与结果（2026-10-02 夜间，100min 时盒内完成）
+
+实现按预案 2b79d02：`build_tasks.py --aux-tahoe`（aux 任务表 + basal reindex）、
+`common.py`（build_sig_store allow_missing 空 store + sig_lookup 空守卫 + FeatureBuilder aux 支持：
+sig 列显式置零 + **has_sig 第 22 特征列**）、train_xgb/train_mlp sample_weight（主 1.0/aux 0.3）
++ warm-up→混训（mlp 5k 步主任务预热 @bs65536；xgb 200 轮主任务预热续训）、模型对 **xgb_s35/mlp_s35**
+（LOCO, s35）与 xgb_s2_35/mlp_s2_35_noemb（提交）。config `configs/l15_fusion/v35.yaml`。
+
+- **aux 规模**：tahoe_p12 4,700 药扰组 → a549/sw480 两上下文各 94 组；任务表 93,966+93,726=**187,692 行**
+  （总训练 30.78M 行的 0.61%），w=0.3；aux |logfc| 均值 0.155（主 0.076）；**has_sig 分布 1.0/0.0 二值，
+  XGB gain share 2.3%**（模型确可用它分离 aux 行）；无 gwps 回退污染（sigstore_a549/sw480 不存在，
+  sig_file 回退路径未触达 + allow_missing 守卫）。
+- **CVCL 考证（资产纠错）**：basal_a549 ↔ CVCL_0023（A549, 全池 r=0.99998，4,056 DMSO cells 精确重建）；
+  **"basal_sw480" 实为 CVCL_0546（SW620, 同患者转移株）r=0.99886**（CDX2 1.51 结肠✓；CVCL_0459 假设
+  r=0.858 证伪）。上下文键沿用 sw480，map 已在 config 注明。另修复：build_aux 曾把 reindex 缓存写覆
+  raw 资产（路径冲突）→ raw 重提取至 raw_basal_*.npy + 同路径禁止断言。
+- **LOCO-HepG2 gate（λ2.5, anchor-normalized）**：
+
+| 臂 | overall | pds | fid | nmae | reach | jac |
+|---|---|---|---|---|---|---|
+| v3（基线） | 0.3214 | 0.5741 | 0.8536 | 0.1440 | 0.2640 | 0.0925 |
+| **v3.5 aux w=0.3** | **0.3313** | **0.6578** | 0.8562 | 0.1324 | 0.2486 | 0.0930 |
+
+  **gate 通过（≥0.3114 线）且 +0.0099**：药扰辅助行没有稀释主任务，反而恢复 pds（v3 相对 v2 的
+  −0.043 缺口被补回并超越 v2 的 0.6174）；未触发 0.15 降权重重试。mlp_s35 best_val 0.01478（v3 0.01434）。
+- **A/B/C 提交物**：`outputs/submissions/20261003_l15fusion_v35.{h5ad,vcc}`（vcc prep 全绿，
+  TMPDIR=/data/resource/wanglab/aivc/tmpdir）；validation 360,000×18,533，entries 2.085B，
+  integer true。Δ̂ sanity：|Δ̂|>0.25 基因/靶 mean A/B/C = **11.7/8.1/6.8**（v3 8.5/4.4/3.8，
+  v2 24.6/20.8/14.2——比 v3 略丰满，仍远紧于 v2），gwps 方向一致率 0.888-0.901。
+- metrics：`outputs/metrics/20261003_l15fusion_v35.json`；LOCO 分数
+  `outputs/metrics/local_bench/l15v35s1_fused_lam2.5/anchor_normalized.json`。
+- **提交纪律**：v3.5 是否上报由 PI 按今晚 fusion v3 @λ2.5 官方分决定（≥−0.05 → v3.5 上；<−0.05 → 冻结）。
+- 风险：① 药扰行剂量/池化噪声与 CRISPRi 因果方向不完全同构（w=0.3+has_sig 已对冲，LOCO 正增益实证）；
+  ② aux 只覆盖 A549/SW480 两上皮系，对 context A(T 谱系)/C(IFN-high) 的迁移是间接的；
+  ③ mlp warm-up 5k 步按 bs65536 实现（预案 5k@262k≈43 epoch 超总预算，已在 config 注明换算）。
