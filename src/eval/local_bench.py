@@ -36,13 +36,17 @@ def load_yaml(path: Path) -> dict:
 
 
 def prepare_reference(ctx: str, ccfg: dict, n_cells: int, n_ntc: int) -> Path:
-    """子采样真值参考（每扰动 n_cells 细胞 + n_ntc 对照），缓存一次。"""
+    """子采样真值参考（每扰动 n_cells 细胞 + n_ntc 对照），缓存一次。
+
+    大源文件（HCT116 全深度 pooled ~280GB csr）用 backed 行子集读取，
+    避免 full read 的 ~300GB RSS 撞 cgroup OOM。
+    """
     out = BENCH_DIR / ctx
     ref = out / "ref.h5ad"
     if ref.exists():
         return ref
     out.mkdir(parents=True, exist_ok=True)
-    a = ad.read_h5ad(ROOT / ccfg["h5ad"])
+    a = ad.read_h5ad(ROOT / ccfg["h5ad"], backed="r")
     tg = a.obs[ccfg["pert_col"]].astype(str)
     rng = np.random.default_rng(ccfg["seed"])
     perts = sorted(set(tg.unique()) - {ccfg["control"]})
@@ -62,8 +66,15 @@ def prepare_reference(ctx: str, ccfg: dict, n_cells: int, n_ntc: int) -> Path:
         take = rng.choice(idx, size=min(n_cells if p != ccfg["control"] else n_ntc, len(idx)),
                           replace=False)
         keep_idx.extend(take.tolist())
-    sub = a[sorted(keep_idx)].copy()
-    sub.obs = sub.obs[[ccfg["pert_col"]]].rename(columns={ccfg["pert_col"]: "target_gene"})
+    keep_idx = sorted(keep_idx)
+    try:
+        Xsub = sp.csr_matrix(a.X[keep_idx])   # backed 行子集（只读所需行）
+        sub_obs = a.obs.iloc[keep_idx][[ccfg["pert_col"]]].rename(
+            columns={ccfg["pert_col"]: "target_gene"}).reset_index(drop=True)
+        sub_var = pd.DataFrame(index=pd.Index(a.var_names.astype(str)))
+        sub = ad.AnnData(X=Xsub, obs=sub_obs, var=sub_var)
+    finally:
+        a.file.close()
     sub.write_h5ad(ref, compression="gzip")
     (out / "targets.json").write_text(json.dumps(chosen))
     print(f"[{ctx}] reference ready: {sub.shape}, {len(chosen)} perts", flush=True)
