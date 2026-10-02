@@ -4,7 +4,8 @@ set -e
 CTX=$1; SEED=$2; CORES=$3
 BIN=/data/home/wsx/miniconda3/envs/aivc2026/bin
 ROOT=/data/resource/wanglab/aivc/aivc2026
-TMP=/tmp/mc_anchors_ext
+# /tmp 仅 14G 禁用 → 默认重定向到 /data（env MC_ANCHORS_TMP 可覆盖）
+TMP=${MC_ANCHORS_TMP:-$ROOT/data/interim/mc_anchors_ext}
 REF=$TMP/${CTX}_seed${SEED}.h5ad
 BUILD=$TMP/build_${CTX}_seed${SEED}
 EVALDIR=$TMP/eval_${CTX}_seed${SEED}

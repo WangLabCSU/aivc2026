@@ -5,14 +5,15 @@ seed{11,12,13} = /tmp/mc_anchors_ext/*_scored.csv + mc_anchor_bundles/<ctx>_seed
 含 u-only 传播方差分解（公式自算，seed-0 官方读数自检）。
 用法: python collect.py --contexts P_H1,R_Jurkat
 """
-import argparse, json, time
+import argparse, json, os, time
 from pathlib import Path
 import numpy as np
 import pandas as pd
 
 ROOT = Path("/data/resource/wanglab/aivc/aivc2026")
 LB = ROOT / "outputs/metrics/local_bench"
-TMP = Path("/tmp/mc_anchors_ext")
+# /tmp 仅 14G 禁用 → 默认重定向到 /data（env MC_ANCHORS_TMP 可覆盖以复用旧 /tmp 工件）
+TMP = Path(os.environ.get("MC_ANCHORS_TMP", str(ROOT / "data/interim/mc_anchors_ext")))
 SEEDS = [0, 11, 12, 13]
 METRICS = ["pds_cosine", "expr_mse_unbiased_capped_norm", "de_wilcoxon_lfc_nmae",
            "de_wilcoxon_direction_fidelity_yield_raw", "de_wilcoxon_direction_reach_raw",
@@ -20,7 +21,8 @@ METRICS = ["pds_cosine", "expr_mse_unbiased_capped_norm", "de_wilcoxon_lfc_nmae"
 SHORT = {"pds_cosine": "pds", "expr_mse_unbiased_capped_norm": "mse",
          "de_wilcoxon_lfc_nmae": "nmae", "de_wilcoxon_direction_fidelity_yield_raw": "fid",
          "de_wilcoxon_direction_reach_raw": "reach", "de_wilcoxon_sig_jaccard": "jac"}
-CONTROL = {"P_H1": "non-targeting", "R_Jurkat": "non-targeting", "Q_HepG2": "non-targeting"}
+CONTROL = {"P_H1": "non-targeting", "R_Jurkat": "non-targeting", "Q_HepG2": "non-targeting",
+           "S_RPE1": "non-targeting"}
 
 
 def bundle_ends(bundle: Path) -> tuple[dict, dict]:
@@ -153,9 +155,13 @@ for ctx in args.contexts.split(","):
     summary[ctx] = {"overall_mean": node["per_metric_normalized"]["overall"]["mean"],
                     "overall_std": node["per_metric_normalized"]["overall"]["std"],
                     "seed0_vs_3ref_diff": node["verdict_seed0_vs_3ref_mean"]["diff"]}
+# cross-context verdict 覆盖全量已有节点（而非仅本次 run），避免覆盖历史 std
+all_ctx = [k for k, v in merged.items()
+           if isinstance(v, dict) and "per_metric_normalized" in v]
 merged["_cross_context_verdict"] = {
-    "ref_selection_overall_std_by_context": {c: summary[c]["overall_std"] for c in summary},
-    "note": "E3 检验 Q_HepG2 ±0.028 的 ref 方差是否普适；std>0.02 的上下文单 ref 差距 <0.04 视为平手"}
+    "ref_selection_overall_std_by_context": {
+        c: merged[c]["per_metric_normalized"]["overall"]["std"] for c in all_ctx},
+    "note": "E3/E4 检验 Q_HepG2 ±0.028 的 ref 方差是否普适；std>0.02 的上下文单 ref 差距 <0.04 视为平手"}
 out_path.write_text(json.dumps(merged, indent=2, ensure_ascii=False))
 print(json.dumps(summary, indent=2))
 print(f"wrote {out_path}")

@@ -3,7 +3,7 @@
 只变细胞/NTC 抽样 seed；每扰动 400 细胞 + NTC 2000。
 用法: python build_refs.py --context P_H1
 """
-import argparse, json, time
+import argparse, json, os, time
 from pathlib import Path
 import anndata as ad
 import numpy as np
@@ -13,14 +13,18 @@ CTX = {
     "P_H1": dict(src="data/public/vcc2025/adata_Test.h5ad", pert_col="target_gene", control="non-targeting"),
     "R_Jurkat": dict(src="data/public/scperturb/Nadig2024_jurkat.h5ad", pert_col="gene", control="non-targeting"),
     "Q_HepG2": dict(src="data/public/scperturb/Nadig2024_hepg2.h5ad", pert_col="gene", control="non-targeting"),
+    # 夜间任务: Replogle RPE1（磁盘实际文件名 Replogle2022_rpe1.h5ad；扰动列=gene；
+    # 100 靶全在源中，min 可用量 7；协议同其他 ctx：400/扰动或可用量 + NTC 2000）
+    "S_RPE1": dict(src="data/public/scperturb/Replogle2022_rpe1.h5ad", pert_col="gene", control="non-targeting"),
 }
 N_CELLS, N_NTC, SEEDS = 400, 2000, [11, 12, 13]
 ap = argparse.ArgumentParser()
 ap.add_argument("--context", required=True, choices=list(CTX))
 args = ap.parse_args()
 cfg = CTX[args.context]
-OUT = Path("/tmp/mc_anchors_ext")
-OUT.mkdir(exist_ok=True)
+# /tmp 仅 14G 禁用 → 默认重定向到 /data（env MC_ANCHORS_TMP 可覆盖以复用旧 /tmp 工件）
+OUT = Path(os.environ.get("MC_ANCHORS_TMP", str(ROOT / "data/interim/mc_anchors_ext")))
+OUT.mkdir(parents=True, exist_ok=True)
 pert_set = json.loads((ROOT / f"data/interim/local_bench/{args.context}/targets.json").read_text())
 
 t0 = time.time()
