@@ -1,0 +1,141 @@
+{
+  "scale": "manual/bundle anchor-normalized (0=baseline, 1=replicate-halfsplit proxy)",
+  "pooled": {
+    "n_cells": 3409169,
+    "n_batches": 109,
+    "n_genes": 38606,
+    "nnz": 17414414157,
+    "n_ntc": 165777,
+    "perts_ge30": 17358,
+    "median_cells_per_pert": 150.0,
+    "seconds": 1034.6
+  },
+  "ref": {
+    "shape": [
+      19218,
+      38606
+    ],
+    "n_targets": -1899,
+    "ntc_cells": 2000,
+    "median_cells_per_target": 139.5
+  },
+  "nmae_disposition": "available (unavailable: [])",
+  "per_tag": {
+    "heuristic_lam15": {
+      "tag": "l11_lam1.5",
+      "norm": {
+        "pds": -0.6949458483754485,
+        "mse": 0.0,
+        "nmae": 0.0908577052178829,
+        "fid": 0.6714787986841859,
+        "reach": -0.1384624826377761,
+        "jac": -1.030556997450507
+      },
+      "overall_norm": -0.1836048040936104,
+      "bundle_mode": "bundle",
+      "metrics_unavailable": [],
+      "raw": {
+        "direction_fidelity_yield_raw": 0.4080850387499882,
+        "direction_reach_raw": 0.4242025353039542,
+        "lfc_nmae": 0.9424006987621502,
+        "sig_jaccard": 0.4030436514184471,
+        "distance_unbiased": 0.0001264983386137,
+        "mse_unbiased": 0.0002581359704648,
+        "mse_unbiased_capped": 0.0002586273622764,
+        "mse_unbiased_capped_norm": 2.0445119288570206,
+        "real_mass_ratio": 0.9999999992008608,
+        "pds_cosine": 0.5153535353535355
+      }
+    },
+    "fusionv1_lam25": {
+      "tag": "l15v1_hct116_lam2.5",
+      "norm": {
+        "pds": 0.5090252707581199,
+        "mse": 0.0,
+        "nmae": 0.1765222605415143,
+        "fid": 0.8533187909165566,
+        "reach": 0.3283218624477511,
+        "jac": -3.017529430352488
+      },
+      "overall_norm": -0.191723540948091,
+      "bundle_mode": "bundle",
+      "metrics_unavailable": [],
+      "raw": {
+        "direction_fidelity_yield_raw": 0.5026797192736167,
+        "direction_reach_raw": 0.58872032121352,
+        "lfc_nmae": 0.8923673541828105,
+        "sig_jaccard": 0.1389840314113266,
+        "distance_unbiased": 0.0001264983386137,
+        "mse_unbiased": 0.0003467215347883,
+        "mse_unbiased_capped": 0.00034713893161,
+        "mse_unbiased_capped_norm": 2.744217318694645,
+        "real_mass_ratio": 0.9999999992008608,
+        "pds_cosine": 0.5827272727272725
+      }
+    },
+    "fusionv2_lam15": {
+      "tag": "l15v2_hct116_lam1.5",
+      "norm": {
+        "pds": 0.0884476534295984,
+        "mse": 0.0,
+        "nmae": 0.2051764641092825,
+        "fid": 0.7771931675007232,
+        "reach": 0.1023424217119279,
+        "jac": -0.7534573863383406
+      },
+      "overall_norm": 0.0699503867355319,
+      "bundle_mode": "bundle",
+      "metrics_unavailable": [],
+      "raw": {
+        "direction_fidelity_yield_raw": 0.4630785350771245,
+        "direction_reach_raw": 0.5090740399224719,
+        "lfc_nmae": 0.8756315451269361,
+        "sig_jaccard": 0.4398689323346666,
+        "distance_unbiased": 0.0001264983386137,
+        "mse_unbiased": 0.0002286256312261,
+        "mse_unbiased_capped": 0.0002291125936216,
+        "mse_unbiased_capped_norm": 1.8111905352462097,
+        "real_mass_ratio": 0.9999999992008608,
+        "pds_cosine": 0.5591919191919189
+      }
+    },
+    "fusionv2_lam25": {
+      "tag": "l15v2_hct116_lam2.5",
+      "norm": {
+        "pds": -0.335740072202168,
+        "mse": 0.0,
+        "nmae": 0.1636998263110197,
+        "fid": 0.8479693925088592,
+        "reach": 0.2407664498530368,
+        "jac": -3.618434187389825
+      },
+      "overall_norm": -0.4502897651531796,
+      "bundle_mode": "bundle",
+      "metrics_unavailable": [],
+      "raw": {
+        "direction_fidelity_yield_raw": 0.4998969176073962,
+        "direction_reach_raw": 0.5578614829167009,
+        "lfc_nmae": 0.8998564407458185,
+        "sig_jaccard": 0.0591265159389024,
+        "distance_unbiased": 0.0001264983386137,
+        "mse_unbiased": 0.000347929991072,
+        "mse_unbiased_capped": 0.0003485680295768,
+        "mse_unbiased_capped_norm": 2.755514684197202,
+        "real_mass_ratio": 0.9999999992008608,
+        "pds_cosine": 0.5354545454545453
+      }
+    }
+  },
+  "comparisons": {
+    "fid_fusionv2_lam15_vs_heuristic_lam15": 0.1057,
+    "fid_fusionv2_lam25_vs_heuristic_lam15": 0.1765,
+    "fid_fusionv1_lam25_vs_heuristic_lam15": 0.1818,
+    "fusion_fixes_fid_on_p53wt_crc": true
+  },
+  "notes": [
+    "S_HCT116 ref 由全批次 pooled (min_cells 30 gate) 重建; ref 靶/NTC 块 400/2000 细胞帽",
+    "fusion v2 对 S_HCT116 为 in-sample (hct116 在训练池; sig_hct116 特征按 row_ctx 约定置 NaN)",
+    "fusion v1 (v1h) 为 LOCO-correct 消融: 训练池不含 hct116",
+    "启发式对照 = l11_lam1.5 同 ref 重跑 (ws-v1.2-sampled-lam15, λ=1.5)"
+  ]
+}
