@@ -71,6 +71,9 @@ def prepare_reference(ctx: str, ccfg: dict, n_cells: int, n_ntc: int) -> Path:
         Xsub = sp.csr_matrix(a.X[keep_idx])   # backed 行子集（只读所需行）
         sub_obs = a.obs.iloc[keep_idx][[ccfg["pert_col"]]].rename(
             columns={ccfg["pert_col"]: "target_gene"}).reset_index(drop=True)
+        # 关键: categorical 列切片会保留源全部类目 → cell-eval2/pdex 对空组除零崩溃，
+        # 必须丢弃未用类目（anndata 原生子集自动做，这里手动等价）
+        sub_obs["target_gene"] = sub_obs["target_gene"].astype(str)
         sub_var = pd.DataFrame(index=pd.Index(a.var_names.astype(str)))
         sub = ad.AnnData(X=Xsub, obs=sub_obs, var=sub_var)
     finally:

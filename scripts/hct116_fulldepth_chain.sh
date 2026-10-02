@@ -37,10 +37,15 @@ set -uo pipefail
 cd /data/resource/wanglab/aivc/aivc2026
 rm -rf data/interim/local_bench/S_HCT116
 rm -rf outputs/metrics/local_bench/bundles/S_HCT116 outputs/metrics/local_bench/bundle_build/S_HCT116*
-rm -f outputs/metrics/local_bench/l11_lam1.5/S_HCT116_* \
-      outputs/metrics/local_bench/l15v1_hct116_lam2.5/S_HCT116_* \
-      outputs/metrics/local_bench/l15v2_hct116_lam1.5/S_HCT116_* \
-      outputs/metrics/local_bench/l15v2_hct116_lam2.5/S_HCT116_*
+rm -rf outputs/metrics/local_bench/l11_lam1.5/S_HCT116_eval \
+      outputs/metrics/local_bench/l15v1_hct116_lam2.5/S_HCT116_eval \
+      outputs/metrics/local_bench/l15v2_hct116_lam1.5/S_HCT116_eval \
+      outputs/metrics/local_bench/l15v2_hct116_lam2.5/S_HCT116_eval
+rm -f outputs/metrics/local_bench/l11_lam1.5/S_HCT116_pred.h5ad \
+      outputs/metrics/local_bench/l11_lam1.5/S_HCT116_scored.csv \
+      outputs/metrics/local_bench/l15v1_hct116_lam2.5/S_HCT116_pred.h5ad \
+      outputs/metrics/local_bench/l15v2_hct116_lam1.5/S_HCT116_pred.h5ad \
+      outputs/metrics/local_bench/l15v2_hct116_lam2.5/S_HCT116_pred.h5ad
 # 新 ref 的 100 靶重采样 → 旧靶 Δ̂ 缓存必须清除（否则新靶全部 Δ=0）
 rm -f data/interim/l15_fusion/v2/pred_s2bench_hct116_v2.parquet \
       data/interim/l15_fusion/v1/pred_s2bench_hct116_v1.parquet
