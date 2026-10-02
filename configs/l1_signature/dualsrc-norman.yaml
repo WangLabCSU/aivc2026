@@ -1,0 +1,12 @@
+# E1 三源：daily-best [gwps,norman] + hct116_all，λ3.5（对 daily-best 的 +hct116 边际效应）
+datasets: [gwps, norman, hct116_all]
+lambda_real: 3.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 12.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261003_dualsrcn_lam35

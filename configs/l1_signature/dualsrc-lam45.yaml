@@ -1,0 +1,15 @@
+# E1 双源启发式：gwps(K562) + hct116_all(xatlas p53-WT) 聚合，λ3.5（20261003）
+# load_delta 语义：按 (target,gene) 对跨源等权均值；单源独有的对保留单源值（不置零）；
+# 未覆盖靶走 gwps generic 兜底。hct116 覆盖 202/300 竞赛靶（Q_HepG2 bench 51/100）。
+# 注：签名文件名为 hct116_all.parquet（hct116.parquet 不存在，直接用 _all 名避免静默跳过）。
+datasets: [gwps, hct116_all]
+lambda_real: 4.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 12.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261003_dualsrc_lam45

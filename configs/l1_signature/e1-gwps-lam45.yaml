@@ -1,0 +1,12 @@
+# E1 对照：单源 gwps λ3.5（Q_HepG2 bench 首测）
+datasets: [gwps]
+lambda_real: 4.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 12.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261003_e1_gwps_lam45
