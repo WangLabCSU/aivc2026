@@ -1,0 +1,56 @@
+# cell-eval2 base config for MANUAL anchor half-split runs (S_HCT116 full-depth fallback).
+# 与 vcc2026.yaml 唯一差异: metrics 用显式 5 项列表, 去掉 expr_mse_unbiased_capped_norm ——
+# 对半自洽 (pred=halfA, ref=halfB) 时该 derived 指标的分母 (expr_distance_unbiased 求和)
+# 会因两半分布几乎相同而 ≤0, 触发 run 的正分母 guard 直接崩溃。
+# 回退口径 (见 src/eval/bench_score.py manual_anchor): fid/pds/reach/jac 归一化,
+# nmae 在全深度 ref 上 gate 全空 → 标注 unavailable; mse 在既有 bundle 中恒为 0。
+metrics:
+  - pds_cosine
+  - de_wilcoxon_lfc_nmae
+  - de_wilcoxon_direction_fidelity_yield_raw
+  - de_wilcoxon_direction_reach_raw
+  - de_wilcoxon_sig_jaccard
+cache_strict: true
+pert_col: target
+control: non-targeting
+version: v2
+control_source: real
+input_type: counts
+max_counts_per_cell: 1000000.0
+target_sum: 1000000.0
+allow_discrete: false
+allow_fractional_counts: false
+autodetect_input_type: false
+validate_input: true
+filter:
+  filter_gene_min_cpm_cell: 5.0
+num_threads: -1
+device: auto
+pert_chunk: 512
+outdir: null
+cache_real: null
+cache_pred: null
+discrimination:
+  distance: cosine
+  rank_denominator: n-1
+  exclude_target_gene: true
+  exclusion_scope: panel
+  embed_key: null
+  tie_policy: midrank
+de:
+  p_adj_threshold: 0.05
+  min_abs_log2fc: 0.0
+  sort_by: abs_log2_fold_change
+  method: wilcoxon
+  nan_lfc_policy: mask
+  backend: auto
+  replicate_col: null
+  mean_calc: arithmetic
+  epsilon: 1.0e-09
+  clip_value: null
+  fdr_scope: per_pert
+  auc_pval_floor: min_nonzero
+  auc_pval_floor_value: 1.0e-10
+gather_threads: -1
+target_gene_map: null
+bulk_target_sum: 50000.0
