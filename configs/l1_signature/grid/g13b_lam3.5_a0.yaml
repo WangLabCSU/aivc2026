@@ -1,0 +1,14 @@
+# L1.3 wave3: lambda probe 3.5, no sparse（校准扩点：官方 λ3.5 A/B/C 点配对用）
+datasets: [gwps, norman]
+lambda_real: 3.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 8.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+top_k: null
+stress_alpha: 0.0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: g13b_lam3.5_a0
