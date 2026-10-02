@@ -33,10 +33,11 @@ def ref_stats() -> dict:
     ref = OUT.parent.parent.parent / "data/interim/local_bench/S_HCT116/ref.h5ad"
     a = ad.read_h5ad(ref, backed="r")
     vc = a.obs["target_gene"].astype(str).value_counts()
+    ctrl = "Non-Targeting" if "Non-Targeting" in vc.index else "non-targeting"
     st = {"shape": list(a.shape),
-          "n_targets": int(len(vc) - vc.get("Non-Targeting", 0)),
-          "ntc_cells": int(vc.get("Non-Targeting", 0)),
-          "median_cells_per_target": float(vc.drop("Non-Targeting", errors="ignore").median())}
+          "n_targets": int(len(vc) - (1 if ctrl in vc.index else 0)),
+          "ntc_cells": int(vc.get(ctrl, 0)),
+          "median_cells_per_target": float(vc.drop(index=[ctrl], errors="ignore").median())}
     a.file.close()
     return st
 

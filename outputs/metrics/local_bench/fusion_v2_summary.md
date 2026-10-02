@@ -69,7 +69,7 @@ A/B/C 提交特征不受该 bug 影响（basal 用 context_{A,B,C} 自身，v1 �
 
 - pooled: 3409169 cells / 109 batches / NTC 165777 /
   ≥30-cell perts 17358 (median 150.0);
-  ref: 19218 cells, -1899 targets (median 139.5 cells/靶)
+  ref: 19218 cells, 100 targets (median 139.5 cells/靶)
 - 归一化 fid 对比: **fusion v2@λ1.5 vs 启发式 λ1.5 = 0.7772 vs 0.6715
   (Δ=0.1057)**;
   fusion v2@λ2.5 = 0.8480; fusion v1(LOCO)@λ2.5 = 0.8533
