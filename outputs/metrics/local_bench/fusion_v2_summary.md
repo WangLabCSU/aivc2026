@@ -84,3 +84,13 @@ A/B/C 提交特征不受该 bug 影响（basal 用 context_{A,B,C} 自身，v1 �
 | fusionv2_lam15 | 0.7772 | 0.0884 | 0.1023 | -0.7535 | 0.2052 | 0.0700 | bundle |
 | fusionv2_lam25 | 0.8480 | -0.3357 | 0.2408 | -3.6184 | 0.1637 | -0.4503 | bundle |
 <!-- hct116-fulldepth:auto-end -->
+
+## fusion v3.5（Tahoe 药扰辅助任务）设计决策预案（2026-10-02，待官方判读后启动）
+
+**触发条件**：fusion v3 @λ2.5 官方 overall ≥ -0.05（fusion 家族存活）→ 启动 v3.5；否则 v3.5 冻结，资源转 dualsrc 调优。
+
+**设计**（tahoe_p12.parquet 已就绪：4,700 药扰组 × 33,092 基因域，300/300 靶响应基因命中）：
+1. 辅助样本行：tahoe 药扰 (cell_line|drug) 组的 logfc 向量，特征 = basal(A549/SW480) + 模块 one-hot + **药扰特异的跨药签名统计**（无跨上下文 CRISPRi 签名可用，sig 特征位置置零 + has_sig=0 标志位），样本权重 0.3；
+2. 主任务不变：6 上下文 CRISPRi 迁移（权重 1.0）——多任务共享骨干，期望药扰行教会 p53/IFN/EMT 模块的方向先验；
+3. 训练顺序：先主任务 warm-up 5k steps → 加辅助行混训 → early stop on LOCO-HepG2。
+**风险**：药扰行分布偏移可能稀释主任务（缓解：权重 0.3 + has_sig 标志位让模型可分）；**收益**：fid 模块缺口（p53/IFN）的唯一新信号源。
