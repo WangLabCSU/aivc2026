@@ -48,3 +48,7 @@ outputs/metrics/local_bench/l0_anchor.h5ad
 outputs/metrics/local_bench/l1_lam0.5.h5ad
 outputs/metrics/local_bench/state_zh_hepg2/
 outputs/metrics/local_bench/official_baseline/
+
+# --- 例外: src/data 代码必须入 git（data/ 模式误伤修复, 2026-10-02 审计）---
+!src/data/
+src/data/__pycache__/
