@@ -1,0 +1,17 @@
+# E1-v2 双源启发式(深度版) + L1.8 置信度 v2 加权：datasets 同 dualsrc-deep.yaml，
+# Δ̂(λ3.5 聚合) × w_j（data/interim/confidence_v2.parquet，gwps×hct116 双源方向一致率，
+# w∈{1.0 agree, 0.5 disagree, 0.7 弱证据}，表外基因 0.7），clip 前应用（含 generic 行）。
+# bench 判据: Q_HepG2 上 fid/jac 提升、pds 不塌（>0.75），基线 dualsrc_deep
+# (anchor 0.318, pds 0.818/fid 0.775/nmae 0.044/reach 0.196/jac 0.076)。
+datasets: [gwps, hct116_all]
+lambda_real: 3.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 12.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261003_dualsrcdeep_lam35_confv2
+confidence_file: data/interim/confidence_v2.parquet

@@ -1,0 +1,54 @@
+# Bizard v0.1 — 鸟群（swarm/PBT）三层架构，骨干 = fusion v3.5 管线
+# 设计书: docs/bizard/architecture.md。每鸟 = fusion v3.5 骨干 × (主场景偏置, τ, seed, aux 权重)。
+# v0.1 时间盒裁剪: top-K 变异不启用（tasks 表缓存共享, 全鸟 top_k=500, 记录为偏差）。
+
+fusion_cfg: configs/l15_fusion/v35.yaml     # 骨干配置（6 上下文池 + tahoe aux）
+v35_workdir: data/interim/l15_fusion/v35    # 复用: feat_train.npz / sigstore / tasks / basal / emb / feat_submit_*
+
+workdir: data/interim/bizard/v01            # bizard 产物（模型/pred/聚合 Δ̂）
+bench_out: outputs/metrics/local_bench      # bench tag 目录根（bizard tag: bz01_*）
+metrics_file: outputs/metrics/20261003_bizard_v01.json
+
+# ---- L3 场景映射: bench 场景 ↔ 训练上下文 ↔ 特征行上下文 ↔ control 标签
+scenarios:
+  P_H1:    {train_ctx: gwps,   control: non-targeting}
+  Q_HepG2: {train_ctx: hepg2,  control: non-targeting}
+  R_Jurkat: {train_ctx: jurkat, control: non-targeting}
+  S_RPE1:  {train_ctx: rpe1,   control: non-targeting}
+  S_HCT116: {train_ctx: hct116, control: Non-Targeting}
+
+# ---- 鸟群 N=6（config 驱动）。main_weight = 主场景训练行 sample_weight（τ 的离散实现:
+#      sharp τ→2.0 强偏置 / soft τ→1.5 弱偏置 / none→1.0 均匀）。b6_g 复用 v35 s2_35
+#      已训模型（均匀权重/seed0/aux0.3，零训练成本的全局鸟）。
+birds:
+  - {name: b1_p,    scenario: P_H1,    main_weight: 2.0, seed: 0, aux_weight: 0.3}
+  - {name: b2_q,    scenario: Q_HepG2, main_weight: 2.0, seed: 1, aux_weight: 0.3}
+  - {name: b3_r,    scenario: R_Jurkat, main_weight: 2.0, seed: 2, aux_weight: 0.3}
+  - {name: b4_s1,   scenario: S_RPE1,  main_weight: 1.5, seed: 3, aux_weight: 0.3}
+  - {name: b5_s2,   scenario: S_HCT116, main_weight: 2.0, seed: 4, aux_weight: 0.3}
+  - {name: b6_g,    scenario: null,    main_weight: 1.0, seed: 5, aux_weight: 0.3,
+     reuse: {xgb: xgb_s2_35.json, mlp: mlp_s2_35_noemb.pt}}
+
+# ---- 每鸟评分场景（时间盒）: 主场景 + Q_HepG2（锚定场景, 历史积累最全）
+bird_eval_scenarios: auto        # auto = [主场景, Q_HepG2]
+
+# ---- 聚合（v0.1 记录选择: soft-rank average, 六鸟等权）
+aggregate:
+  method: soft_rank              # soft_rank | simple
+  birds: all                     # all = 6 鸟等权
+  bench_lambda: 2.5              # bench 评分用 λ（fusion 家族 gate λ, 对齐 v3.5 LOCO）
+  lambda_grid: [2.5, 3.5]        # 提交 λ 扫描（Q_HepG2 定 λ）
+
+# ---- 适应度（校准 v5: outputs/metrics/local_bench/affine_calibration.json）
+fitness:
+  affine_a: 2.0958               # official_overall ≈ a*local − b
+  affine_b: 0.5259
+  clip: [-0.11, 0.10]
+  min_penalty: 0.15              # 全局适应度 = affine 均值 − min_penalty × max(0, −min_ctx affine)
+
+# ---- 预测/采样载体（对齐 build_submission_v1.py 冻结值）
+predict:
+  alpha: 0.5                     # fused = α·xgb + (1−α)·mlp
+  clip: 4.0
+  max_fold: 8.0
+  n_cells_per_pert: 400

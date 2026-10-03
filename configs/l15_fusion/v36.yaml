@@ -1,0 +1,100 @@
+# L1.5-fusion v3: = v2 池 + HCT116 签名深度重建（xatlas 109 批全量, min_cells 30）。
+# 唯一差异源: data/interim/signatures/hct116_all.parquet（12,253 perts 浅版 → ~17k perts 深版）。
+# 超参沿用 v0/v1/v2 冻结值（α=0.5, mlp no-emb）；basal/采样/模块集与 v2 逐字一致。
+train_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116]   # stage2 全量
+stage1_holdout: hepg2                                          # LOCO-HepG2 验证臂
+locos:
+  jurkat: {h5ad: data/public/scperturb/Nadig2024_jurkat.h5ad, sig: data/interim/signatures/jurkat_all.parquet}
+  hepg2: {h5ad: data/public/scperturb/Nadig2024_hepg2.h5ad, sig: data/interim/signatures/hepg2_all.parquet}
+basal_h5ad:
+  gwps: data/public/scperturb/Replogle2022_K562_gwps.h5ad
+  k562_ess: data/public/scperturb/Replogle2022_K562_essential.h5ad
+  rpe1: data/public/scperturb/Replogle2022_rpe1.h5ad
+  jurkat: data/public/scperturb/Nadig2024_jurkat.h5ad
+  hepg2: data/public/scperturb/Nadig2024_hepg2.h5ad
+  hct116: {h5ad: data/public/xatlas/HCT116_3batches.h5ad, pert_col: target_gene, control: non-targeting}
+  a: {h5ad: data/raw/controls/context_A.h5ad, pert_col: target_gene, control: non-targeting}
+  b: {h5ad: data/raw/controls/context_B.h5ad, pert_col: target_gene, control: non-targeting}
+  c: {h5ad: data/raw/controls/context_C.h5ad, pert_col: target_gene, control: non-targeting}
+pert_col: gene
+control: non-targeting
+
+sampling:
+  top_k: 500          # 每 (c,g) 保留 |logfc| top-K
+  rand_k: 500         # 再随机 K 个零/小 logfc 基因
+  gwps_target_cap: 4000   # gwps 9866 靶下采样, 控制训练规模
+  seed: 0
+
+features:
+  module_sets:
+    mt: {prefix: [MT-]}
+    ribo: {prefix: [RPS, RPL]}
+    e2f: [MKI67, TOP2A, PCNA, MCM2, MCM3, MCM4, MCM5, MCM6, MCM7, E2F1, E2F2, AURKA, BIRC5, CCNB1, CCNE1, TYMS, FEN1, RRM2, UBE2C, CDC20, CENPF, HMGB2, NUSAP1, PRC1, ASPM]
+    p53: [CDKN1A, BBC3, MDM2, TP53, GADD45A, GADD45B, DDB2, SESN1, SESN2, RRM2B, PMAIP1, BAX, PERP, ZMAT3, TRIAP1, PLK3, EI24]
+    ifn: [ISG15, IFIT1, IFIT2, IFIT3, IFI6, IFI44, IFI44L, IFITM1, IFITM3, OAS1, OAS2, OASL, MX1, MX2, IRF7, IRF1, RSAD2, DDX58, IFIH1, CXCL10, STAT1, STAT2]
+    myc: [MYC, NPM1, ODC1, CAD, LDHA, PDK1, SLC1A5, GLS, CDK4, TERT]
+
+embeddings:
+  se600m: data/public/models/SE-600M/protein_embeddings.pt
+  tahoe_dir: data/public/models/Tahoe-x1/70m-model
+  pca_dim: 128
+  use_tahoe: true
+
+xgb:
+  objective: reg:pseudohubererror   # logfc 重尾, huber 稳健
+  max_depth: 9
+  n_estimators: 400
+  learning_rate: 0.08
+  subsample: 0.6
+  colsample_bytree: 0.7
+  tree_method: hist
+  early_stopping_rounds: 40
+  label_clip: 4.0
+  n_jobs: 40
+
+mlp:
+  hidden: [256, 128]
+  dropout: 0.1
+  lr: 0.002
+  weight_decay: 0.01
+  batch_size: 262144
+  max_epochs: 12
+  patience: 2
+  label_clip: 4.0
+  huber_beta: 0.5
+
+fusion:
+  alpha_grid: [0.0, 0.25, 0.5, 0.75, 1.0]
+  lambda_grid: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+
+bench:   # 与 src/eval/local_bench.py 对齐
+  n_cells_per_pert: 400
+  n_ntc_ref: 2000
+  n_perts: 100
+  lambda_generic: 0.15
+  max_abs_delta: 4.0
+  max_fold: 8.0
+  cell_sampling: true
+  seed: 0
+
+paths:
+  workdir: data/interim/l15_fusion/v36
+  outdir: outputs/metrics/local_bench/l15_fusion_v36
+
+# ---- v3.5: Tahoe 药扰辅助多任务（预案 2b79d02）
+aux:
+  contexts: [a549, sw480]
+  map: {a549: CVCL_0023, sw480: CVCL_0546}
+  # CVCL 考证: basal_a549 ↔ CVCL_0023 (A549, r=0.99998); "basal_sw480" 实为 CVCL_0546
+  # (SW620, 同患者转移株, CDX2-high 结肠, r=0.99886; CVCL_0459 假设 r=0.858 已证伪)。
+  # 上下文键名沿用资产命名 sw480; 要义是 basal 与药扰组同系一致。
+  sig_parquet: data/interim/signatures/tahoe_p12.parquet
+  weight: 0.3            # aux 行 sample_weight（gate 回退时降 0.15 重试）
+  warmup: true
+  warmup_steps: 5000     # MLP 主任务 warm-up 步数（预案）
+  warmup_batch_size: 65536   # 5k 步 @262k = 43 epoch 超预算 → 小批实现 ≈5 epoch
+  xgb_warmup_trees_ratio: 0.5
+  basal_raw:
+    a549: data/interim/l15_fusion/v35/raw_basal_a549.npy
+    sw480: data/interim/l15_fusion/v35/raw_basal_sw480.npy
+  basal_raw_order: data/public/tahoe/plate12.h5ad   # var 序 = npy 基因序 (62,710)

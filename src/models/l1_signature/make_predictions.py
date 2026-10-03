@@ -38,6 +38,9 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
       beta(0.5), exclude_datasets([])（LOCO: 评测上下文对应的数据集签名不参与投票），
       vote_datasets(默认 norman,k562_ess,rpe1,hepg2,jurkat；gwps 为 Δ 源不投票)。
       基因不在权重表 → w'=beta。
+    - confidence_file (str|null, 默认 null): L1.8 v2 置信权重表路径（parquet，列
+      [gene, w]；由 confidence_v2.py 产出 data/interim/confidence_v2.parquet）。
+      Δ 乘 w_j（在 top_k/clip 之前，含 generic 兜底行）；表外基因 w=0.7（N<2 中性）。
     """
     sig_dir = ROOT / "data/interim/signatures"
     per_ds = {}
@@ -120,6 +123,17 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
                                 "delta_rows_weighted": int(len(real)),
                                 "mean_w_applied": float(np.mean(wv)) if len(wv) else None,
                                 "frac_at_beta": float(np.mean(wv == beta)) if len(wv) else None}
+
+    conf_file = cfg.get("confidence_file")
+    if conf_file:
+        wtab = pd.read_parquet(ROOT / conf_file if not Path(conf_file).is_absolute() else conf_file)
+        wmap = pd.Series(wtab["w"].to_numpy(), index=wtab["gene"].astype(str))
+        wv = real["gene"].astype(str).map(wmap).fillna(0.7).to_numpy()
+        real["delta"] = real["delta"] * wv
+        report["confidence_file"] = {"path": str(conf_file), "table_genes": int(len(wtab)),
+                                     "delta_rows_weighted": int(len(real)),
+                                     "mean_w_applied": float(np.mean(wv)) if len(wv) else None,
+                                     "frac_neutral_0.7": float(np.mean(wv == 0.7)) if len(wv) else None}
 
     if top_k is not None:
         k = int(top_k)
@@ -223,8 +237,12 @@ def build_submission(cfg: dict) -> tuple["ad.AnnData", dict]:  # noqa: F821
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default=str(ROOT / "configs/l1_signature/ws-v1.yaml"))
+    ap.add_argument("--confidence-file", default=None,
+                    help="覆盖 config 的 confidence_file 键（L1.8 v2 权重表 parquet）")
     args = ap.parse_args()
     cfg = load_config(Path(args.config))
+    if args.confidence_file:
+        cfg["confidence_file"] = args.confidence_file
 
     perts = pd.read_csv(ROOT / cfg["controls_dir"] / cfg["pert_counts_file"])["target_gene"]
     a, report = build_submission(cfg)
