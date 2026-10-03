@@ -1,0 +1,63 @@
+# Bizard v0.2 — 变异算子升级 + 真 PBT（2 代）。骨干不变（fusion v3.5）。
+# 变异三维（每鸟）:
+#   pred_topk   Δ̂ 每靶保留 |Δ̂| 前 K（null=off 稠密; 150/500 稀疏化）——鸟间变异算子,
+#               与 L1.7 幅度缩水不同: 不缩量程, 只截尾部（实测说话）
+#   aux_weight  tahoe 药扰行 sample_weight ∈ {0, 0.15, 0.3, 0.45}
+#   module_off  特征级模块开关: 置零 mod_p53+mod_ifn 列（训练与预测同掩码, 防泄漏不对称）
+fusion_cfg: configs/l15_fusion/v35.yaml
+v35_workdir: data/interim/l15_fusion/v35
+
+workdir: data/interim/bizard/v02
+bench_out: outputs/metrics/local_bench
+metrics_file: outputs/metrics/20261003_bizard_v02.json
+
+scenarios:
+  P_H1:    {train_ctx: gwps,   control: non-targeting}
+  Q_HepG2: {train_ctx: hepg2,  control: non-targeting}
+  R_Jurkat: {train_ctx: jurkat, control: non-targeting}
+  S_RPE1:  {train_ctx: rpe1,   control: non-targeting}
+  S_HCT116: {train_ctx: hct116, control: Non-Targeting}
+
+# ---- 第 1 代鸟群: 6 鸟全训（不再复用 v35）, 变异按 3^1×4^1×2^1 网格角点铺开
+birds:
+  - {name: b1_p,    scenario: P_H1,    main_weight: 2.0, seed: 0, aux_weight: 0.15,
+     pred_topk: null, module_off: []}
+  - {name: b2_q,    scenario: Q_HepG2, main_weight: 2.0, seed: 1, aux_weight: 0.3,
+     pred_topk: 150, module_off: []}
+  - {name: b3_r,    scenario: R_Jurkat, main_weight: 2.0, seed: 2, aux_weight: 0.45,
+     pred_topk: null, module_off: [p53, ifn]}
+  - {name: b4_s1,   scenario: S_RPE1,  main_weight: 1.5, seed: 3, aux_weight: 0.0,
+     pred_topk: 500, module_off: []}
+  - {name: b5_s2,   scenario: S_HCT116, main_weight: 2.0, seed: 4, aux_weight: 0.3,
+     pred_topk: null, module_off: [p53, ifn]}
+  - {name: b6_g,    scenario: null,    main_weight: 1.0, seed: 5, aux_weight: 0.3,
+     pred_topk: 150, module_off: [p53, ifn]}
+
+bird_eval_scenarios: auto        # 主场景 + Q_HepG2（时间盒）
+
+aggregate:
+  method: soft_rank
+  birds: all
+  bench_lambda: 2.5              # 对齐 v0.1 口径（fusion 家族 gate λ）
+  lambda_grid: [2.5]
+
+# ---- PBT（真·代际）: 末位 2 鸟继承头鸟配置+高斯扰动重训; 排名键 = affine_mean_raw − 0.15×max(0,−min_ctx)
+pbt:
+  generations: 2
+  n_replace: 2
+  rank_key: global_raw           # global(clip 后) 存档但排名用 raw（clip +0.10 饱和区无区分度）
+  perturb: {aux_sigma: 0.10, main_sigma: 0.15, seed_offset: 10}
+  aux_bounds: [0.0, 0.6]
+
+fitness:
+  affine_a: 2.0958
+  affine_b: 0.5259
+  clip: [-0.11, 0.10]
+  min_penalty: 0.15
+
+predict:
+  alpha: 0.5
+  clip: 4.0
+  max_fold: 8.0
+  n_cells_per_pert: 400
+  xgb_n_jobs: 24                 # 双训练 worker 并行时的线程预算
