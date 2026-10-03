@@ -1,0 +1,203 @@
+{
+  "version": "bizard-v0.1",
+  "fitness_rule": {
+    "local": "主场景 anchor-normalized overall",
+    "global": "clip(2.0958·local_mean − 0.5259, −0.11, +0.10) − 0.15·max(0, −min_ctx)",
+    "note": "affine 为 heuristic 家族标定, 同族相对比较用; 鸟覆盖=主场景+Q_HepG2 (partial)"
+  },
+  "birds": [
+    {
+      "bird": "b1_p",
+      "scenario": "P_H1",
+      "main_weight": 2.0,
+      "seed": 0,
+      "aux_weight": 0.3,
+      "reuse": false,
+      "tag": "bz01_b1_p",
+      "per_ctx": {
+        "P_H1": 0.0689027756009175,
+        "Q_HepG2": 0.4080834124256726
+      },
+      "lam": 2.5,
+      "local_fitness": 0.0689027756009175,
+      "global": {
+        "global": -0.0215,
+        "affine_mean": -0.0049999999999999975,
+        "affine_mean_raw": -0.026066173566936246,
+        "min_ctx": -0.11,
+        "min_penalty": 0.0165,
+        "partial": true
+      }
+    },
+    {
+      "bird": "b2_q",
+      "scenario": "Q_HepG2",
+      "main_weight": 2.0,
+      "seed": 1,
+      "aux_weight": 0.3,
+      "reuse": false,
+      "tag": "bz01_b2_q",
+      "per_ctx": {
+        "Q_HepG2": 0.4149865569242004
+      },
+      "lam": 2.5,
+      "local_fitness": 0.4149865569242004,
+      "global": {
+        "global": 0.1,
+        "affine_mean": 0.1,
+        "affine_mean_raw": 0.34382882600173914,
+        "min_ctx": 0.1,
+        "min_penalty": 0.0,
+        "partial": true
+      }
+    },
+    {
+      "bird": "b3_r",
+      "scenario": "R_Jurkat",
+      "main_weight": 2.0,
+      "seed": 2,
+      "aux_weight": 0.3,
+      "reuse": false,
+      "tag": "bz01_b3_r",
+      "per_ctx": {
+        "R_Jurkat": 0.3889824237858623,
+        "Q_HepG2": 0.4079366640189882
+      },
+      "lam": 2.5,
+      "local_fitness": 0.3889824237858623,
+      "global": {
+        "global": 0.1,
+        "affine_mean": 0.1,
+        "affine_mean_raw": 0.30919151211070284,
+        "min_ctx": 0.1,
+        "min_penalty": 0.0,
+        "partial": true
+      }
+    },
+    {
+      "bird": "b4_s1",
+      "scenario": "S_RPE1",
+      "main_weight": 1.5,
+      "seed": 3,
+      "aux_weight": 0.3,
+      "reuse": false,
+      "tag": "bz01_b4_s1",
+      "per_ctx": {
+        "S_RPE1": 0.2161507550998337,
+        "Q_HepG2": 0.4074016469933268
+      },
+      "lam": 2.5,
+      "local_fitness": 0.2161507550998337,
+      "global": {
+        "global": 0.0026206891498504383,
+        "affine_mean": 0.013554376269115723,
+        "affine_mean_raw": 0.1275205621534229,
+        "min_ctx": -0.07289124746176856,
+        "min_penalty": 0.010933687119265284,
+        "partial": true
+      }
+    },
+    {
+      "bird": "b5_s2",
+      "scenario": "S_HCT116",
+      "main_weight": 2.0,
+      "seed": 4,
+      "aux_weight": 0.3,
+      "reuse": false,
+      "tag": "bz01_b5_s2",
+      "per_ctx": {
+        "S_HCT116": 0.2031546882465583,
+        "Q_HepG2": 0.4096985886335844
+      },
+      "lam": 2.5,
+      "local_fitness": 0.2031546882465583,
+      "global": {
+        "global": -0.015083462842361034,
+        "affine_mean": -6.420218643156395e-05,
+        "affine_mean_raw": 0.11630894884270152,
+        "min_ctx": -0.10012840437286313,
+        "min_penalty": 0.01501926065592947,
+        "partial": true
+      }
+    },
+    {
+      "bird": "b6_g",
+      "scenario": null,
+      "main_weight": 1.0,
+      "seed": 5,
+      "aux_weight": 0.3,
+      "reuse": true,
+      "tag": "bz01_b6_g",
+      "per_ctx": {
+        "P_H1": 0.0649462358773763,
+        "Q_HepG2": 0.4089993493997969
+      },
+      "lam": 2.5,
+      "local_fitness": null,
+      "global": {
+        "global": -0.0215,
+        "affine_mean": -0.0049999999999999975,
+        "affine_mean_raw": -0.029252421188050243,
+        "min_ctx": -0.11,
+        "min_penalty": 0.0165,
+        "partial": true
+      }
+    }
+  ],
+  "aggregates": [
+    {
+      "tag": "bz01_agg_sr",
+      "lam": 2.5,
+      "per_ctx": {
+        "P_H1": 0.0689032177253289,
+        "Q_HepG2": 0.4109685762520237,
+        "R_Jurkat": 0.3841097635646217,
+        "S_RPE1": 0.2085173703054418,
+        "S_HCT116": 0.2024616893254613
+      },
+      "global": {
+        "global": -0.03659401736511066,
+        "affine_mean": -0.020094017365110663,
+        "affine_mean_raw": 0.008512492294183271,
+        "min_ctx": -0.11,
+        "min_penalty": 0.0165,
+        "partial": false
+      },
+      "mean_local": 0.25499212343457545
+    },
+    {
+      "tag": "bz01_agg_lam3.5",
+      "lam": 3.5,
+      "per_ctx": {
+        "P_H1": 0.0845563315734046,
+        "Q_HepG2": 0.4106044769884958,
+        "R_Jurkat": 0.3886591814591124,
+        "S_RPE1": 0.1908702341888978,
+        "S_HCT116": 0.1856730462865045
+      },
+      "global": {
+        "global": -0.0425,
+        "affine_mean": -0.026000000000000002,
+        "affine_mean_raw": 0.0023938684612773487,
+        "min_ctx": -0.11,
+        "min_penalty": 0.0165,
+        "partial": false
+      },
+      "mean_local": 0.252072654099283
+    }
+  ],
+  "baselines": {
+    "dualsrc-deep λ3.5 (现行最优)": {
+      "official": 0.0506,
+      "Q_HepG2": 0.3182
+    },
+    "fusion v3.5 s1 LOCO λ2.5": {
+      "official": null,
+      "Q_HepG2": 0.3313
+    },
+    "heuristic λ3.5 (affine 拟合点)": {
+      "official": 0.0247,
+      "Q_HepG2": 0.2871
+    }
+  }
+}

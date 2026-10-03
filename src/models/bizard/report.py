@@ -99,10 +99,11 @@ def main() -> None:
            "| 实体 | λ | P_H1 | Q_HepG2 | R_Jurkat | S_RPE1 | S_HCT116 | 局部均值 | 全局适应度 |", "|---|---|---|---|---|---|---|---|---|"]
     for a in agg_rows:
         pc = a["per_ctx"]
+        cells = {k: (f"{pc[k]:.4f}" if k in pc else "—") for k in
+                 ["P_H1", "Q_HepG2", "R_Jurkat", "S_RPE1", "S_HCT116"]}
         md.append("| {t} | {lam} | {p} | {q} | {r} | {s1} | {s2} | {m:.4f} | {g:.4f} |".format(
-            t=a["tag"], lam=a["lam"],
-            **{k: (f"{pc[k]:.4f}" if k in pc else "—") for k in
-               ["P_H1", "Q_HepG2", "R_Jurkat", "S_RPE1", "S_HCT116"]},
+            t=a["tag"], lam=a["lam"], p=cells["P_H1"], q=cells["Q_HepG2"],
+            r=cells["R_Jurkat"], s1=cells["S_RPE1"], s2=cells["S_HCT116"],
             m=a["mean_local"], g=a["global"]["affine_mean_raw"]))
     print("\n".join(md))
     if args.out_md:

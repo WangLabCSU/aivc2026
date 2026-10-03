@@ -18,7 +18,7 @@ import pandas as pd
 import scipy.sparse as sp
 
 sys.path.insert(0, "/data/resource/wanglab/aivc/aivc2026")
-from src.models.bizard.swarm import ROOT, load_cfg  # noqa: E402
+from src.models.bizard.swarm import ROOT, load_cfg, workdir  # noqa: E402
 
 CONTROLS = ROOT / "data/raw/controls"
 MAX_FOLD = 8.0

@@ -27,7 +27,8 @@ birds:
   - {name: b4_s1,   scenario: S_RPE1,  main_weight: 1.5, seed: 3, aux_weight: 0.3}
   - {name: b5_s2,   scenario: S_HCT116, main_weight: 2.0, seed: 4, aux_weight: 0.3}
   - {name: b6_g,    scenario: null,    main_weight: 1.0, seed: 5, aux_weight: 0.3,
-     reuse: {xgb: xgb_s2_35.json, mlp: mlp_s2_35_noemb.pt}}
+     reuse: {xgb: xgb_s2_35.json, mlp: mlp_s2_35_noemb.pt},
+     xgb_tag: s2_35, mlp_tag: s2_35_noemb}
 
 # ---- 每鸟评分场景（时间盒）: 主场景 + Q_HepG2（锚定场景, 历史积累最全）
 bird_eval_scenarios: auto        # auto = [主场景, Q_HepG2]

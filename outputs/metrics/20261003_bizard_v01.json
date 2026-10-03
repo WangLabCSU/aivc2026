@@ -1,0 +1,69 @@
+{
+  "lambda": 2.5,
+  "contexts": {
+    "A": {
+      "n_cells": 18400,
+      "median_lib_size": 20109.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 27.8
+    },
+    "B": {
+      "n_cells": 18400,
+      "median_lib_size": 19946.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 25.4
+    },
+    "C": {
+      "n_cells": 18400,
+      "median_lib_size": 20034.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 26.9
+    }
+  },
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 2084976127,
+    "entries_per_cell_avg": 5791.6,
+    "density_margin": 0.5611,
+    "max_per_cell_counts": 53094.0,
+    "integer_valued": true
+  },
+  "model": "bizard-v0.1 swarm (6 birds, soft-rank avg)",
+  "stem": "20261003_bizard_v01",
+  "h5ad": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20261003_bizard_v01.h5ad",
+  "bench_ref": {
+    "aggregate_tag": "bz01_agg_sr",
+    "lambda": 2.5,
+    "per_context": {
+      "P_H1": 0.0689,
+      "Q_HepG2": 0.411,
+      "R_Jurkat": 0.3841,
+      "S_RPE1": 0.2085,
+      "S_HCT116": 0.2025
+    },
+    "mean_local": 0.255,
+    "affine_global": 0.0085,
+    "lambda_scan": {
+      "lam3.5": {
+        "per_context": {
+          "P_H1": 0.0846,
+          "Q_HepG2": 0.4106,
+          "R_Jurkat": 0.3887,
+          "S_RPE1": 0.1909,
+          "S_HCT116": 0.1857
+        },
+        "mean_local": 0.2521,
+        "affine_global": 0.0024
+      }
+    },
+    "swarm_report": "outputs/metrics/20261003_bizard_v01_swarm.json",
+    "results_doc": "docs/bizard/v01_results.md",
+    "caveat": "affine 标定仅适用 heuristic 家族; fusion 家族官方预期 local-0.42(±0.1), 提交=独立检验点"
+  }
+}

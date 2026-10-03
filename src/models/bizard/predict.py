@@ -61,18 +61,20 @@ def build_bench_features(cfg: dict, ctxs: list[str], fcfg: dict) -> None:
 
 def predict_pairs(cfg: dict, fcfg: dict, bird: dict, X: np.ndarray,
                   target: np.ndarray, gene: np.ndarray) -> np.ndarray:
-    """单 (鸟, 特征块) → fused Δ̂（xgb+mlp 融合, clip）。"""
+    """单 (鸟, 特征块) → fused Δ̂（xgb+mlp 融合, clip）。复用鸟 → v35 模型 tag。"""
     from src.models.l15_fusion.common import build_vocab
     from src.models.l15_fusion.predict_loco import predict_mlp, predict_xgb
     import torch
     bdir = bird_dirs(cfg, bird)
     tag = bird["name"]
+    xgb_tag = bird.get("xgb_tag", tag)
+    mlp_tag = bird.get("mlp_tag", tag)
     vocab = build_vocab(fcfg)
     gpos = vocab.get_indexer(pd.Index(gene.astype(str))).astype(np.int64)
     tpos = vocab.get_indexer(pd.Index(target.astype(str))).astype(np.int64)
     dev = "cuda" if torch.cuda.is_available() else "cpu"
-    px = predict_xgb(fcfg, bdir, X, 2, model_tag=tag)
-    pm = predict_mlp(fcfg, bdir, X, 2, gpos, tpos, dev, pt_tag=tag)
+    px = predict_xgb(fcfg, bdir, X, 2, model_tag=xgb_tag)
+    pm = predict_mlp(fcfg, bdir, X, 2, gpos, tpos, dev, pt_tag=mlp_tag)
     alpha = float(cfg["predict"]["alpha"])
     pf = alpha * px + (1 - alpha) * pm
     return np.clip(np.nan_to_num(pf, nan=0.0), -cfg["predict"]["clip"], cfg["predict"]["clip"])
