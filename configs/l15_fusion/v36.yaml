@@ -81,20 +81,69 @@ paths:
   workdir: data/interim/l15_fusion/v36
   outdir: outputs/metrics/local_bench/l15_fusion_v36
 
-# ---- v3.5: Tahoe 药扰辅助多任务（预案 2b79d02）
+# ---- v3.6: Tahoe 药扰 aux 扩展到全部 50 细胞系（4,700 组全用）+ 每系 DMSO_TF basal。
+# aux 规模控制: 每 (cell_line|drug) 组 top500|logfc| + 随机500（同主任务协议）→ ~470 万行。
+# 权重 0.3→0.15（组数×25, 总辅助质量与 v3.5 相当而多样性↑）。
+# basal: 50 系 DMSO_TF 列和由 scripts/l15fusion_v36_basal.py 从 plate12.h5ad 提取
+# （sum/mean 在 CPM 下等价）; CVCL_0023/CVCL_0546 与 v3.5 raw_basal 同源可互验。
 aux:
-  contexts: [a549, sw480]
-  map: {a549: CVCL_0023, sw480: CVCL_0546}
-  # CVCL 考证: basal_a549 ↔ CVCL_0023 (A549, r=0.99998); "basal_sw480" 实为 CVCL_0546
-  # (SW620, 同患者转移株, CDX2-high 结肠, r=0.99886; CVCL_0459 假设 r=0.858 已证伪)。
-  # 上下文键名沿用资产命名 sw480; 要义是 basal 与药扰组同系一致。
+  contexts: [CVCL_0023, CVCL_0028, CVCL_0069, CVCL_0099, CVCL_0131, CVCL_0152, CVCL_0179, CVCL_0218, CVCL_0292, CVCL_0293, CVCL_0320, CVCL_0332, CVCL_0334, CVCL_0359, CVCL_0366, CVCL_0371, CVCL_0397, CVCL_0399, CVCL_0428, CVCL_0459, CVCL_0480, CVCL_0504, CVCL_0546, CVCL_1055, CVCL_1056, CVCL_1094, CVCL_1097, CVCL_1098, CVCL_1119, CVCL_1125, CVCL_1239, CVCL_1285, CVCL_1381, CVCL_1478, CVCL_1495, CVCL_1517, CVCL_1531, CVCL_1547, CVCL_1550, CVCL_1571, CVCL_1577, CVCL_1635, CVCL_1666, CVCL_1693, CVCL_1715, CVCL_1716, CVCL_1717, CVCL_1724, CVCL_1731, CVCL_C466]
+  map: {CVCL_0023: CVCL_0023, CVCL_0028: CVCL_0028, CVCL_0069: CVCL_0069, CVCL_0099: CVCL_0099, CVCL_0131: CVCL_0131, CVCL_0152: CVCL_0152, CVCL_0179: CVCL_0179, CVCL_0218: CVCL_0218, CVCL_0292: CVCL_0292, CVCL_0293: CVCL_0293, CVCL_0320: CVCL_0320, CVCL_0332: CVCL_0332, CVCL_0334: CVCL_0334, CVCL_0359: CVCL_0359, CVCL_0366: CVCL_0366, CVCL_0371: CVCL_0371, CVCL_0397: CVCL_0397, CVCL_0399: CVCL_0399, CVCL_0428: CVCL_0428, CVCL_0459: CVCL_0459, CVCL_0480: CVCL_0480, CVCL_0504: CVCL_0504, CVCL_0546: CVCL_0546, CVCL_1055: CVCL_1055, CVCL_1056: CVCL_1056, CVCL_1094: CVCL_1094, CVCL_1097: CVCL_1097, CVCL_1098: CVCL_1098, CVCL_1119: CVCL_1119, CVCL_1125: CVCL_1125, CVCL_1239: CVCL_1239, CVCL_1285: CVCL_1285, CVCL_1381: CVCL_1381, CVCL_1478: CVCL_1478, CVCL_1495: CVCL_1495, CVCL_1517: CVCL_1517, CVCL_1531: CVCL_1531, CVCL_1547: CVCL_1547, CVCL_1550: CVCL_1550, CVCL_1571: CVCL_1571, CVCL_1577: CVCL_1577, CVCL_1635: CVCL_1635, CVCL_1666: CVCL_1666, CVCL_1693: CVCL_1693, CVCL_1715: CVCL_1715, CVCL_1716: CVCL_1716, CVCL_1717: CVCL_1717, CVCL_1724: CVCL_1724, CVCL_1731: CVCL_1731, CVCL_C466: CVCL_C466}   # 键=CVCL id, prefix 同 id; basal 与药扰组按 construction 同系
   sig_parquet: data/interim/signatures/tahoe_p12.parquet
-  weight: 0.3            # aux 行 sample_weight（gate 回退时降 0.15 重试）
+  weight: 0.15           # aux 行 sample_weight（v3.5 为 0.3/2 系; v3.6 组数×25 故减半）
   warmup: true
-  warmup_steps: 5000     # MLP 主任务 warm-up 步数（预案）
-  warmup_batch_size: 65536   # 5k 步 @262k = 43 epoch 超预算 → 小批实现 ≈5 epoch
+  warmup_steps: 5000
+  warmup_batch_size: 65536
   xgb_warmup_trees_ratio: 0.5
   basal_raw:
-    a549: data/interim/l15_fusion/v35/raw_basal_a549.npy
-    sw480: data/interim/l15_fusion/v35/raw_basal_sw480.npy
+    CVCL_0023: data/interim/l15_fusion/v36/raw_basal_CVCL_0023.npy
+    CVCL_0028: data/interim/l15_fusion/v36/raw_basal_CVCL_0028.npy
+    CVCL_0069: data/interim/l15_fusion/v36/raw_basal_CVCL_0069.npy
+    CVCL_0099: data/interim/l15_fusion/v36/raw_basal_CVCL_0099.npy
+    CVCL_0131: data/interim/l15_fusion/v36/raw_basal_CVCL_0131.npy
+    CVCL_0152: data/interim/l15_fusion/v36/raw_basal_CVCL_0152.npy
+    CVCL_0179: data/interim/l15_fusion/v36/raw_basal_CVCL_0179.npy
+    CVCL_0218: data/interim/l15_fusion/v36/raw_basal_CVCL_0218.npy
+    CVCL_0292: data/interim/l15_fusion/v36/raw_basal_CVCL_0292.npy
+    CVCL_0293: data/interim/l15_fusion/v36/raw_basal_CVCL_0293.npy
+    CVCL_0320: data/interim/l15_fusion/v36/raw_basal_CVCL_0320.npy
+    CVCL_0332: data/interim/l15_fusion/v36/raw_basal_CVCL_0332.npy
+    CVCL_0334: data/interim/l15_fusion/v36/raw_basal_CVCL_0334.npy
+    CVCL_0359: data/interim/l15_fusion/v36/raw_basal_CVCL_0359.npy
+    CVCL_0366: data/interim/l15_fusion/v36/raw_basal_CVCL_0366.npy
+    CVCL_0371: data/interim/l15_fusion/v36/raw_basal_CVCL_0371.npy
+    CVCL_0397: data/interim/l15_fusion/v36/raw_basal_CVCL_0397.npy
+    CVCL_0399: data/interim/l15_fusion/v36/raw_basal_CVCL_0399.npy
+    CVCL_0428: data/interim/l15_fusion/v36/raw_basal_CVCL_0428.npy
+    CVCL_0459: data/interim/l15_fusion/v36/raw_basal_CVCL_0459.npy
+    CVCL_0480: data/interim/l15_fusion/v36/raw_basal_CVCL_0480.npy
+    CVCL_0504: data/interim/l15_fusion/v36/raw_basal_CVCL_0504.npy
+    CVCL_0546: data/interim/l15_fusion/v36/raw_basal_CVCL_0546.npy
+    CVCL_1055: data/interim/l15_fusion/v36/raw_basal_CVCL_1055.npy
+    CVCL_1056: data/interim/l15_fusion/v36/raw_basal_CVCL_1056.npy
+    CVCL_1094: data/interim/l15_fusion/v36/raw_basal_CVCL_1094.npy
+    CVCL_1097: data/interim/l15_fusion/v36/raw_basal_CVCL_1097.npy
+    CVCL_1098: data/interim/l15_fusion/v36/raw_basal_CVCL_1098.npy
+    CVCL_1119: data/interim/l15_fusion/v36/raw_basal_CVCL_1119.npy
+    CVCL_1125: data/interim/l15_fusion/v36/raw_basal_CVCL_1125.npy
+    CVCL_1239: data/interim/l15_fusion/v36/raw_basal_CVCL_1239.npy
+    CVCL_1285: data/interim/l15_fusion/v36/raw_basal_CVCL_1285.npy
+    CVCL_1381: data/interim/l15_fusion/v36/raw_basal_CVCL_1381.npy
+    CVCL_1478: data/interim/l15_fusion/v36/raw_basal_CVCL_1478.npy
+    CVCL_1495: data/interim/l15_fusion/v36/raw_basal_CVCL_1495.npy
+    CVCL_1517: data/interim/l15_fusion/v36/raw_basal_CVCL_1517.npy
+    CVCL_1531: data/interim/l15_fusion/v36/raw_basal_CVCL_1531.npy
+    CVCL_1547: data/interim/l15_fusion/v36/raw_basal_CVCL_1547.npy
+    CVCL_1550: data/interim/l15_fusion/v36/raw_basal_CVCL_1550.npy
+    CVCL_1571: data/interim/l15_fusion/v36/raw_basal_CVCL_1571.npy
+    CVCL_1577: data/interim/l15_fusion/v36/raw_basal_CVCL_1577.npy
+    CVCL_1635: data/interim/l15_fusion/v36/raw_basal_CVCL_1635.npy
+    CVCL_1666: data/interim/l15_fusion/v36/raw_basal_CVCL_1666.npy
+    CVCL_1693: data/interim/l15_fusion/v36/raw_basal_CVCL_1693.npy
+    CVCL_1715: data/interim/l15_fusion/v36/raw_basal_CVCL_1715.npy
+    CVCL_1716: data/interim/l15_fusion/v36/raw_basal_CVCL_1716.npy
+    CVCL_1717: data/interim/l15_fusion/v36/raw_basal_CVCL_1717.npy
+    CVCL_1724: data/interim/l15_fusion/v36/raw_basal_CVCL_1724.npy
+    CVCL_1731: data/interim/l15_fusion/v36/raw_basal_CVCL_1731.npy
+    CVCL_C466: data/interim/l15_fusion/v36/raw_basal_CVCL_C466.npy
   basal_raw_order: data/public/tahoe/plate12.h5ad   # var 序 = npy 基因序 (62,710)
