@@ -1,0 +1,75 @@
+fusion_cfg: configs/l15_fusion/v35.yaml
+v35_workdir: data/interim/l15_fusion/v35
+workdir: data/interim/bizard/v02
+bench_out: outputs/metrics/local_bench
+metrics_file: outputs/metrics/20261003_bizard_v02.json
+scenarios:
+  P_H1:
+    train_ctx: gwps
+    control: non-targeting
+  Q_HepG2:
+    train_ctx: hepg2
+    control: non-targeting
+  R_Jurkat:
+    train_ctx: jurkat
+    control: non-targeting
+  S_RPE1:
+    train_ctx: rpe1
+    control: non-targeting
+  S_HCT116:
+    train_ctx: hct116
+    control: Non-Targeting
+birds:
+- name: b6_g_g2
+  scenario: R_Jurkat
+  main_weight: 2.412
+  seed: 15
+  aux_weight: 0.444
+  pred_topk: null
+  module_off:
+  - p53
+  - ifn
+  inherit_from: b3_r
+  replaces: b6_g
+- name: b4_s1_g2
+  scenario: R_Jurkat
+  main_weight: 1.651
+  seed: 13
+  aux_weight: 0.56
+  pred_topk: null
+  module_off:
+  - p53
+  - ifn
+  inherit_from: b3_r
+  replaces: b4_s1
+bird_eval_scenarios: auto
+aggregate:
+  method: soft_rank
+  birds: all
+  bench_lambda: 2.5
+  lambda_grid:
+  - 2.5
+pbt:
+  generations: 2
+  n_replace: 2
+  rank_key: global_raw
+  perturb:
+    aux_sigma: 0.1
+    main_sigma: 0.15
+    seed_offset: 10
+  aux_bounds:
+  - 0.0
+  - 0.6
+fitness:
+  affine_a: 2.0958
+  affine_b: 0.5259
+  clip:
+  - -0.11
+  - 0.1
+  min_penalty: 0.15
+predict:
+  alpha: 0.5
+  clip: 4.0
+  max_fold: 8.0
+  n_cells_per_pert: 400
+  xgb_n_jobs: 24
