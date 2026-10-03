@@ -31,6 +31,17 @@ def workdir(cfg: dict) -> Path:
     return d
 
 
+def fusion_cfg(cfg: dict) -> dict:
+    """加载骨干 fusion 配置并固定 L15_CFG 环境变量（l15_fusion.common.load_cfg 全链一致）。"""
+    import os
+    p = ROOT / cfg["fusion_cfg"]
+    os.environ["L15_CFG"] = str(p)
+    import src.models.l15_fusion.common as fcommon
+    fcommon.CFG_PATH = p
+    with open(p) as f:
+        return yaml.safe_load(f)
+
+
 def birds(cfg: dict) -> list[dict]:
     """鸟册（config 驱动），补全派生字段。"""
     out = []
@@ -66,15 +77,20 @@ def global_fitness(per_ctx_overall: dict[str, float], fit: dict) -> dict:
 
     场景min 惩罚: 任一场景 affine 后仍在官方零线下（fid 型坍塌前兆）→ 线性扣分。
     per_ctx_overall 覆盖不足五场景时按可用场景计（partial=True 标注）。
+    affine_mean_raw: 未 clip 的 affine 均值（诊断用——clip 上限 +0.10 会使
+    local>0.30 的鸟在排名奖励上饱和, 原始值保留区分度）。
     """
     vals = {c: affine(v, fit) for c, v in per_ctx_overall.items()}
     if not vals:
         return {"global": float("nan"), "affine_mean": float("nan"),
+                "affine_mean_raw": float("nan"),
                 "min_ctx": None, "min_penalty": 0.0, "partial": True}
     m = float(np.mean(list(vals.values())))
+    raw = float(np.mean([fit["affine_a"] * v - fit["affine_b"]
+                         for v in per_ctx_overall.values()]))
     mn = float(min(vals.values()))
     pen = fit["min_penalty"] * max(0.0, -mn)
-    return {"global": m - pen, "affine_mean": m, "min_ctx": mn,
+    return {"global": m - pen, "affine_mean": m, "affine_mean_raw": raw, "min_ctx": mn,
             "min_penalty": pen, "partial": len(vals) < len(SCENARIO_ORDER)}
 
 

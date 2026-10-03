@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, "/data/resource/wanglab/aivc/aivc2026")
-from src.models.bizard.swarm import ROOT, birds, load_cfg, workdir  # noqa: E402
+from src.models.bizard.swarm import ROOT, birds, fusion_cfg, load_cfg, workdir  # noqa: E402
 
 
 def bird_weights(fcfg: dict, ctx: np.ndarray, bird: dict) -> np.ndarray:
@@ -169,7 +169,6 @@ def train_mlp_bird(fcfg: dict, outdir: Path, bird: dict, w: np.ndarray, X: np.nd
 
 
 def main() -> None:
-    from src.models.l15_fusion.common import load_cfg as load_fusion_cfg
     ap = argparse.ArgumentParser()
     ap.add_argument("--bird", required=True)
     ap.add_argument("--branch", default="both", choices=["both", "xgb", "mlp"])
@@ -179,13 +178,14 @@ def main() -> None:
     if bird.get("reuse"):
         print(f"[{bird['name']}] reuse v35 模型 {bird['reuse']} — 无需训练", flush=True)
         return
-    fcfg = load_fusion_cfg(ROOT / cfg["fusion_cfg"])
+    fcfg = fusion_cfg(cfg)
     cache = ROOT / cfg["v35_workdir"]
     outdir = workdir(cfg) / bird["name"]
     outdir.mkdir(parents=True, exist_ok=True)
     done_flag = outdir / ".train_done"
-    if done_flag.exists():
-        print(f"[{bird['name']}] already trained, skip", flush=True)
+    branch_flag = outdir / f".{args.branch}_done"
+    if (done_flag if args.branch == "both" else branch_flag).exists() or done_flag.exists():
+        print(f"[{bird['name']}] {args.branch} already done, skip", flush=True)
         return
     t0 = time.time()
     z = np.load(cache / "feat_train.npz", allow_pickle=False)
@@ -197,8 +197,11 @@ def main() -> None:
         train_xgb_bird(fcfg, outdir, bird, w, X, y, ctx, t0)
     if args.branch in ("both", "mlp"):
         train_mlp_bird(fcfg, outdir, bird, w, X, y, ctx, t0)
-    done_flag.write_text(json.dumps({"bird": bird, "seconds": time.time() - t0}))
-    print(f"train_bird {bird['name']} complete ({time.time()-t0:.0f}s)", flush=True)
+    flag = done_flag if args.branch == "both" else branch_flag
+    flag.write_text(json.dumps({"bird": bird, "branch": args.branch,
+                                "seconds": time.time() - t0}))
+    print(f"train_bird {bird['name']} {args.branch} complete ({time.time()-t0:.0f}s)",
+          flush=True)
 
 
 if __name__ == "__main__":

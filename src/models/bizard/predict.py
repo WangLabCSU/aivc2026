@@ -19,14 +19,10 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, "/data/resource/wanglab/aivc/aivc2026")
-from src.models.bizard.swarm import ROOT, SCENARIO_ORDER, birds, load_cfg, workdir  # noqa: E402
+from src.models.bizard.swarm import (  # noqa: E402
+    ROOT, SCENARIO_ORDER, birds, fusion_cfg, load_cfg, workdir)
 
 BENCH = ROOT / "data/interim/local_bench"
-
-
-def fusion_cfg(cfg: dict) -> dict:
-    from src.models.l15_fusion.common import load_cfg as load_fusion_cfg
-    return load_fusion_cfg(ROOT / cfg["fusion_cfg"])
 
 
 def bird_dirs(cfg: dict, bird: dict) -> Path:
