@@ -3,13 +3,13 @@
 # 未覆盖靶走 gwps generic 兜底。hct116 覆盖 202/300 竞赛靶（Q_HepG2 bench 51/100）。
 # 注：签名文件名为 hct116_all.parquet（hct116.parquet 不存在，直接用 _all 名避免静默跳过）。
 datasets: [gwps, hct116_all]
-lambda_real: 5.5
+lambda_real: 7.5
 lambda_generic: 0.15
 max_abs_delta: 4.0
-max_fold: 12.0
+max_fold: 16.0
 min_mean_cpm: 0.05
 cell_sampling: true
 seed: 0
 controls_dir: data/raw/controls
 pert_counts_file: pert_counts.csv
-output_stem: 20261004_dualsrcdeep_lam55
+output_stem: 20261005_dualsrcdeep_lam75
