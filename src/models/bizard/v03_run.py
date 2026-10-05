@@ -326,10 +326,15 @@ def do_bench(cfg_path: str, tag: str, ctxs: list[str], lam: float) -> None:
     outdir.mkdir(parents=True, exist_ok=True)
     per_ctx: dict[str, float] = {}
     per_metric: dict[str, dict] = {}
+    sm = outdir / "bizard_summary.json"
+    if sm.exists():   # 断点续评: 载入已完成场景, 只补缺失场景
+        prev = json.loads(sm.read_text())
+        per_ctx.update(prev.get("per_ctx") or {})
+        per_metric.update(prev.get("per_metric") or {})
     for ctx in ctxs:
-        sm = outdir / "bizard_summary.json"
-        if sm.exists():
-            break
+        if ctx in per_ctx:
+            print(f"[{tag}/{ctx}] already scored={per_ctx[ctx]:.4f}, skip", flush=True)
+            continue
         t0 = time.time()
         delta = pd.read_parquet(swarm_workdir(cfg) / f"agg_delta_{ctx}.parquet")
         pp = bb.build_pred(ctx, delta, lam, outdir, seed=0,
