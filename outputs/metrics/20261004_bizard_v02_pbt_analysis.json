@@ -1,0 +1,249 @@
+{
+  "date": "2026-10-04",
+  "task": "bizard v0.2 PBT 完整循环复盘(变异升级+2代进化+聚合判定)",
+  "gen1_fitness_table": [
+    {
+      "rank": 1,
+      "bird": "b3_r",
+      "cfg": {
+        "name": "b3_r",
+        "scenario": "R_Jurkat",
+        "main_weight": 2.0,
+        "seed": 2,
+        "aux_weight": 0.45,
+        "pred_topk": null,
+        "module_off": [
+          "p53",
+          "ifn"
+        ],
+        "reuse": null
+      },
+      "per_ctx": {
+        "R_Jurkat": 0.3879628572181172,
+        "Q_HepG2": 0.4081766065527863
+      },
+      "rank_raw": 0.3083745440855298,
+      "global": {
+        "global": 0.1,
+        "affine_mean": 0.1,
+        "affine_mean_raw": 0.3083745440855298,
+        "min_ctx": 0.1,
+        "min_penalty": 0.0,
+        "partial": true
+      }
+    },
+    {
+      "rank": 2,
+      "bird": "b5_s2",
+      "cfg": {
+        "name": "b5_s2",
+        "scenario": "S_HCT116",
+        "main_weight": 2.0,
+        "seed": 4,
+        "aux_weight": 0.3,
+        "pred_topk": null,
+        "module_off": [
+          "p53",
+          "ifn"
+        ],
+        "reuse": null
+      },
+      "per_ctx": {
+        "S_HCT116": 0.2013819513571088,
+        "Q_HepG2": 0.4087889733554388
+      },
+      "rank_raw": 0.0979215560544129,
+      "global": {
+        "global": -0.017498409124751403,
+        "affine_mean": -0.001921853172885693,
+        "affine_mean_raw": 0.1134981120062786,
+        "min_ctx": -0.10384370634577139,
+        "min_penalty": 0.015576555951865708,
+        "partial": true
+      }
+    },
+    {
+      "rank": 3,
+      "bird": "b1_p",
+      "cfg": {
+        "name": "b1_p",
+        "scenario": "P_H1",
+        "main_weight": 2.0,
+        "seed": 0,
+        "aux_weight": 0.15,
+        "pred_topk": null,
+        "module_off": [],
+        "reuse": null
+      },
+      "per_ctx": {
+        "P_H1": 0.0678557301014227,
+        "Q_HepG2": 0.4063272559778619
+      },
+      "rank_raw": -0.08655684301553343,
+      "global": {
+        "global": -0.0215,
+        "affine_mean": -0.0049999999999999975,
+        "affine_mean_raw": -0.02900364888751769,
+        "min_ctx": -0.11,
+        "min_penalty": 0.0165,
+        "partial": true
+      }
+    },
+    {
+      "rank": 4,
+      "bird": "b2_q",
+      "cfg": {
+        "name": "b2_q",
+        "scenario": "Q_HepG2",
+        "main_weight": 2.0,
+        "seed": 1,
+        "aux_weight": 0.3,
+        "pred_topk": 150,
+        "module_off": [],
+        "reuse": null
+      },
+      "per_ctx": {
+        "Q_HepG2": 0.2066143822392746
+      },
+      "rank_raw": -0.1068092143583675,
+      "global": {
+        "global": -0.1068092143583675,
+        "affine_mean": -0.09287757770292826,
+        "affine_mean_raw": -0.09287757770292826,
+        "min_ctx": -0.09287757770292826,
+        "min_penalty": 0.013931636655439238,
+        "partial": true
+      }
+    },
+    {
+      "rank": 5,
+      "bird": "b6_g",
+      "cfg": {
+        "name": "b6_g",
+        "scenario": null,
+        "main_weight": 1.0,
+        "seed": 5,
+        "aux_weight": 0.3,
+        "pred_topk": 150,
+        "module_off": [
+          "p53",
+          "ifn"
+        ],
+        "reuse": null
+      },
+      "per_ctx": {
+        "Q_HepG2": 0.2055002761165818
+      },
+      "rank_raw": -0.10949439951209802,
+      "global": {
+        "global": -0.10949439951209802,
+        "affine_mean": -0.09521252131486785,
+        "affine_mean_raw": -0.09521252131486785,
+        "min_ctx": -0.09521252131486785,
+        "min_penalty": 0.014281878197230176,
+        "partial": true
+      }
+    },
+    {
+      "rank": 6,
+      "bird": "b4_s1",
+      "cfg": {
+        "name": "b4_s1",
+        "scenario": "S_RPE1",
+        "main_weight": 1.5,
+        "seed": 3,
+        "aux_weight": 0.0,
+        "pred_topk": 500,
+        "module_off": [],
+        "reuse": null
+      },
+      "per_ctx": {
+        "S_RPE1": 0.1048124141237501,
+        "Q_HepG2": 0.3183126168292233
+      },
+      "rank_raw": -0.12844240143629587,
+      "global": {
+        "global": -0.0215,
+        "affine_mean": -0.0049999999999999975,
+        "affine_mean_raw": -0.08250728006437918,
+        "min_ctx": -0.11,
+        "min_penalty": 0.0165,
+        "partial": true
+      }
+    }
+  ],
+  "gen2": {
+    "b6_g_g2": {
+      "cfg": "继承b3_r(aux .444,main 2.412,seed15,mod_off p53+ifn)",
+      "R_Jurkat": 0.3904,
+      "Q_HepG2": 0.4085,
+      "rank_raw": 0.3113,
+      "vs_parent_b3_r": "+0.0029",
+      "vs_replaced_b6_g": "+0.4208"
+    },
+    "b4_s1_g2": {
+      "cfg": "继承b3_r(aux 0.56,main 1.651,seed13,mod_off p53+ifn)",
+      "R_Jurkat": 0.3902,
+      "Q_HepG2": 0.4082,
+      "rank_raw": 0.3107,
+      "vs_parent_b3_r": "+0.0023",
+      "vs_replaced_b4_s1": "+0.4391"
+    }
+  },
+  "correlation_diagnosis": {
+    "v01_six_birds_mean_pairwise_pearson_Q": 0.9956,
+    "v02_dense5_mean_pairwise_pearson_Q": 0.9953,
+    "v02_sparse_vs_dense_on_covered_rows": {
+      "b2_q_topk150": 0.9965,
+      "b6_g_topk150": 0.998,
+      "b4_s1_topk500": 0.9972
+    },
+    "conclusion": "配置级变异(aux/module_off/topk/seed)未打破 r≈0.995 克隆天花板, Δ̂ 多样性≈0, 聚合≈鸟均"
+  },
+  "aggregation_variants_Q_lam2.5": {
+    "bizard_v01_six_bird_soft_rank": 0.411,
+    "bizard_v02_dense5_soft_rank": 0.4085,
+    "bizard_v02_pbt_pool_covered_row_fused": 0.4086,
+    "bizard_v02_pbt_pool_zero_fill": 0.2506,
+    "bizard_v02_g1full_zero_fill": 0.2031,
+    "single_best_v01_b2_q": 0.415,
+    "single_best_v02_b5_s2": 0.4088,
+    "dualsrc_deep_lam45_Q": 0.3306,
+    "dualsrc_deep_lam65_Q": 0.2886
+  },
+  "operator_ranking": [
+    {
+      "rank": 1,
+      "op": "module_off [p53,ifn]",
+      "effect": "Q +0.002 (0.4082/0.4088 vs 全开 0.4063/0.4079), 单模型小幅正收益, R 中性; 无多样性贡献"
+    },
+    {
+      "rank": 2,
+      "op": "aux_weight",
+      "effect": "0.3≈0.45>0.15(0.4063); 非单调弱效应, 与 module_off 混杂"
+    },
+    {
+      "rank": 3,
+      "op": "pred_topk",
+      "effect": "单模型剂量负(稠密0.408>topk500 0.318>topk150 0.206); 作多样性算子零增益(融合聚合0.4086≈纯稠密0.4085); 零填充聚合毒性 -0.16~-0.21"
+    },
+    {
+      "rank": 4,
+      "op": "tau/main_weight",
+      "effect": "不可判读: τ1.0/1.5 仅出现于 topk 鸟(完全混杂), τ3.0 未覆盖——v0.3 需正交补测"
+    }
+  ],
+  "packaging_verdict": {
+    "gate": "Q>0.4110 (v0.1)",
+    "best_v02": 0.4086,
+    "decision": "NOT 打包 20261004_bizard_v02_pbt",
+    "note": "20261003_bizard_v02_agg(去毒5稠密) 已于 4b394d6 staged 为候选2, 维持既有双发决策, 但不构成对 v0.1 的升级"
+  },
+  "v03_recommendations": [
+    "放弃配置级变异: 已证 r≈0.995 天花板, PBT 在克隆种群上无选择材料",
+    "表征级变异: 混骨干(双src/fusion/L1sig)、特征子集抽样(基因/模块 bootstrap)、训练行 bootstrap、损失函数族(排序损失 vs 回归)——目标 pairwise r≤0.9",
+    "聚合修复: 单鸟 b2_q(0.4150)>任意聚合→soft-rank 等权在克隆群中收缩极值; 试 fitness 加权/择优聚合/栈式融合(stacking)",
+    "PBT 保留但升级算子库: 变异算子作用于数据视图与目标函数而非超参",
+    "禁止零填充稀疏鸟: 已落盘 covered-row 融合实现(/tmp/fused_agg.py 逻辑, agg_delta_fused_Q.parquet)"
+  ]
+}
