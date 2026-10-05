@@ -51,7 +51,7 @@ def train_xgb_bird(fcfg: dict, outdir: Path, bird: dict, w: np.ndarray, X: np.nd
     tag = bird["name"]
     print(f"[xgb {tag}] train={tr.sum()} (aux {int((tr & is_aux).sum())}) val={va.sum()} "
           f"main_weight={bird['main_weight']} seed={bird['seed']}", flush=True)
-    params = {"objective": xc["objective"], "max_depth": xc["max_depth"],
+    params = {"objective": bird.get("xgb_objective", xc["objective"]), "max_depth": xc["max_depth"],
               "learning_rate": xc["learning_rate"], "subsample": xc["subsample"],
               "colsample_bytree": xc["colsample_bytree"], "tree_method": xc["tree_method"],
               "n_jobs": xc["n_jobs"], "eval_metric": "mphe", "seed": int(bird["seed"])}
@@ -100,7 +100,10 @@ def train_mlp_bird(fcfg: dict, outdir: Path, bird: dict, w: np.ndarray, X: np.nd
                         nn.SiLU(), nn.Dropout(mc["dropout"]), nn.Linear(mc["hidden"][1], 1)).to(dev)
     opt = torch.optim.AdamW(net.parameters(), lr=mc["lr"], weight_decay=mc["weight_decay"])
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=mc["max_epochs"])
-    huber = nn.HuberLoss(delta=beta, reduction="none")
+    if bird.get("mlp_loss", "huber") == "mse":   # v0.3 损失族变异
+        huber = nn.MSELoss(reduction="none")
+    else:
+        huber = nn.HuberLoss(delta=beta, reduction="none")
     bs = mc["batch_size"]
     n_main = len(fcfg["train_contexts"])
     auxc = dict(fcfg.get("aux") or {})

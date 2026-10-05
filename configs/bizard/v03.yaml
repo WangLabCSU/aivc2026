@@ -1,0 +1,67 @@
+# Bizard v0.3 — 表征级变异（Expert I 建议）：混骨干 + 特征子集 bootstrap + 训练行 bootstrap + 损失族。
+# v0.1/v0.2 短板: 配置级变异混杂（六鸟 Pearson ~0.995, 聚合≈鸟均）。v0.3 目标: 鸟间 r≤0.9。
+# 四变异维 × 8 鸟:
+#   骨干维(4 族): dualsrc-deep 启发式 / v35 XGB 臂 / v35 MLP 臂 / v0.2 PBT 鸟(b3_r)
+#   特征子集维: sig 源 dropout（xgb_sigdrop 去 gwps+hct116 / mlp_sigsub 去 k562+rpe1+jurkat,
+#               互补子集）+ v0.2 鸟 module_off p53/ifn
+#   训练行维: xgb_rowboot 70% 行 bootstrap（seed 12）
+#   损失族维: mlp_mse（MSE, v35 默认 Huber）; xgb_rowboot 兼 reg:squarederror
+fusion_cfg: configs/l15_fusion/v35.yaml
+v35_workdir: data/interim/l15_fusion/v35
+
+workdir: data/interim/bizard/v03
+bench_out: outputs/metrics/local_bench
+metrics_file: outputs/metrics/20261003_bizard_v03.json
+heuristic_cfg: configs/l1_signature/dualsrc-deep.yaml   # 骨干族 1: 启发式（λ3.5 家族）
+
+scenarios:
+  P_H1:    {train_ctx: gwps,   control: non-targeting}
+  Q_HepG2: {train_ctx: hepg2,  control: non-targeting}
+  R_Jurkat: {train_ctx: jurkat, control: non-targeting}
+  S_RPE1:  {train_ctx: rpe1,   control: non-targeting}
+  S_HCT116: {train_ctx: hct116, control: Non-Targeting}
+
+# ---- 8 鸟。kind: heuristic(零训练) | fusion。reuse.base_dir: v35 | v02 目录。
+#      alpha: 1.0=XGB 单臂, 0.0=MLP 单臂, 0.5=融合。feature_off: FeatureBuilder 列名置零。
+birds:
+  # --- 骨干维（零训练复用, 3 族）
+  - {name: heu_dual,  kind: heuristic, scenario: null}
+  - {name: xgb_s235,  kind: fusion, scenario: null, alpha: 1.0, seed: 0, aux_weight: 0.3,
+     reuse: {base_dir: v35, xgb: xgb_s2_35.json}, xgb_tag: s2_35}
+  - {name: mlp_s235,  kind: fusion, scenario: null, alpha: 0.0, seed: 0, aux_weight: 0.3,
+     reuse: {base_dir: v35, mlp: mlp_s2_35_noemb.pt}, mlp_tag: s2_35_noemb}
+  - {name: v02_b3r,   kind: fusion, scenario: R_Jurkat, alpha: 0.5, seed: 0, aux_weight: 0.45,
+     feature_off: [mod_p53, mod_ifn],
+     reuse: {base_dir: v02, dir: b3_r, xgb: xgb_b3_r.json, mlp: mlp_b3_r.pt}, xgb_tag: b3_r, mlp_tag: b3_r}
+  # --- 特征子集 bootstrap（互补 sig 源子集, 互为镜像; 单分支训练 → 单臂预测 alpha 对齐）
+  - {name: xgb_sigdrop, kind: fusion, scenario: P_H1, alpha: 1.0, main_weight: 2.0, seed: 10,
+     aux_weight: 0.3, feature_off: [sig_gwps, sig_hct116]}
+  - {name: mlp_sigsub,  kind: fusion, scenario: S_HCT116, alpha: 0.0, main_weight: 2.0, seed: 13,
+     aux_weight: 0.3, feature_off: [sig_k562_ess, sig_rpe1, sig_jurkat]}
+  # --- 训练行 bootstrap + 损失族（XGB 换 squarederror 双保险异质）
+  - {name: xgb_rowboot, kind: fusion, scenario: null, alpha: 1.0, main_weight: 1.0, seed: 12,
+     aux_weight: 0.3, row_frac: 0.7, xgb_objective: reg:squarederror}
+  # --- 损失族（MLP MSE, 标准特征）
+  - {name: mlp_mse,   kind: fusion, scenario: Q_HepG2, alpha: 0.0, main_weight: 2.0, seed: 11,
+     aux_weight: 0.3, mlp_loss: mse}
+
+bird_eval_scenarios: auto
+
+aggregate:
+  method: soft_rank
+  birds: all
+  bench_lambda: 2.5              # 主口径（与 v0.1 bz01_agg_sr 可比）
+  lambda_grid: [2.5, 3.5]
+
+fitness:
+  affine_a: 2.0958
+  affine_b: 0.5259
+  clip: [-0.11, 0.10]
+  min_penalty: 0.15
+
+predict:
+  alpha: 0.5
+  clip: 4.0
+  max_fold: 8.0
+  n_cells_per_pert: 400
+  xgb_n_jobs: 24
