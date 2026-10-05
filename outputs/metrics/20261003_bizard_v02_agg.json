@@ -1,0 +1,40 @@
+{
+  "lambda": 2.5,
+  "contexts": {
+    "A": {
+      "n_cells": 18400,
+      "median_lib_size": 20109.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 18.8
+    },
+    "B": {
+      "n_cells": 18400,
+      "median_lib_size": 19946.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 16.3
+    },
+    "C": {
+      "n_cells": 18400,
+      "median_lib_size": 20034.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 17.5
+    }
+  },
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 2084975872,
+    "entries_per_cell_avg": 5791.6,
+    "density_margin": 0.5611,
+    "max_per_cell_counts": 53173.0,
+    "integer_valued": true
+  },
+  "model": "bizard-v0.2 detox swarm (5 dense birds, soft-rank avg)",
+  "stem": "20261003_bizard_v02_agg",
+  "h5ad": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20261003_bizard_v02_agg.h5ad"
+}

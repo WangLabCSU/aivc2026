@@ -97,21 +97,26 @@ def do_train(cfg_path: str, bird_name: str, branch: str) -> None:
         (outdir / ".train_done").write_text('{"gen": "v02"}')
 
 
-def do_predict(cfg_path: str, bird_name: str) -> None:
+def do_predict(cfg_path: str, bird_name: str, submit: bool = False) -> None:
     swarm, cfg, fcfg = setup(cfg_path)
     from src.models.bizard.predict import predict_pairs
     bird = bird_cfg(swarm, cfg, bird_name)
     out = swarm.workdir(cfg)
     ctxs = ([bird["scenario"]] if bird.get("scenario") else []) + ["Q_HepG2"]
+    if submit:
+        ctxs = list(ctxs) + [f"submit_{cx}" for cx in ("A", "B", "C")]
     for ctx in dict.fromkeys(ctxs):
         fp = out / f"pred_{bird['name']}_{ctx}.parquet"
         if fp.exists():
             print(f"pred_{bird['name']}_{ctx} exists, skip", flush=True)
             continue
         t0 = time.time()
-        fp_feat = out / f"feat_bench_{ctx}.npz"
-        if not fp_feat.exists():  # 复用 v01 同骨干特征缓存（v35 布局一致）
-            fp_feat = ROOT / "data/interim/bizard/v01" / f"feat_bench_{ctx}.npz"
+        if ctx.startswith("submit_"):   # A/B/C 提交特征 = v35 workdir 缓存
+            fp_feat = ROOT / cfg["v35_workdir"] / f"feat_{ctx}.npz"
+        else:
+            fp_feat = out / f"feat_bench_{ctx}.npz"
+            if not fp_feat.exists():  # 复用 v01 同骨干特征缓存（v35 布局一致）
+                fp_feat = ROOT / "data/interim/bizard/v01" / f"feat_bench_{ctx}.npz"
         z = np.load(fp_feat, allow_pickle=False)
         X = apply_mask(z["X"], module_mask_cols(fcfg, bird))
         delta = predict_pairs(cfg, fcfg, bird, X, z["target"], z["gene"])
@@ -171,6 +176,8 @@ def main() -> None:
     ap.add_argument("--train", action="store_true")
     ap.add_argument("--predict", action="store_true")
     ap.add_argument("--bench", action="store_true")
+    ap.add_argument("--submit", action="store_true",
+                    help="predict 时附加 A/B/C 提交特征预测（pred_{bird}_submit_{A|B|C}.parquet）")
     ap.add_argument("--bird", required=True)
     ap.add_argument("--branch", default="both", choices=["both", "xgb", "mlp"])
     ap.add_argument("--lam", type=float, default=None)
@@ -179,7 +186,7 @@ def main() -> None:
         for br in (["xgb", "mlp"] if args.branch == "both" else [args.branch]):
             do_train(args.config, args.bird, br)
     if args.predict:
-        do_predict(args.config, args.bird)
+        do_predict(args.config, args.bird, submit=args.submit)
     if args.bench:
         cfg = setup(args.config)[1]
         do_bench(args.config, args.bird, args.lam or cfg["aggregate"]["bench_lambda"])

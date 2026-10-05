@@ -80,8 +80,11 @@ def main() -> None:
     ap.add_argument("--lam", type=float, required=True)
     ap.add_argument("--out-stem", default="20261003_bizard_v01")
     ap.add_argument("--model-label", default="bizard-v0.1 swarm (6 birds, soft-rank avg)")
+    ap.add_argument("--config", default=None,
+                    help="bizard 配置（默认 configs/bizard/v01.yaml）；v0.2 用 configs/bizard/v02.yaml")
     args = ap.parse_args()
-    cfg = load_cfg()
+    from pathlib import Path
+    cfg = load_cfg(Path(args.config) if args.config else None)
     a, report = build_submission(cfg, args.lam)
     report["model"] = args.model_label
     report["stem"] = args.out_stem
