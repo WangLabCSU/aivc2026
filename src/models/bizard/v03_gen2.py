@@ -220,7 +220,9 @@ def do_report(cfg: dict) -> dict:
             "gen1_bz03_agg_lam2.5": _pc(BENCH_OUT / "bz03_agg_lam2.5" / "bizard_summary.json"),
             "gen1_weighted_bz03_aggw": _pc(BENCH_OUT / "bz03_aggw_lam2.5" / "bizard_summary.json"),
             "gen2_bz03g2_agg_lam2.5": agg_gen2}
-    comp = {k: {"per_ctx": v, "mean5": float(np.mean(list(v.values())))}
+    comp = {k: {"per_ctx": v,
+                "mean5": float(np.mean(list(v.values()))) if len(v) == 5 else None,
+                "n_ctx": len(v)}
             for k, v in refs.items()}
     rep = {"gen": 2, "rank_key": "Q_HepG2 anchor-normalized overall",
            "children": gen2, "gen1_table": g1_fit["birds"],
@@ -233,6 +235,7 @@ def do_report(cfg: dict) -> dict:
                                               - refs["v0.1_bz01_agg_sr"]["Q_HepG2"], 4),
                        "gen2_vs_v01_mean5": round(comp["gen2_bz03g2_agg_lam2.5"]["mean5"]
                                                   - comp["v0.1_bz01_agg_sr"]["mean5"], 4),
+                       "best_child": max(gen2, key=lambda r: r["mean5"] or -9)["bird"],
                        "pbt_promoted": agg_gen2["Q_HepG2"] > refs["gen1_bz03_agg_lam2.5"]["Q_HepG2"]},
            "submission": {"h5ad": "outputs/submissions/20261003_bizard_v03_gen2.h5ad",
                           "vcc": "outputs/submissions/20261003_bizard_v03_gen2.vcc",
@@ -241,10 +244,33 @@ def do_report(cfg: dict) -> dict:
     metrics = ROOT / "outputs/metrics/20261003_bizard_v03_pbt_gen2.json"
     metrics.write_text(json.dumps(rep, indent=2, ensure_ascii=False))
     print(json.dumps({"verdict": rep["verdict"],
-                      "mean5": {k: round(v["mean5"], 4) for k, v in comp.items()},
+                      "mean5": {k: (round(v["mean5"], 4) if v["mean5"] is not None else None)
+                                for k, v in comp.items()},
                       "children_Q": {r["bird"]: round(r["per_ctx"]["Q_HepG2"], 4)
                                      for r in gen2}}, indent=1, ensure_ascii=False), flush=True)
     return rep
+
+
+# ----------------------------------------------------------------- rescore
+def do_rescore(tags: list[str], contexts: list[str], lam: float) -> None:
+    """并发 bench 摘要竞态修复: 从已有 {tag}/{ctx}_eval 重打分并合并成完整 summary。"""
+    import src.models.bizard.bench_bird as bb
+    for tag in tags:
+        per_ctx: dict[str, float] = {}
+        per_metric: dict[str, dict] = {}
+        for ctx in contexts:
+            try:
+                res = bb.score_ctx(tag, ctx)
+            except FileNotFoundError:
+                print(f"[{tag}/{ctx}] no eval dir, skip", flush=True)
+                continue
+            per_ctx[ctx] = res["overall"]
+            per_metric[ctx] = res.get("per_metric") or {}
+        if per_ctx:
+            bb.save_json({"tag": tag, "lam": lam, "per_ctx": per_ctx,
+                          "per_metric": per_metric},
+                         BENCH_OUT / tag / "bizard_summary.json")
+            print(f"[{tag}] rescored: {json.dumps(per_ctx)}", flush=True)
 
 
 def main() -> None:
@@ -256,6 +282,8 @@ def main() -> None:
     ap.add_argument("--bench", action="store_true")
     ap.add_argument("--bench-agg", action="store_true")
     ap.add_argument("--report", action="store_true")
+    ap.add_argument("--rescore", action="store_true",
+                    help="从已有 eval 目录重打分（修复并发摘要竞态）")
     ap.add_argument("--tag", default=None)
     ap.add_argument("--delta", default=None, help="bench 输入 Δ̂ parquet（默认按 tag 解析）")
     ap.add_argument("--contexts", default="Q_HepG2")
@@ -282,6 +310,9 @@ def main() -> None:
         for ctx in ctxs:
             bench(f"bz03g2_agg_lam{args.lam:g}",
                   g2_workdir(cfg) / f"agg_delta_{ctx}.parquet", [ctx], args.lam)
+    if args.rescore:
+        tags = [f"bz03g2_{n}" for n in CHILDREN] + [f"bz03g2_agg_lam{args.lam:g}"]
+        do_rescore(tags, ctxs, args.lam)
     if args.report:
         do_report(cfg)
 
