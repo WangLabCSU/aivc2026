@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-06",
+  "ver": "bizard v0.4",
+  "lam": 2.5,
+  "rank_key": "anchor-normalized overall (bizard bundle 口径)",
+  "w_scan_gen1_8bird_pool": {
+    "0 (7 fusion 鸟)": {
+      "Q": 0.4044
+    },
+    "0.05": {
+      "Q": 0.3865
+    },
+    "0.10": {
+      "Q": 0.3755
+    },
+    "0.25": {
+      "Q": 0.359
+    },
+    "refs": {
+      "8鸟等权 v0.3": 0.371,
+      "v0.3 aggw(构造不同,未复现)": 0.3897
+    }
+  },
+  "heu_x_fusion_hybrid": {
+    "fusion_s2 单鸟": {
+      "Q": 0.409
+    },
+    "0.2": {
+      "Q": 0.4007
+    },
+    "0.3": {
+      "Q": 0.3928
+    },
+    "0.5": {
+      "Q": 0.3714
+    },
+    "refs": {
+      "heu_dual 单鸟": 0.3031,
+      "xgb_s235 单鸟": 0.4146,
+      "g2_c3(heu.3xs235.7)": 0.4047
+    }
+  },
+  "backbone_new": {
+    "confv2 (gwps+hct116_all × L1.8 conf v2)": {
+      "Q": 0.2266
+    },
+    "l1sig (gwps 单源启发式)": {
+      "Q": 0.2507
+    },
+    "ref heu_dual (双源无 conf)": 0.3031
+  },
+  "g2_pool_mix": {
+    "gen2+heu w0.1 Q": 0.3803,
+    "gen2 纯池 Q ref": 0.414
+  },
+  "S_HCT116_aggregator_fix": {
+    "gen2 纯池 soft-rank (压平)": 0.2688,
+    "blend β0.3 (SR×0.3+SA×0.7)": 0.3061,
+    "blend β0.5": 0.2917,
+    "scw c3dom (c3 w=0.5)": 0.3111,
+    "scw heu.25+c3.35": 0.5054,
+    "g2_c3 单鸟 ref": 0.6258
+  },
+  "final_configs": {
+    "final_c3s (g2池 P/Q/R/S_RPE1 + g2_c3 S_HCT116)": {
+      "per_ctx": {
+        "P_H1": 0.0764,
+        "Q_HepG2": 0.414,
+        "R_Jurkat": 0.3911,
+        "S_RPE1": 0.22,
+        "S_HCT116": 0.6258
+      },
+      "mean5": 0.3454
+    },
+    "final_pool (g2池 + heu.25/c3.35 场景化池 S_HCT116)": {
+      "per_ctx": {
+        "P_H1": 0.0764,
+        "Q_HepG2": 0.414,
+        "R_Jurkat": 0.3911,
+        "S_RPE1": 0.22,
+        "S_HCT116": 0.5054
+      },
+      "mean5": 0.3214
+    },
+    "refs": {
+      "gen2 纯池聚合 (已打包)": {
+        "per_ctx": {
+          "P_H1": 0.0763586769929622,
+          "Q_HepG2": 0.4139892434434698,
+          "R_Jurkat": 0.3910651170713331,
+          "S_RPE1": 0.2200322831482356,
+          "S_HCT116": 0.2688486690145766
+        },
+        "mean5": 0.2741
+      },
+      "g2_c3 全场景单鸟": {
+        "mean5": 0.3378
+      },
+      "v0.1 bz01_agg_sr": {
+        "mean5": 0.255
+      }
+    }
+  },
+  "notes": [
+    "w_heu 扫描否定 heu 加权: Q 池内 heu 单调稀释 (0.4044→0.3590); heu 价值是场景特异的 (S_HCT116 正, Q 负)",
+    "heu×fusion Δ̂ 插值无协同, 两端点线性内插 (fusion 0.4090 ↔ heu 0.3031)",
+    "confv2/l1sig 均弱于双源无 conf 的 heu_dual → 双源签名聚合仍是启发式骨干最优",
+    "S_HCT116 压平修复: 场景化 soft-rank 权重 (heu 0.25+c3 0.35) 0.5054, 恢复 72% 的 c3 单鸟优势(0.6258-0.2688)",
+    "终选A final_c3s mean5 0.3455 (+0.0714 vs gen2 已打包), Q 持平 0.4140; 终选B final_pool 0.3214 对冲单鸟风险"
+  ]
+}
