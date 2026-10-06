@@ -24,7 +24,8 @@ CONTROLS = ROOT / "data/raw/controls"
 MAX_FOLD = 8.0
 
 
-def build_submission(cfg: dict, lam: float) -> tuple["ad.AnnData", dict]:
+def build_submission(cfg: dict, lam: float,
+                     delta_pattern: str = "agg_delta_submit_{cx}.parquet") -> tuple["ad.AnnData", dict]:
     import anndata as ad
     from src.models.l0_context_mean.make_predictions import (
         CONTEXTS, N_CELLS_PER_PERT, N_PERTS, validate)
@@ -40,7 +41,7 @@ def build_submission(cfg: dict, lam: float) -> tuple["ad.AnnData", dict]:
         del a_ctx
         n_ntc = X_ntc.shape[0]
         lib = np.asarray(X_ntc.sum(axis=1)).ravel()
-        d = pd.read_parquet(out / f"agg_delta_submit_{cx}.parquet").set_index(
+        d = pd.read_parquet(out / delta_pattern.format(cx=cx)).set_index(
             ["target_gene", "gene"])["delta"]
         pert_blocks = []
         for g in perts:
@@ -82,10 +83,15 @@ def main() -> None:
     ap.add_argument("--model-label", default="bizard-v0.1 swarm (6 birds, soft-rank avg)")
     ap.add_argument("--config", default=None,
                     help="bizard 配置（默认 configs/bizard/v01.yaml）；v0.2 用 configs/bizard/v02.yaml")
+    ap.add_argument("--delta-pattern", default="agg_delta_submit_{cx}.parquet",
+                    help="workdir 内 Δ̂ parquet 文件名模式（{cx}=A/B/C），"
+                         "如 v0.4 终选A: pred_g2_c3_submit_{cx}.parquet")
     args = ap.parse_args()
     from pathlib import Path
     cfg = load_cfg(Path(args.config) if args.config else None)
-    a, report = build_submission(cfg, args.lam)
+    a, report = build_submission(cfg, args.lam, delta_pattern=args.delta_pattern)
+    report["delta_pattern"] = args.delta_pattern
+    report["config"] = args.config
     report["model"] = args.model_label
     report["stem"] = args.out_stem
     out_dir = ROOT / "outputs/submissions"

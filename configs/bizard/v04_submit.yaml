@@ -1,0 +1,28 @@
+# Bizard v0.4 终选A 提交物（场景化聚合 → c3 单鸟 Δ̂ 携带）。
+# 终选A final_c3s = g2池(P/Q/R/S_RPE1) + g2_c3 单鸟(S_HCT116), bench mean5 0.3455
+# （超已打包 gen2 纯池 0.2741; 见 outputs/metrics/20261006_bizard_v04.json）。
+# 提交上下文 A/B/C 携带 c3 鸟 Δ̂ = pred_g2_c3_submit_{cx}.parquet
+# （跨骨干杂交 0.3·heu_dual + 0.7·xgb_s235, v03_run --submit 位级验证产物;
+#   基因覆盖 12457/18533 与 gen2 打包版 agg_delta_submit 完全一致集）。
+# 采样协议沿用 bizard 家族: λ2.5, NTC bootstrap 400 细胞, max_fold 8 帽（同 gen2, 保证 A/B 单变量）。
+fusion_cfg: configs/l15_fusion/v35.yaml
+workdir: data/interim/bizard/v03/gen2        # c3 Δ̂ 所在目录（复用 v0.3 gen2 产物）
+bench_out: outputs/metrics/local_bench
+metrics_file: outputs/metrics/20261006_bizard_v04.json
+
+scenarios:
+  P_H1:    {train_ctx: gwps,   control: non-targeting}
+  Q_HepG2: {train_ctx: hepg2,  control: non-targeting}
+  R_Jurkat: {train_ctx: jurkat, control: non-targeting}
+  S_RPE1:  {train_ctx: rpe1,   control: non-targeting}
+  S_HCT116: {train_ctx: hct116, control: Non-Targeting}
+
+aggregate:
+  method: soft_rank
+  birds: all
+  bench_lambda: 2.5
+
+predict:
+  clip: 4.0
+  max_fold: 8.0
+  n_cells_per_pert: 400

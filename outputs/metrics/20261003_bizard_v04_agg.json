@@ -1,0 +1,53 @@
+{
+  "lambda": 2.5,
+  "contexts": {
+    "A": {
+      "n_cells": 18400,
+      "median_lib_size": 20109.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 18.6
+    },
+    "B": {
+      "n_cells": 18400,
+      "median_lib_size": 19946.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 16.2
+    },
+    "C": {
+      "n_cells": 18400,
+      "median_lib_size": 20034.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 2.5,
+      "seconds": 17.3
+    }
+  },
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 2084975137,
+    "entries_per_cell_avg": 5791.6,
+    "density_margin": 0.5611,
+    "max_per_cell_counts": 53288.0,
+    "integer_valued": true
+  },
+  "delta_pattern": "pred_g2_c3_submit_{cx}.parquet",
+  "config": "configs/bizard/v04_submit.yaml",
+  "model": "bizard v0.4 终选A (g2_c3 跨骨干杂交 0.3heu+0.7s235, final_c3s mean5 0.3455)",
+  "stem": "20261003_bizard_v04_agg",
+  "h5ad": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20261003_bizard_v04_agg.h5ad",
+  "vcc": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20261003_bizard_v04_agg.vcc",
+  "vcc_prep": {
+    "cells": 360000,
+    "genes": 18533,
+    "contexts": "A/B/C=120000 each",
+    "targets": "verified against official list",
+    "normalization": "counts-preserved",
+    "exit": 0
+  },
+  "delta_source": "data/interim/bizard/v03/gen2/pred_g2_c3_submit_{A,B,C}.parquet (g2_c3=0.3*heu_dual+0.7*xgb_s235, 位级验证 max|diff|=6e-8)",
+  "protocol_note": "同 gen2 打包协议单变量换 Δ̂: λ2.5, NTC bootstrap 400细胞 ⊕ 2^(2.5·Δ̂), max_fold 8 帽, rint→csr f32; seed 0"
+}
