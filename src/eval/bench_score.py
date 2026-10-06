@@ -17,6 +17,11 @@
   3) cell-eval2 score --user-agg <tag>/<ctx>_eval/agg_results.csv \
        --real-bundle bundles/<ctx> -o <tag>/<ctx>_scored.csv
   4) 汇总 from_replicate 六指标 + avg_score → anchor_normalized.json
+  5) 3-ref 标准输出（默认开，--no-multi-ref 关）：存在多重复锚点 bundle
+     （mc_anchor_bundles/<ctx>_seed*，固定靶集重抽细胞/锚点）时，候选 seed-0 raw
+     六指标对各 seed bundle 的 (b,r) 端 manual 归一化，报告 overall 均值±std 与
+     范围（口径 u_fixed——b 腿重摆×窄标度放大是方差主体，u×ref 交互实测可忽略）。
+     单 bundle 分差 < 范围 ⇒ 不可分辨（S_HCT116 判读线 ±0.08 即此规则特例）。
 
 用法:
   python src/eval/bench_score.py --tag l11_lam1.5 [--contexts P_H1,Q_HepG2,R_Jurkat] \
@@ -160,6 +165,91 @@ def manual_anchor(ctx: str, n_splits: int = 5) -> dict:
     return {"b": b, "r": r}
 
 
+def multi_ref_bundles(ctx: str) -> list[Path]:
+    """收集某上下文全部可用的重复锚点 bundle：seed-0（bundles/<ctx>）+ 多 ref
+    （mc_anchor_bundles/<ctx>_seed*，seed11/12/13，固定 seed-0 靶集、仅重抽细胞/NTC）。
+
+    返回空列表表示该上下文无任何 bundle（调用方走 manual anchor 回退）。
+    """
+    out: list[Path] = []
+    base = OUT_DIR / "bundles" / ctx
+    if (base / "manifest.json").exists():
+        out.append(base)
+    mc = OUT_DIR / "mc_anchor_bundles"
+    if mc.is_dir():
+        out.extend(sorted(mc.glob(f"{ctx}_seed*")))
+    return out
+
+
+def _bundle_ends(bundle: Path) -> tuple[dict, dict]:
+    """读 bundle 的 0 端（baseline_agg.csv）与 1 端（anchor_agg.parquet replicate 列）。"""
+    import pandas as pd
+    b = pd.read_csv(bundle / "baseline_agg.csv")
+    brow = b[b["statistic"] == "mean"].iloc[0]
+    r = pd.read_parquet(bundle / "anchor_agg.parquet").set_index("metric")["replicate"]
+    return ({m: float(brow[m]) for m in METRICS if m in brow.index},
+            {m: float(r[m]) for m in METRICS if m in r.index})
+
+
+def score_multi_ref(tag: str, ctx: str, bundles: list[Path]) -> dict | None:
+    """3-ref 标准输出：同一候选 raw 六指标（u，来自 <tag>/<ctx>_eval）对每个重复锚点
+    bundle 的 (b,r) 端做 manual 归一化 (u-b)/(r-b)，overall = 可用指标均值 →
+    均值±std 与（min,max）范围。
+
+    口径标注 u_fixed：u 固定为 seed-0 eval 读数，仅重摆 b/r 端——与 mc_anchors 协议
+    （每 seed 重跑 eval）相比少了 u×ref 交互项；该项实测极小（u 腿 std≈0.003，
+    细胞重采样 ±0.0017，bench_reliability_final §7/§8），而方差主体正是 b 腿重摆×
+    窄锚点标度放大。mse 两端 clamp 恒 0 → 记 0.0。
+
+    seed-0 bundle 的 manual 值同时返回（vs bundle score 的差即近似误差，供自检）。
+    """
+    import numpy as np
+    import pandas as pd
+
+    eval_dir = OUT_DIR / tag / f"{ctx}_eval"
+    agg = eval_dir / "agg_results.csv"
+    if not agg.exists():
+        raise FileNotFoundError(f"{agg} 不存在：先跑 src/eval/local_bench.py --tag {tag}")
+    raw = pd.read_csv(agg)
+    row = raw[raw["statistic"] == "mean"].iloc[0]
+    u = {SHORT[m]: float(row[m]) for m in METRICS if m in raw.columns}
+    values: dict[str, dict] = {}
+    for bundle in bundles:
+        b_raw, r_raw = _bundle_ends(bundle)
+        b = {SHORT[m]: v for m, v in b_raw.items() if m in SHORT}
+        r = {SHORT[m]: v for m, v in r_raw.items() if m in SHORT}
+        per_metric = {}
+        for m in METRICS:
+            s = SHORT[m]
+            if s not in u or s not in b or s not in r:
+                continue
+            if m == "expr_mse_unbiased_capped_norm":
+                per_metric[s] = 0.0  # 官方 scoring policy：mse 双端 clamp 恒 0（已交叉验证）
+                continue
+            denom = r[s] - b[s]
+            if abs(denom) > 1e-12:
+                per_metric[s] = (u[s] - b[s]) / denom
+            elif abs(u[s] - b[s]) <= 1e-9:
+                per_metric[s] = 0.0  # 两端重合（退化锚点）
+        if not per_metric:
+            continue
+        values[bundle.name] = {
+            "overall": float(sum(per_metric.values()) / len(per_metric)),
+            "per_metric": {k: round(v, 6) for k, v in sorted(per_metric.items())}}
+    if len(values) < 2:
+        return None
+    ovs = np.array([v["overall"] for v in values.values()], dtype=float)
+    return {"method": "u_fixed_anchor_ends (u=seed0 eval raw; b/r ends per seed bundle)",
+            "n_refs": len(ovs),
+            "bundles": sorted(values),
+            "per_bundle": {k: v["overall"] for k, v in sorted(values.items())},
+            "per_metric_detail": {k: v["per_metric"] for k, v in sorted(values.items())},
+            "overall_mean": float(ovs.mean()),
+            "overall_std": float(ovs.std(ddof=1)) if len(ovs) > 1 else 0.0,
+            "overall_range": [float(ovs.min()), float(ovs.max())],
+            "half_range": float((ovs.max() - ovs.min()) / 2)}
+
+
 def score_tag_ctx(tag: str, ctx: str, bundle: Path | None = None,
                   manual: dict | None = None) -> dict:
     """对已跑过 local_bench 的 <tag>/<ctx>_eval 做 bundle 归一化打分，返回官方标度分数。
@@ -236,6 +326,8 @@ def main() -> None:
                     help="bundle 不存在时现场构建（baseline + anchor，较慢）")
     ap.add_argument("--allow-degenerate-baseline", action="store_true",
                     help="baseline 步加 --allow-degenerate-baseline（全深度 HCT116 ref）")
+    ap.add_argument("--no-multi-ref", action="store_true",
+                    help="关闭 3-ref 均值±范围标准输出（默认对存在多 ref bundle 的上下文追加）")
     ap.add_argument("--out", default=str(OUT_DIR / "anchor_normalized.json"))
     args = ap.parse_args()
 
@@ -278,7 +370,28 @@ def main() -> None:
                             for k in sorted(keys)}
         ov = [per_ctx[c]["overall"] for c in avail]
         overall["overall"] = float(sum(ov) / len(ov)) if ov else float("nan")
-        result["per_tag"][tag] = {"per_context": per_ctx, "overall": overall}
+        entry: dict = {"per_context": per_ctx, "overall": overall}
+        # 3-ref 标准输出（默认开）：多重复锚点 bundle 存在的上下文，追加 overall 均值±std/范围
+        if not args.no_multi_ref:
+            multi: dict[str, dict] = {}
+            for c in avail:
+                rb = multi_ref_bundles(c)
+                if len(rb) < 2:
+                    continue
+                try:
+                    m = score_multi_ref(tag, c, rb)
+                except Exception as e:  # noqa: BLE001 — 多 ref 失败不拖垮主输出
+                    print(f"[{tag}/{c}] multi-ref failed: {e}", flush=True)
+                    continue
+                if m:
+                    multi[c] = m
+                    print(f"[{tag}/{c}] multi-ref({m['n_refs']}) overall "
+                          f"{m['overall_mean']:.4f}±{m['overall_std']:.4f} "
+                          f"range [{m['overall_range'][0]:.4f}, {m['overall_range'][1]:.4f}]",
+                          flush=True)
+            if multi:
+                entry["multi_ref"] = multi
+        result["per_tag"][tag] = entry
         print(f"[{tag}] overall(official)={overall['overall']:.4f} "
               + " ".join(f"{k}={v:.4f}" for k, v in overall["per_metric"].items())
               + (f" [{per_ctx[avail[0]]['bundle_mode']}]" if avail else ""), flush=True)
