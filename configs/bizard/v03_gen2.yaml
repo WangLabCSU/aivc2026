@@ -1,0 +1,24 @@
+# Bizard v0.3 PBT gen-2（表征级变异鸟的代际进化, Δ̂ 级插值零重训）。
+# 骨干鸟产物全部复用 v0.3 workdir（data/interim/bizard/v03/pred_*）;
+# 本配置仅指向 gen2 子代/聚合产物目录（v03_gen2.py 与 build_submission 共用）。
+fusion_cfg: configs/l15_fusion/v35.yaml
+workdir: data/interim/bizard/v03/gen2
+bench_out: outputs/metrics/local_bench
+metrics_file: outputs/metrics/20261003_bizard_v03_pbt_gen2.json
+
+scenarios:
+  P_H1:    {train_ctx: gwps,   control: non-targeting}
+  Q_HepG2: {train_ctx: hepg2,  control: non-targeting}
+  R_Jurkat: {train_ctx: jurkat, control: non-targeting}
+  S_RPE1:  {train_ctx: rpe1,   control: non-targeting}
+  S_HCT116: {train_ctx: hct116, control: Non-Targeting}
+
+aggregate:
+  method: soft_rank
+  birds: all
+  bench_lambda: 2.5
+
+predict:
+  clip: 4.0
+  max_fold: 8.0
+  n_cells_per_pert: 400
