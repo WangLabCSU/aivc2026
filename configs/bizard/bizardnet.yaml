@@ -1,0 +1,41 @@
+# BizardNet v0.1 — Context-Conditioned Perturbation Response Transformer
+# 设计书: docs/bizard/v10_full_redesign.md §3.1。
+# 三 token ([CTX]/[TRG]/[GEN]×N) + Transformer Encoder (6L/8H/d512/ffn2048) → 每基因 logFC。
+# 复用 l15_fusion v3.5 缓存: feat_train.npz (30.78M 行 X/y/ctx/gpos/tpos/w) +
+# feat_bench_hepg2/feat_submit_{A,B,C}.npz + basal_{ctx}.npy + emb_se/emb_tahoe。
+fusion_v35_dir: data/interim/l15_fusion/v35
+vocab_json: data/interim/l15_fusion/v35/vocab.json
+workdir: data/interim/bizard/bizardnet
+
+# 行上下文名 → feat_train ctx id (0-7); bench/submit 用 8-10
+train_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116, a549, sw480]
+crispr_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116]   # 指纹中位数插补 + PCA 拟合域
+extra_contexts: [a, b, c]
+loco_holdout: hepg2
+
+model:
+  d_model: 512
+  n_layers: 6
+  n_heads: 8
+  d_ff: 2048
+  dropout: 0.1
+  seq_genes: 128        # 每 (ctx,target) 组切 128 基因一条序列
+  use_gene_emb: false   # v0.2: 去学习身份嵌入 (记忆通道, 伤 LOCO 迁移; 保留预训练 G)
+  residual_gate: true   # v0.2: ReZero 门控 out = skip(gen_x) + α·transformer, α 零初始化
+train:
+  lr: 8.0e-4
+  weight_decay: 0.01
+  warmup_steps: 400
+  batch_seqs: 128       # ≈16k 基因 token/步
+  max_epochs: 12
+  patience: 4
+  label_clip: 4.0
+  huber_beta: 0.5
+  seed: 0
+  grad_clip: 1.0
+  skip_head: true       # 零初始化 gen_x→output 直连 (fusion-MLP 基线下界, transformer 学修正)
+
+predict:
+  clip: 4.0
+  bench_lam: 2.5        # gate λ (对齐 fusion v3.5 LOCO @λ2.5 基线 0.3313 / 任务书 0.2644)
+  submit_lam: 3.5       # 家族提交约定 (ccrn/fusion 同款)
