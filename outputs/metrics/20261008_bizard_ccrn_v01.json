@@ -1,0 +1,42 @@
+{
+  "lambda": 3.5,
+  "contexts": {
+    "A": {
+      "n_cells": 18400,
+      "median_lib_size": 20109.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 3.5,
+      "seconds": 18.5
+    },
+    "B": {
+      "n_cells": 18400,
+      "median_lib_size": 19946.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 3.5,
+      "seconds": 16.6
+    },
+    "C": {
+      "n_cells": 18400,
+      "median_lib_size": 20034.0,
+      "mode": "sampled_ntc_bootstrap",
+      "lambda": 3.5,
+      "seconds": 18.0
+    }
+  },
+  "validation": {
+    "shape": [
+      360000,
+      18533
+    ],
+    "entries": 2080341943,
+    "entries_per_cell_avg": 5778.7,
+    "density_margin": 0.562,
+    "max_per_cell_counts": 48591.0,
+    "integer_valued": true
+  },
+  "delta_pattern": "delta_submit_{cx}.parquet",
+  "config": "configs/bizard/ccrn.yaml",
+  "model": "bizard CCRN v0.1 (38d ctx-conditioned MLP 2.18M, loco Q 0.3474)",
+  "stem": "20261008_bizard_ccrn_v01",
+  "h5ad": "/data/resource/wanglab/aivc/aivc2026/outputs/submissions/20261008_bizard_ccrn_v01.h5ad"
+}

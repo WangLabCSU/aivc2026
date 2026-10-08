@@ -1,0 +1,30 @@
+# Bizard CCRN (Context-Conditioned Response Network) — v0.1
+# 复用 l15_fusion v3.5 缓存 (feat_train/feat_submit/basal/sigstore)，新增:
+#   上下文指纹 (6 模块 basal 分数 + 全局 basal 统计) + 指纹×基因模块交互 + basal 中心化
+# 设计书: docs/bizard/v01_architecture.md §2.1
+fusion_v35_dir: data/interim/l15_fusion/v35
+vocab_json: data/interim/l15_fusion/v35/vocab.json
+workdir: data/interim/bizard/ccrn
+
+# 行上下文名 → feat_train ctx id (0-7); bench/submit 用 8-10
+train_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116, a549, sw480]
+extra_contexts: [a, b, c]        # feat_submit_A/B/C 行上下文
+loco_holdout: hepg2              # LOCO-HepG2 验证臂 (ctx id 4 全部行作 val)
+
+model:
+  hidden: [2048, 1024]
+  dropout: 0.1
+train:
+  lr: 0.002
+  weight_decay: 0.01
+  batch_size: 262144
+  max_epochs: 10
+  patience: 3
+  label_clip: 4.0
+  huber_beta: 0.5
+  seed: 0
+
+predict:
+  clip: 4.0
+  bench_lam: 2.5                 # gate λ (对齐 fusion v3.5 LOCO @λ2.5 基线 0.3313/任务书 0.2644)
+  submit_lam: 3.5

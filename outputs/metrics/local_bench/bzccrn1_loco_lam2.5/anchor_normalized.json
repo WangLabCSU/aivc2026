@@ -1,0 +1,116 @@
+{
+  "scale": "official anchor-normalized (0=baseline, 1=replicate)",
+  "per_tag": {
+    "bzccrn1_loco_lam2.5": {
+      "per_context": {
+        "Q_HepG2": {
+          "per_metric": {
+            "pds": 0.5986504412019148,
+            "mse": 0.0,
+            "nmae": 0.2001322057632425,
+            "fid": 0.867849463223713,
+            "reach": 0.3215692663309376,
+            "jac": 0.096439093112395
+          },
+          "per_metric_raw": {
+            "pds": 0.7134343434343434,
+            "mse": 0.934771888257428,
+            "nmae": 0.8833303491466603,
+            "fid": 0.59679467151139,
+            "reach": 0.4656224129559012,
+            "jac": 0.0750800492567025
+          },
+          "overall": 0.3474400782720339,
+          "bundle_mode": "bundle",
+          "metrics_available": [
+            "pds",
+            "mse",
+            "nmae",
+            "fid",
+            "reach",
+            "jac"
+          ],
+          "metrics_unavailable": []
+        }
+      },
+      "overall": {
+        "per_metric": {
+          "fid": 0.867849463223713,
+          "jac": 0.096439093112395,
+          "mse": 0.0,
+          "nmae": 0.2001322057632425,
+          "pds": 0.5986504412019148,
+          "reach": 0.3215692663309376
+        },
+        "per_metric_raw": {
+          "fid": 0.59679467151139,
+          "jac": 0.0750800492567025,
+          "mse": 0.934771888257428,
+          "nmae": 0.8833303491466603,
+          "pds": 0.7134343434343434,
+          "reach": 0.4656224129559012
+        },
+        "overall": 0.3474400782720339
+      },
+      "multi_ref": {
+        "Q_HepG2": {
+          "method": "u_fixed_anchor_ends (u=seed0 eval raw; b/r ends per seed bundle)",
+          "n_refs": 4,
+          "bundles": [
+            "Q_HepG2",
+            "Q_HepG2_seed11",
+            "Q_HepG2_seed12",
+            "Q_HepG2_seed13"
+          ],
+          "per_bundle": {
+            "Q_HepG2": 0.3474400782720337,
+            "Q_HepG2_seed11": 0.3669724510520987,
+            "Q_HepG2_seed12": 0.31318872480746307,
+            "Q_HepG2_seed13": 0.3373877937333966
+          },
+          "per_metric_detail": {
+            "Q_HepG2": {
+              "fid": 0.867849,
+              "jac": 0.096439,
+              "mse": 0.0,
+              "nmae": 0.200132,
+              "pds": 0.59865,
+              "reach": 0.321569
+            },
+            "Q_HepG2_seed11": {
+              "fid": 0.872694,
+              "jac": -0.099473,
+              "mse": 0.0,
+              "nmae": 0.47866,
+              "pds": 0.609438,
+              "reach": 0.340516
+            },
+            "Q_HepG2_seed12": {
+              "fid": 0.885492,
+              "jac": -0.02029,
+              "mse": 0.0,
+              "nmae": 0.112866,
+              "pds": 0.600635,
+              "reach": 0.30043
+            },
+            "Q_HepG2_seed13": {
+              "fid": 0.878711,
+              "jac": 0.06557,
+              "mse": 0.0,
+              "nmae": 0.147845,
+              "pds": 0.613284,
+              "reach": 0.318916
+            }
+          },
+          "overall_mean": 0.34124726196624805,
+          "overall_std": 0.022377915674695003,
+          "overall_range": [
+            0.31318872480746307,
+            0.3669724510520987
+          ],
+          "half_range": 0.02689186312231781
+        }
+      }
+    }
+  }
+}
