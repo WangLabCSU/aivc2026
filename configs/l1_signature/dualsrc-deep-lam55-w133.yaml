@@ -1,0 +1,19 @@
+# L1.9 fid 专项候选3 官方提交配置：dualsrc-deep λ5.5 + HCT116 特征非对称加权（20261010）
+# 与官方 λ5.5（20261003_dualsrcdeep_lam55, +0.0872, Rank 628, fid=-0.063）唯一差异：
+# dataset_weights {gwps:0.7, hct116_all:1.3}——跨源加权均值，hct116(xatlas p53-WT) 加权
+# 提供 HepG2 的 p53/IFN 模块补偿（等价归一化 0.35/0.65，全局 |Δ̂| 不变）。
+# bench gate: dualdeepw_lam55 Q overall > 基线 dualdeep_lam55 0.3305 → staged。
+datasets: [gwps, hct116_all]
+lambda_real: 5.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 12.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261011_dualsrcdeep_lam55_w133
+dataset_weights:
+  gwps: 0.7
+  hct116_all: 1.3

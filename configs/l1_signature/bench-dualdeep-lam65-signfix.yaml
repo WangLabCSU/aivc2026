@@ -1,0 +1,21 @@
+# L1.9 fid 专项候选1：dualdeep λ6.5 + 置信度 v2 符号修正（20261009）
+# 与 bench-dualdeep-lam65.yaml 完全一致（λ6.5/max_fold 14/cell_sampling），唯一变量：
+# sign_fix——对 w=0.5（gwps×hct116 双源显著但反向）的 1272 个基因，聚合前把非锚定源
+# per-source logfc 翻号，跨源均值由"互相抵消"变为"同向叠加"（方向修正而非幅度缩放；
+# confv2 幅度缩放版 dualsrc_deep_confv2 Q 0.2896<0.3182 已证伪，此为其对照面）。
+# align=majority: 按 |显著行 logfc| 行数多者锚定（平局不翻）。基线 dualdeep_lam65 Q=0.2886。
+datasets: [gwps, hct116_all]
+lambda_real: 6.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261009_dualsrcdeep_lam65_signfix
+sign_fix:
+  file: data/interim/confidence_v2.parquet
+  align: majority
+  sources: [gwps, hct116_all]

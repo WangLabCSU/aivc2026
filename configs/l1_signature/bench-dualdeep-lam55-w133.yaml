@@ -1,0 +1,19 @@
+# L1.9 fid 专项候选3：dualdeep λ5.5 + HCT116 特征非对称加权（20261009）
+# 与 bench-dualdeep-lam55.yaml 完全一致（λ5.5/max_fold 12/cell_sampling），唯一变量：
+# dataset_weights {gwps:0.7, hct116_all:1.3}——跨源加权均值 Σw·Δ/Σw，hct116(xatlas
+# p53-WT) 加权 1.3 为 Q_HepG2 提供 p53/IFN 模块补偿（等价归一化 0.35/0.65）。
+# 基线 dualdeep_lam55 Q=0.3305。
+datasets: [gwps, hct116_all]
+lambda_real: 5.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 12.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261009_dualsrcdeep_lam55_w133
+dataset_weights:
+  gwps: 0.7
+  hct116_all: 1.3

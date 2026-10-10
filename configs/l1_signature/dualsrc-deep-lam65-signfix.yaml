@@ -1,0 +1,20 @@
+# L1.9 fid 专项候选1 官方提交配置：dualsrc-deep λ6.5 + 置信度 v2 符号修正（20261010）
+# 与官方最优 20261005_dualsrcdeep_lam65（+0.0886, Rank 633, fid=-0.034）唯一差异：sign_fix
+# ——对 w=0.5（gwps×hct116 双源显著反向）1272 基因，聚合前翻非锚定源符号（majority 锚定，
+# 翻 gwps 168 + hct116 1071 行），跨源均值由抵消变同向叠加；全局 |Δ̂| 不变（-0.3%）。
+# bench gate: dualdeep_lam65_signfix Q overall > 基线 dualdeep_lam65 0.2886 → staged。
+datasets: [gwps, hct116_all]
+lambda_real: 6.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261011_dualsrcdeep_lam65_signfix
+sign_fix:
+  file: data/interim/confidence_v2.parquet
+  align: majority
+  sources: [gwps, hct116_all]

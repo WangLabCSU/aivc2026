@@ -41,6 +41,15 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
     - confidence_file (str|null, 默认 null): L1.8 v2 置信权重表路径（parquet，列
       [gene, w]；由 confidence_v2.py 产出 data/interim/confidence_v2.parquet）。
       Δ 乘 w_j（在 top_k/clip 之前，含 generic 兜底行）；表外基因 w=0.7（N<2 中性）。
+    - sign_fix (dict|null, 默认 null): L1.9 双源反向基因符号修正（改方向不改幅度）。
+      对 w=0.5（n_votes=2 且 agree_sum=0，两源显著但反向）基因，聚合前把"非锚定源"
+      的 per-source logfc 整体翻号，使跨源均值不再互相抵消（幅度=两源 |logfc| 之和的一半，
+      方向=锚定源）。键: file（confidence_v2.parquet 路径）, align（majority=按显著行数
+      多者锚定，平局保 gwps；gwps/hct116_all=固定锚定该源）, sources（默认 [gwps,
+      hct116_all]，须与 datasets 键一致）。generic 兜底与单源显著基因不受影响。
+    - dataset_weights (dict|null, 默认 null): 跨源非对称加权均值，如 {gwps: 0.7,
+      hct116_all: 1.3}。delta = Σ w_s·Δ_s / Σ w_s（按 (target,gene) 对出现源计权）；
+      键缺省源权重 1.0。与 confidence_file/互斥使用时后者在后（乘 w_j）。
     """
     sig_dir = ROOT / "data/interim/signatures"
     per_ds = {}
@@ -48,6 +57,28 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
     report = {"datasets": {}}
     stress_alpha = float(cfg.get("stress_alpha") or 0.0)
     top_k = cfg.get("top_k")
+
+    # L1.9 sign_fix: 双源反向基因 → 非锚定源翻号（方向修正而非幅度缩放）
+    sign_fix = cfg.get("sign_fix") or {}
+    flip_genes: dict[str, set] = {}
+    if sign_fix.get("file"):
+        ftab = pd.read_parquet(ROOT / sign_fix["file"]
+                               if not Path(sign_fix["file"]).is_absolute()
+                               else sign_fix["file"])
+        dis = ftab[(ftab["n_votes"] == 2) & (ftab["agree_sum"] == 0)]
+        srcs = list(sign_fix.get("sources") or ["gwps", "hct116_all"])
+        align = str(sign_fix.get("align", "majority"))
+        if align in ("gwps", "hct116_all"):
+            for s in srcs:  # 固定锚定 align 源 → 翻其余源
+                flip_genes[s] = set() if s == align else set(dis["gene"].astype(str))
+        else:  # majority: 逐基因按显著行数多者锚定，平局双方不翻（保现等权均值）
+            for s in srcs:
+                other = [x for x in srcs if x != s][0]
+                ns, no = dis[f"n_sig_{s}"], dis[f"n_sig_{other}"]
+                flip_genes[s] = set(dis.loc[ns < no, "gene"].astype(str))
+        report["sign_fix"] = {"file": str(sign_fix["file"]), "align": align,
+                              "disagree_genes": int(len(dis)),
+                              "flipped": {k: len(v) for k, v in flip_genes.items()}}
     for name in cfg["datasets"]:
         f = sig_dir / f"{name}.parquet"
         if not f.exists():
@@ -68,20 +99,31 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
         g = df.groupby(["target_gene", "gene"], sort=False)["logfc"].mean().reset_index()
         if stress is not None:
             g["logfc"] = g["logfc"] - stress_alpha * stress.reindex(g["gene"]).fillna(0.0).to_numpy()
+        if name in flip_genes and flip_genes[name]:
+            m = g["gene"].astype(str).isin(flip_genes[name]).to_numpy()
+            g.loc[m, "logfc"] = -g.loc[m, "logfc"]
         per_ds[name] = g
         report["datasets"][name] = {"perts": int(df["target_gene"].nunique()),
                                     "genes_in_panel": int(g["gene"].nunique())}
 
     covered = set().union(*(set(g["target_gene"]) for g in per_ds.values())) if per_ds else set()
+    ds_w = {k: float(v) for k, v in (cfg.get("dataset_weights") or {}).items()}
     parts = []
     for name, g in per_ds.items():
         part = g[g["target_gene"].isin(targets) & g["target_gene"].isin(covered)].copy()
-        # 跨数据集同基因取均值（v1: 等权；后续换签名相关性权重）
+        # 跨数据集聚合（v1 等权；dataset_weights 时按源加权均值 Σw·Δ/Σw）
         agg = part.groupby(["target_gene", "gene"], sort=False)["logfc"].mean().reset_index()
+        agg["_w"] = ds_w.get(name, 1.0)
         parts.append(agg.rename(columns={"logfc": "delta"}))
     real = (pd.concat(parts, ignore_index=True)
             if parts else pd.DataFrame(columns=["target_gene", "gene", "delta"]))
-    real = real.groupby(["target_gene", "gene"], sort=False)["delta"].mean().reset_index()
+    if ds_w:
+        real["_dw"] = real["delta"] * real["_w"]
+        num = real.groupby(["target_gene", "gene"], sort=False)["_dw"].sum()
+        den = real.groupby(["target_gene", "gene"], sort=False)["_w"].sum()
+        real = (num / den).rename("delta").reset_index()
+    else:
+        real = real.groupby(["target_gene", "gene"], sort=False)["delta"].mean().reset_index()
 
     # 兜底: gwps 全局均值签名（通用应激响应）
     uncovered = [t for t in targets if t not in covered]
@@ -146,7 +188,8 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
     real["delta"] = real["delta"].clip(-cfg["max_abs_delta"], cfg["max_abs_delta"])
     report.update({"covered_targets": len(covered), "uncovered_targets": len(uncovered),
                    "delta_rows": len(real), "top_k": top_k, "stress_alpha": stress_alpha,
-                   "stress_genes": int(len(stress)) if stress is not None else 0})
+                   "stress_genes": int(len(stress)) if stress is not None else 0,
+                   "dataset_weights": ds_w or None})
     return real, report
 
 
