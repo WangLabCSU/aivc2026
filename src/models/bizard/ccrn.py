@@ -32,7 +32,9 @@ BASAL_J_COL = 3        # basal_j 列
 
 
 def load_cfg() -> dict:
-    with open(CFG_PATH) as f:
+    import os
+    p = os.environ.get("CCRN_CFG") or "configs/bizard/ccrn.yaml"
+    with open(ROOT / p) as f:
         return yaml.safe_load(f)
 
 
