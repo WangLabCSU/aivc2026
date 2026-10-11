@@ -1,0 +1,41 @@
+# BizardNet v1.1 — v1.0 + 训练时 context-dropout
+# iter013 方向 (a)：随机置零上下文指纹 (p=0.2, 可学 null 向量替补)，
+# 阻断指纹记忆、强迫 transformer 学跨上下文路由 → 修 "transformer 分量在
+# 未见上下文上是噪声" 的失败模式。其余与 v1.0 完全一致（回归对照）。
+# 复用 v1.0 的 train 数据（symlink），模型/曲线/Δ̂ 落 workdir 根。
+fusion_v35_dir: data/interim/l15_fusion/v35
+vocab_json: data/interim/l15_fusion/v35/vocab.json
+workdir: data/interim/bizard/bizardnet11
+
+train_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116, a549, sw480]
+crispr_contexts: [gwps, k562_ess, rpe1, jurkat, hepg2, hct116]
+extra_contexts: [a, b, c]
+loco_holdout: hepg2
+
+model:
+  d_model: 512
+  n_layers: 6
+  n_heads: 8
+  d_ff: 2048
+  dropout: 0.1
+  seq_genes: 128
+  use_gene_emb: false
+  residual_gate: true
+train:
+  lr: 8.0e-4
+  weight_decay: 0.01
+  warmup_steps: 400
+  batch_seqs: 128
+  max_epochs: 12
+  patience: 4
+  label_clip: 4.0
+  huber_beta: 0.5
+  seed: 0
+  grad_clip: 1.0
+  skip_head: true
+  context_dropout: 0.2   # v1.1 新增
+
+predict:
+  clip: 4.0
+  bench_lam: 2.5
+  submit_lam: 3.5

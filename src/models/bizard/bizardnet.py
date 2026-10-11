@@ -27,14 +27,15 @@ import yaml
 
 ROOT = Path("/data/resource/wanglab/aivc/aivc2026")
 CFG_PATH = ROOT / "configs/bizard/bizardnet.yaml"
-
 GEN_COLS = {"cross_mean", "cross_std", "cross_maxabs", "basal_j", "basal_j_zero",
             "x_sign_mean_basal", "x_absmean_basal", "has_sig"}
 TRG_X_COLS = {"basal_g", "basal_g_zero"}
 
 
 def load_cfg() -> dict:
-    with open(CFG_PATH) as f:
+    import os
+    p = os.environ.get("BIZNET_CFG") or "configs/bizard/bizardnet.yaml"
+    with open(ROOT / p) as f:
         return yaml.safe_load(f)
 
 
@@ -249,6 +250,11 @@ def make_model(cfg: dict, dims: dict, fp: np.ndarray, G: np.ndarray, device: str
             self.register_buffer("G", torch.from_numpy(G))
             self.use_gene_emb = cfg["model"].get("use_gene_emb", True)
             self.residual_gate = cfg["model"].get("residual_gate", False)
+            # v1.1: 训练时以 p 概率把整条上下文指纹换成可学 null 向量，
+            # 阻断指纹记忆、强迫跨上下文路由 (iter013 方向 a)
+            self.fp_drop = cfg["train"].get("context_dropout", 0.0)
+            if self.fp_drop > 0:
+                self.fp_null = nn.Parameter(torch.zeros(dims["d_ctx"]))
             self.type_emb = nn.Embedding(3, dm)
             if self.use_gene_emb:
                 self.gene_emb = nn.Embedding(dims["V"] + 1, dm)
@@ -274,7 +280,12 @@ def make_model(cfg: dict, dims: dict, fp: np.ndarray, G: np.ndarray, device: str
 
         def forward(self, ctx_id, tpos, gpos, gen_x, trg_x, pad):
             B = gpos.shape[0]
-            ctx_t = self.ctx_proj(self.F[ctx_id]) + self.type_emb.weight[0]
+            ctx_feat = self.F[ctx_id]
+            if self.training and self.fp_drop > 0:
+                keep = (torch.rand(B, 1, device=ctx_feat.device) >= self.fp_drop
+                        ).to(ctx_feat.dtype)
+                ctx_feat = ctx_feat * keep + self.fp_null * (1.0 - keep)
+            ctx_t = self.ctx_proj(ctx_feat) + self.type_emb.weight[0]
             dm = ctx_t.shape[-1]
             z_t = torch.zeros(B, dm, device=ctx_t.device)
             ge_t = self.gene_emb(tpos + 1) if self.use_gene_emb else z_t
