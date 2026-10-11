@@ -78,10 +78,21 @@ VCC2025（H1 hESC CRISPRi，同技术）与 A/B/C 300 靶重叠仅 25/300（Test
   官方期望 +0.088~0.089 边际）。
 - 不发：三源 ensemble（本地已负）、α 重扫（期望 ≤+0.009）、v1.1（bench 负）。
 
-## 六、过夜任务：CCRN PBT
+## 六、CCRN PBT（过夜，已完成）
 
-- 动机：CCRN 训练 ~2min/代，是最便宜的可进化单元；若明日 CCRN 官方读数可接受，
-  PBT 优化版即 CCRN v0.2 候补。奖励 = LOCO bench anchor（含 λ·sd 扫描）。
-- 状态空间：hidden ∈ {[2048,1024],[1024,512],[4096,1024]}, lr ∈ {1e-3,2e-3,4e-3},
-  dropout ∈ {0.0,0.1,0.3}, seed ∈ {0,1,2}；exploit=top-half 复制, explore=逐维随机重采样。
-- 风险纪律：bizard 家族 bench→官方 offset 未定（明日读数），PBT 产物仅在官方正读数后晋级提交。
+- 6 代 × 种群 4，奖励 = LOCO bench max(λ2.5, λ4.0)；exploit top-half / explore 逐维扰动。
+- **最优 hp：hidden [4096,1024]、lr 4e-3、dropout 0.3、seed 2 → reward 0.3907**
+  （base CCRN 0.3474，**+0.043 / +12.4%**；该配置跨 seed 稳健：0.3907/0.3868/0.3747）。
+- λ 曲线：2.5→0.3714、**4.0→0.3907（峰）**、5.0→3654、6.0→0.3162——峰位 λ·sd=0.224 与家族律一致。
+- 收敛轨迹：gen0 峰 0.3907 → gen1-5 维持（exploit 锁定 [4096,1024]+4e-3+0.3）；
+  dropout 0.0/0.1、窄网、低 lr 均显著劣后（0.35-0.37）。
+
+## 七、CCRN v0.2 打包（明日 slot2）
+
+- full 臂 4.36M 参数（batch 减半 131072 + expandable_segments 修 OOM），A/B/C predict +
+  per-context 中心化 + **sd 重标定到 bench 峰 sd 0.056**（raw 0.029/0.048/0.054 过缩），
+  统一 λ4.0（等价于逐上下文 λ 7.7/4.7/4.1 的 λ·sd 匹配）。
+- `20261012_bizard_ccrn_v02.vcc` prep 全绿（targets 校验通过，counts-preserved）。
+- 明日链自动选用（`scripts/morning_submit_chain.sh` 检测到 v02 文件即切换 slot2）。
+- 预期管理：bench 0.3907 若按 bizard 家族 offset −0.43 → 官方 ≈ −0.04；若按 fusion 家族
+  affine → ≈ +0.29（top-100 级）。slot2 本质是 bizard 家族迁移性的判定发。

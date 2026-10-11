@@ -1,0 +1,35 @@
+fusion_v35_dir: data/interim/l15_fusion/v35
+vocab_json: data/interim/l15_fusion/v35/vocab.json
+workdir: data/interim/bizard/ccrn_v02
+train_contexts:
+- gwps
+- k562_ess
+- rpe1
+- jurkat
+- hepg2
+- hct116
+- a549
+- sw480
+extra_contexts:
+- a
+- b
+- c
+loco_holdout: hepg2
+model:
+  hidden:
+  - 4096
+  - 1024
+  dropout: 0.3
+train:
+  lr: 0.004
+  weight_decay: 0.01
+  batch_size: 131072
+  max_epochs: 10
+  patience: 3
+  label_clip: 4.0
+  huber_beta: 0.5
+  seed: 2
+predict:
+  clip: 4.0
+  bench_lam: 2.5
+  submit_lam: 3.5
