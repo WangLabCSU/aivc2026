@@ -74,7 +74,8 @@ VCC2025（H1 hESC CRISPRi，同技术）与 A/B/C 300 靶重叠仅 25/300（Test
 - slot1：**bizard v10（BizardNet v1.0 λ39）**——v1.1 已证伪，v1.0 仍是家族最优（bench 0.3521）。
 - slot2：CCRN v0.1 λ3.5（`20261008_bizard_ccrn_v01.vcc` 已 staged）——清洁家族读数，
   决定 BizardNet v0.2 / CCRN PBT 产物是否继续投入。
-- 备胎：λ7.5-deep（fid 零穿越探针，官方期望 +0.088~0.089 边际；构建 30min 随时可发）。
+- 备胎：λ7.5-deep（`20261005_dualsrcdeep_lam75.vcc` 10/5 已 staged+prep 绿；fid 零穿越探针，
+  官方期望 +0.088~0.089 边际）。
 - 不发：三源 ensemble（本地已负）、α 重扫（期望 ≤+0.009）、v1.1（bench 负）。
 
 ## 六、过夜任务：CCRN PBT
