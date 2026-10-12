@@ -1,0 +1,302 @@
+{
+ "global": {
+  "pds": {
+   "a": 0.37353824367868677,
+   "b": 0.15869120056184982,
+   "n": 7,
+   "resid_std": 0.04711477044768309
+  },
+  "jac": {
+   "a": -0.15046187380538578,
+   "b": 0.01220455610408403,
+   "n": 7,
+   "resid_std": 0.0037756429210378307
+  },
+  "nmae": {
+   "a": 0.11807634653386875,
+   "b": -0.010451478814845386,
+   "n": 7,
+   "resid_std": 0.020493005389913825
+  },
+  "fid": {
+   "a": -0.5431386012923968,
+   "b": 0.39409617148797554,
+   "n": 7,
+   "resid_std": 0.042801841403976554
+  },
+  "reach": {
+   "a": -0.10233489756692894,
+   "b": 0.13653119417229867,
+   "n": 7,
+   "resid_std": 0.015059731888131929
+  }
+ },
+ "family": {
+  "heur": {
+   "pds": {
+    "a": 1.66708344537817,
+    "b": -0.9753913565426316,
+    "n": 3
+   },
+   "jac": {
+    "a": 0.5894022986016508,
+    "b": -0.05619162511672479,
+    "n": 3
+   },
+   "nmae": {
+    "a": 0.25599048001518,
+    "b": 0.015003213777311888,
+    "n": 3
+   },
+   "fid": {
+    "a": 2.401350599856208,
+    "b": -2.069646156867192,
+    "n": 3
+   },
+   "reach": {
+    "a": 0.7812582082410156,
+    "b": -0.056294941843903996,
+    "n": 3
+   }
+  },
+  "fusion": {
+   "pds": {
+    "a": -9.229683076924115,
+    "b": 5.779700000000596,
+    "n": 2
+   },
+   "jac": {
+    "a": -8.25504314840018,
+    "b": 1.073915397168307,
+    "n": 2
+   },
+   "nmae": {
+    "a": 0.10001659592807678,
+    "b": -0.005238283931831781,
+    "n": 2
+   },
+   "fid": {
+    "a": -24.47522990248564,
+    "b": 22.973466609202887,
+    "n": 2
+   },
+   "reach": {
+    "a": 0.26910603683934164,
+    "b": -0.05543342435090424,
+    "n": 2
+   }
+  }
+ },
+ "points": [
+  {
+   "family": "heur",
+   "metric": "pds",
+   "local_raw": 0.886152603956398,
+   "official_raw": 0.5022
+  },
+  {
+   "family": "heur",
+   "metric": "nmae",
+   "local_raw": -0.3230071228206508,
+   "official_raw": -0.0656
+  },
+  {
+   "family": "heur",
+   "metric": "fid",
+   "local_raw": 0.8439902986203613,
+   "official_raw": -0.034
+  },
+  {
+   "family": "heur",
+   "metric": "reach",
+   "local_raw": 0.2251462898935639,
+   "official_raw": 0.1267
+  },
+  {
+   "family": "heur",
+   "metric": "jac",
+   "local_raw": 0.0993932369877292,
+   "official_raw": 0.0023
+  },
+  {
+   "family": "heur",
+   "metric": "pds",
+   "local_raw": 0.8714458734644436,
+   "official_raw": 0.4769
+  },
+  {
+   "family": "heur",
+   "metric": "nmae",
+   "local_raw": -0.0525690017470443,
+   "official_raw": -0.0079
+  },
+  {
+   "family": "heur",
+   "metric": "fid",
+   "local_raw": 0.8398423095981603,
+   "official_raw": -0.0634
+  },
+  {
+   "family": "heur",
+   "metric": "reach",
+   "local_raw": 0.230451333190463,
+   "official_raw": 0.1185
+  },
+  {
+   "family": "heur",
+   "metric": "jac",
+   "local_raw": 0.09388521444475,
+   "official_raw": -0.0007
+  },
+  {
+   "family": "heur",
+   "metric": "pds",
+   "local_raw": 0.8469346559778526,
+   "official_raw": 0.4367
+  },
+  {
+   "family": "heur",
+   "metric": "nmae",
+   "local_raw": 0.0239628875184182,
+   "official_raw": 0.0285
+  },
+  {
+   "family": "heur",
+   "metric": "fid",
+   "local_raw": 0.8164014146522298,
+   "official_raw": -0.1076
+  },
+  {
+   "family": "heur",
+   "metric": "reach",
+   "local_raw": 0.2101039593706022,
+   "official_raw": 0.106
+  },
+  {
+   "family": "heur",
+   "metric": "jac",
+   "local_raw": 0.0861145467639366,
+   "official_raw": -0.0055
+  },
+  {
+   "family": "fusion",
+   "metric": "pds",
+   "local_raw": 0.5848088125036036,
+   "official_raw": 0.3821
+  },
+  {
+   "family": "fusion",
+   "metric": "nmae",
+   "local_raw": 0.0363768022503797,
+   "official_raw": -0.0016
+  },
+  {
+   "family": "fusion",
+   "metric": "fid",
+   "local_raw": 0.94586513391042,
+   "official_raw": -0.1768
+  },
+  {
+   "family": "fusion",
+   "metric": "reach",
+   "local_raw": 0.4954679795255029,
+   "official_raw": 0.0779
+  },
+  {
+   "family": "fusion",
+   "metric": "jac",
+   "local_raw": 0.1315578098920992,
+   "official_raw": -0.0121
+  },
+  {
+   "family": "fusion",
+   "metric": "pds",
+   "local_raw": 0.5810600380644784,
+   "official_raw": 0.4167
+  },
+  {
+   "family": "fusion",
+   "metric": "nmae",
+   "local_raw": -0.3745549998033071,
+   "official_raw": -0.0427
+  },
+  {
+   "family": "fusion",
+   "metric": "fid",
+   "local_raw": 0.9440347118805352,
+   "official_raw": -0.132
+  },
+  {
+   "family": "fusion",
+   "metric": "reach",
+   "local_raw": 0.5173924226531849,
+   "official_raw": 0.0838
+  },
+  {
+   "family": "fusion",
+   "metric": "jac",
+   "local_raw": 0.1311701680660695,
+   "official_raw": -0.0089
+  },
+  {
+   "family": "ens",
+   "metric": "pds",
+   "local_raw": 0.6796816425399389,
+   "official_raw": 0.4839
+  },
+  {
+   "family": "ens",
+   "metric": "nmae",
+   "local_raw": -0.3027891185588236,
+   "official_raw": -0.0607
+  },
+  {
+   "family": "ens",
+   "metric": "fid",
+   "local_raw": 0.9266279312432756,
+   "official_raw": -0.053
+  },
+  {
+   "family": "ens",
+   "metric": "reach",
+   "local_raw": 0.4805682200356431,
+   "official_raw": 0.1112
+  },
+  {
+   "family": "ens",
+   "metric": "jac",
+   "local_raw": 0.1244682978990351,
+   "official_raw": -0.0013
+  },
+  {
+   "family": "bizard",
+   "metric": "pds",
+   "local_raw": 0.5637580021915921,
+   "official_raw": 0.2852
+  },
+  {
+   "family": "bizard",
+   "metric": "nmae",
+   "local_raw": 0.1995373142323662,
+   "official_raw": -0.0168
+  },
+  {
+   "family": "bizard",
+   "metric": "fid",
+   "local_raw": 0.8646681195059525,
+   "official_raw": -0.0319
+  },
+  {
+   "family": "bizard",
+   "metric": "reach",
+   "local_raw": 0.3866128937272325,
+   "official_raw": 0.0711
+  },
+  {
+   "family": "bizard",
+   "metric": "jac",
+   "local_raw": 0.0979359164100836,
+   "official_raw": -0.0034
+  }
+ ]
+}
