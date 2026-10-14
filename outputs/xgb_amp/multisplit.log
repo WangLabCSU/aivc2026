@@ -1,0 +1,49 @@
+[ms] gwps      split101 seed0 rmse=0.3713 g1=0.7151
+[ms] gwps      split101 seed7 rmse=0.5799 g1=0.7151
+[ms] gwps      split202 seed0 rmse=0.3777 g1=0.7151
+[ms] gwps      split202 seed7 rmse=0.3977 g1=0.7151
+[ms] gwps      split303 seed0 rmse=0.3942 g1=0.7151
+[ms] gwps      split303 seed7 rmse=0.5710 g1=0.7151
+[ms] gwps      FULL seed7 rmse=0.3993
+[ms] k562_ess  split101 seed0 rmse=0.2954 g1=0.3353
+[ms] k562_ess  split101 seed7 rmse=0.2972 g1=0.3353
+[ms] k562_ess  split202 seed0 rmse=0.3025 g1=0.3353
+[ms] k562_ess  split202 seed7 rmse=0.2999 g1=0.3353
+[ms] k562_ess  split303 seed0 rmse=0.2923 g1=0.3353
+[ms] k562_ess  split303 seed7 rmse=0.2988 g1=0.3353
+[ms] k562_ess  FULL seed7 rmse=0.2970
+[ms] rpe1      split101 seed0 rmse=0.8790 g1=0.7599
+[ms] rpe1      split101 seed7 rmse=0.8642 g1=0.7599
+[ms] rpe1      split202 seed0 rmse=0.8564 g1=0.7599
+[ms] rpe1      split202 seed7 rmse=0.8686 g1=0.7599
+[ms] rpe1      split303 seed0 rmse=0.8657 g1=0.7599
+[ms] rpe1      split303 seed7 rmse=0.8592 g1=0.7599
+[ms] rpe1      FULL seed7 rmse=0.8644
+[ms] jurkat    split101 seed0 rmse=0.3949 g1=0.4152
+[ms] jurkat    split101 seed7 rmse=0.6354 g1=0.4152
+[ms] jurkat    split202 seed0 rmse=0.4940 g1=0.4152
+[ms] jurkat    split202 seed7 rmse=0.6463 g1=0.4152
+[ms] jurkat    split303 seed0 rmse=0.4969 g1=0.4152
+[ms] jurkat    split303 seed7 rmse=0.6377 g1=0.4152
+[ms] jurkat    FULL seed7 rmse=0.6373
+[ms] hepg2     split101 seed0 rmse=0.4457 g1=0.5370
+[ms] hepg2     split101 seed7 rmse=0.3862 g1=0.5370
+[ms] hepg2     split202 seed0 rmse=0.4529 g1=0.5370
+[ms] hepg2     split202 seed7 rmse=0.3857 g1=0.5370
+[ms] hepg2     split303 seed0 rmse=0.4519 g1=0.5370
+[ms] hepg2     split303 seed7 rmse=0.3801 g1=0.5370
+[ms] hepg2     FULL seed7 rmse=0.3832
+[ms] hct116    split101 seed0 rmse=0.5872 g1=0.5675
+[ms] hct116    split101 seed7 rmse=0.8102 g1=0.5675
+[ms] hct116    split202 seed0 rmse=0.6434 g1=0.5675
+[ms] hct116    split202 seed7 rmse=0.6889 g1=0.5675
+[ms] hct116    split303 seed0 rmse=0.6643 g1=0.5675
+[ms] hct116    split303 seed7 rmse=0.7069 g1=0.5675
+[ms] hct116    FULL seed7 rmse=0.6345
+[sum] gwps: std=0.0988 delta_frozen=-0.3518 2xstd=0.1975 eligible=False
+[sum] k562_ess: std=0.0036 delta_frozen=-0.0417 2xstd=0.0071 eligible=False
+[sum] rpe1: std=0.0080 delta_frozen=+0.1177 2xstd=0.0159 eligible=False
+[sum] jurkat: std=0.1042 delta_frozen=+0.0794 2xstd=0.2084 eligible=True
+[sum] hepg2: std=0.0364 delta_frozen=-0.0861 2xstd=0.0728 eligible=False
+[sum] hct116: std=0.0747 delta_frozen=+0.0828 2xstd=0.1494 eligible=True
+[ms] done -> /data/resource/wanglab/aivc/aivc2026/outputs/xgb_amp/loco_multisplit.json
