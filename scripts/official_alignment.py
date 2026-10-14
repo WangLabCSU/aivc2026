@@ -59,6 +59,9 @@ OFFICIAL_POINTS = {
     ("bizard", "20261008_bizard_v10"): dict(
         local="bzbiz10skip_lam16", official={"pds": 0.2852, "mse": 0.0, "nmae": -0.0168,
                                              "fid": -0.0319, "reach": 0.0711, "jac": -0.0034}),
+    ("bizard", "20261012_bizard_v10_lam55"): dict(
+        local="bzbiz10skip_lam55", official={"pds": 0.3045, "mse": 0.0, "nmae": -0.1743,
+                                             "fid": -0.0141, "reach": 0.0815, "jac": 0.0003}),
 }
 
 
