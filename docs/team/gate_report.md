@@ -103,10 +103,14 @@ loco_frozen.json：pass_all_ctx = **false**，3/6 轴劣化于 g=1 基线：
 全部声明均为 local 相对比较；无任何 affine 系数向官方 λ39 的外推换算；D-5 affine 校准 gate
 已废除未使用；official mse 转换声明一律缺席（本地 mse 恒 0，无声明素材）。合规。
 
-## 5. 总裁决 —— **不推荐发档（XGB-MVP 即 bizard-v0.2 不上 slot1）**
+## 5. 总裁决 —— **不推荐发档（XGB-MVP 不上 slot1）**
+
+> **命名更正（2026-10-14, PI 处置裁定）**：本节及下文"λ47=bizard-v0.3"绑定作废。
+> 版本号跟随实际提交序列——XGB-MVP 不发档故 v0.2 空出，**λ47 作为首个 plain 命名提交
+> 取官方名 bizard-v0.2**。本文件正文保留原记录，以下按此更正解读。
 
 G1 FAIL · G2 PASS · G3 FAIL · G4 遵守。R-1 verdict flow：任一 FAIL → 不推荐发档，
-且 G1-FAIL 分支预注册了确定默认：**slot1 → λ47 备选，官方名 bizard-v0.3**。
+且 G1-FAIL 分支预注册了确定默认：**slot1 → λ47 备选**（官方名按提交序列为 bizard-v0.2，见上更正）。
 
 理由压缩成三句：oracle 臂退化使 G1 的上限证明没有做成，而镜像先验尺度上 g 结构的可见增益
 （−1.7%）低于 5% 门槛；LOCO 三轴劣化且无送审时方差可豁免；两处 FAIL 均触发预注册的
@@ -114,8 +118,9 @@ G1 FAIL · G2 PASS · G3 FAIL · G4 遵守。R-1 verdict flow：任一 FAIL → 
 是唯一不新增未验证风险的选项。
 
 **slot 建议**：
-- 10-14 唯一 slot → λ47（本地 interp overall ≈ 0.087），官方名 **bizard-v0.3**（命名规则：只写 bizard+版本）。
-- bizard-v0.2（XGB-MVP rec 臂）**不占用该 slot**；若 PI 愿意在后续窗口把它作为预注册校准探针
+- 10-14 唯一 slot → λ47（本地 interp overall ≈ 0.087），官方名 **bizard-v0.2**
+  （提交序列规则, 见第 5 节更正; 命名规则：只写 bizard+版本）。
+- XGB-MVP（rec 臂）**不占用该 slot**；若 PI 愿意在后续窗口把它作为预注册校准探针
   （检验官方 mse 是否 ≠0、官方 nmae 口径是否复现 rec 结构收益），需自担 G1/G3 双 FAIL 的
   已记录风险——这是 PI 自由裁量项，不是本报告推荐。
 - **操作警告**：`delta_submit_g_{A,B,C}.parquet` 是按 **g_raw（未重定心）** 缩放的；若任何情况下
