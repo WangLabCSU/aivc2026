@@ -1,0 +1,19 @@
+{
+  "covered_targets": 18297,
+  "dataset_weights": null,
+  "datasets": {
+    "gwps": {
+      "genes_in_panel": 7679,
+      "perts": 9866
+    },
+    "hct116_all": {
+      "genes_in_panel": 18106,
+      "perts": 17358
+    }
+  },
+  "delta_rows": 5278422,
+  "stress_alpha": 0.0,
+  "stress_genes": 0,
+  "top_k": null,
+  "uncovered_targets": 1
+}

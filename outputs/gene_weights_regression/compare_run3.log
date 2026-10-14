@@ -1,0 +1,2 @@
+[compare] rows 5278422==5278422? True; max|delta|=0.0; only0=0 only1=0; report_identical=True
+[compare] PASS=True

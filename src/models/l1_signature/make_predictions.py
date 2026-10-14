@@ -50,6 +50,13 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
     - dataset_weights (dict|null, 默认 null): 跨源非对称加权均值，如 {gwps: 0.7,
       hct116_all: 1.3}。delta = Σ w_s·Δ_s / Σ w_s（按 (target,gene) 对出现源计权）；
       键缺省源权重 1.0。与 confidence_file/互斥使用时后者在后（乘 w_j）。
+    - gene_weights (dict|null, 默认 null): cb v2.2 源质量逐基因权重（pre_significance）。
+      键: file（parquet，列 [source, gene, w]）, sources（可选 str 列表，只对列表内源应用
+      权重，其余源 w=1.0）, mode（仅支持 "pre_significance"——权重作用于定显著集之前的
+      各源 Δ）。语义: 行级有效权重 = dataset_weights 源权重 × gene_weights (source→gene)
+      权重，再走既有 Σw·Δ/Σw 加权均值路径；表外 (source, gene) → w=1.0（中性）。
+      w clip 到 [0, 1]（w 上限 1.0，REV C4；负权=翻号属已闭环 sign_fix 路线，不启用）。
+      不作用于 generic 兜底行。
     """
     sig_dir = ROOT / "data/interim/signatures"
     per_ds = {}
@@ -108,20 +115,47 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
 
     covered = set().union(*(set(g["target_gene"]) for g in per_ds.values())) if per_ds else set()
     ds_w = {k: float(v) for k, v in (cfg.get("dataset_weights") or {}).items()}
+
+    # cb v2.2 gene_weights: (source→gene) 逐基因权重表（pre_significance, REV C3/C4）
+    gw_cfg = cfg.get("gene_weights") or {}
+    gw_map: dict[tuple[str, str], float] = {}
+    if gw_cfg.get("file"):
+        mode = str(gw_cfg.get("mode") or "pre_significance")
+        if mode != "pre_significance":
+            raise ValueError(f"gene_weights.mode 仅支持 pre_significance，收到 {mode!r}")
+        gtab = pd.read_parquet(ROOT / gw_cfg["file"]
+                               if not Path(gw_cfg["file"]).is_absolute()
+                               else gw_cfg["file"])
+        gsrcs = [str(s) for s in (gw_cfg.get("sources") or gtab["source"].unique())]
+        gsel = gtab[gtab["source"].astype(str).isin(gsrcs)]
+        gw_map = {(s, g): min(max(float(w), 0.0), 1.0)  # w 上限 1.0（REV C4 防回退）
+                  for s, g, w in zip(gsel["source"].astype(str), gsel["gene"].astype(str),
+                                     gsel["w"])}
+
+    gw_applied = {"rows": 0, "neutral": 0}
     parts = []
     for name, g in per_ds.items():
         part = g[g["target_gene"].isin(targets) & g["target_gene"].isin(covered)].copy()
         # 跨数据集聚合（v1 等权；dataset_weights 时按源加权均值 Σw·Δ/Σw）
         agg = part.groupby(["target_gene", "gene"], sort=False)["logfc"].mean().reset_index()
         agg["_w"] = ds_w.get(name, 1.0)
+        if gw_map:  # 行级有效权重 = 源权重 × (source→gene) 权重（缺省 1.0 中性）
+            w_g = agg["gene"].astype(str).map(
+                pd.Series({g_: w for (s_, g_), w in gw_map.items() if s_ == name})
+            ).fillna(1.0)
+            agg["_w"] = agg["_w"] * w_g.to_numpy()
+            gw_applied["neutral"] += int((w_g == 1.0).sum())
+            gw_applied["rows"] += int(len(w_g))
         parts.append(agg.rename(columns={"logfc": "delta"}))
     real = (pd.concat(parts, ignore_index=True)
             if parts else pd.DataFrame(columns=["target_gene", "gene", "delta"]))
-    if ds_w:
+    n_weighted = 0
+    if ds_w or gw_map:
         real["_dw"] = real["delta"] * real["_w"]
         num = real.groupby(["target_gene", "gene"], sort=False)["_dw"].sum()
         den = real.groupby(["target_gene", "gene"], sort=False)["_w"].sum()
         real = (num / den).rename("delta").reset_index()
+        n_weighted = int(len(real))
     else:
         real = real.groupby(["target_gene", "gene"], sort=False)["delta"].mean().reset_index()
 
@@ -186,6 +220,15 @@ def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataF
                 .drop(columns="_abs"))
 
     real["delta"] = real["delta"].clip(-cfg["max_abs_delta"], cfg["max_abs_delta"])
+    if gw_map:
+        report["gene_weights"] = {"file": str(gw_cfg["file"]),
+                                  "mode": str(gw_cfg.get("mode") or "pre_significance"),
+                                  "sources": sorted({s for s, _ in gw_map}),
+                                  "table_rows": int(len(gw_map)),
+                                  "delta_rows_weighted": int(n_weighted),
+                                  "frac_neutral_1.0": (gw_applied["neutral"]
+                                                       / gw_applied["rows"]
+                                                       if gw_applied["rows"] else None)}
     report.update({"covered_targets": len(covered), "uncovered_targets": len(uncovered),
                    "delta_rows": len(real), "top_k": top_k, "stress_alpha": stress_alpha,
                    "stress_genes": int(len(stress)) if stress is not None else 0,
