@@ -104,6 +104,7 @@ def main() -> None:
                 p = m.predict(xgb.DMatrix(X[te]))
                 row = dict(ctx=c, kind="sub", split_seed=ss, xgb_seed=xs, n_train=int(len(keep)),
                            rmse_model=round(rmse(p, yte), 4), rmse_g1=round(rmse_g1, 4))
+                row["delta"] = round(row["rmse_model"] - row["rmse_g1"], 4)  # C2 逐折 delta
                 res["folds"].append(row)
                 axis_rows.append(row)
                 print(f"[ms] {c:9s} split{ss} seed{xs} rmse={row['rmse_model']:.4f} "
@@ -117,6 +118,7 @@ def main() -> None:
             p = m.predict(xgb.DMatrix(X[te]))
             row = dict(ctx=c, kind="full", split_seed=0, xgb_seed=7, n_train=int(len(tr)),
                        rmse_model=round(rmse(p, yte), 4), rmse_g1=round(rmse_g1, 4))
+            row["delta"] = round(row["rmse_model"] - row["rmse_g1"], 4)
             res["folds"].append(row)
             print(f"[ms] {c:9s} FULL seed7 rmse={row['rmse_model']:.4f}", flush=True)
         (OUT).mkdir(parents=True, exist_ok=True)
@@ -149,6 +151,15 @@ def main() -> None:
         if fl:
             axes_out[c]["seed_noise_full_s7_vs_frozen_s0"] = round(
                 fl[0]["rmse_model"] - frozen_rmse[c], 5)
+        # C2 分解报告: 每 split_seed 均值 + seed 对内差, 供 REV 独立重算 split-only 口径
+        pairs = [f for f in res["folds"] if f["kind"] == "sub" and f["ctx"] == c]
+        by_split = {}
+        for f in pairs:
+            by_split.setdefault(f["split_seed"], []).append(f["rmse_model"])
+        axes_out[c]["decomp"] = {
+            f"split{ss}": {"mean": round(float(np.mean(v)), 4),
+                           "seed_pair_gap": round(abs(v[0] - v[1]), 4)}
+            for ss, v in sorted(by_split.items())}
     res["axes"] = axes_out
     res["params"] = {**PARAMS, "rounds": ROUNDS, "frac": FRAC,
                      "split_seeds": SPLIT_SEEDS, "xgb_seeds": XGB_SEEDS}
