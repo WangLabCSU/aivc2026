@@ -41,3 +41,14 @@ REV 保留的 re-adjudication 口径是 split-only。按 2×σ_split 门槛重�
 
 gwps 0.3993 / k562_ess 0.2970 / rpe1 0.8644 / jurkat 0.6373 / hepg2 0.3832 / hct116 0.6345
 （jurkat 0.6373 即此前引用的"纯 seed 噪声"值；rpe1 FULL 0.8644 vs g1 0.7599 → δ≈0.105，与 +0.1177 同量级）
+
+## 与 ml-expert 结果纪要的收敛（2026-10-14 补）
+
+ml_v21a_multisplit_result.md 已读：split-only std（jurkat 0.0310 / hct116 0.0164）与
+本 memo 重算同值；其口径更严谨——split 均值各含半个 seed 方差，故 split-only std 是
+**高估**，本 memo 的 σ_split 是下界，两者夹住真值，结论（split-only 下 jurkat/hct116
+FAIL）在两种口径下均成立。三轴豁免落空的判定以 ml-expert §3 + 本 memo 为共同依据。
+
+附：ml-expert §5.2 已被 PI 采纳为送审要求——未来任何单 seed LOCO 读数必须附带
+seed 不确定性声明（本运行实测轴级系统位移量级 ±0.07~0.18：jurkat +0.178 /
+hct116 +0.104 / hepg2 −0.066，方向轴内一致 = 固定效应而非交换噪声）。
