@@ -1,0 +1,58 @@
+{
+ "params": {
+  "objective": "reg:pseudohubererror",
+  "max_depth": 7,
+  "learning_rate": 0.05,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "tree_method": "hist",
+  "n_jobs": 40,
+  "seed": 0,
+  "rounds": 600
+ },
+ "folds": [
+  {
+   "ctx": "gwps",
+   "n": 3718,
+   "rmse_model": 0.36333659291267395,
+   "rmse_g1": 0.7151255966897695,
+   "rmse_const": 0.5101447677699997
+  },
+  {
+   "ctx": "k562_ess",
+   "n": 1959,
+   "rmse_model": 0.2935342490673065,
+   "rmse_g1": 0.3352625703420572,
+   "rmse_const": 0.5141192506219102
+  },
+  {
+   "ctx": "rpe1",
+   "n": 2288,
+   "rmse_model": 0.8775561451911926,
+   "rmse_g1": 0.7598611448474784,
+   "rmse_const": 1.0982873834178082
+  },
+  {
+   "ctx": "jurkat",
+   "n": 2288,
+   "rmse_model": 0.49464112520217896,
+   "rmse_g1": 0.41523454092513146,
+   "rmse_const": 0.6422835574074451
+  },
+  {
+   "ctx": "hepg2",
+   "n": 2288,
+   "rmse_model": 0.4509265720844269,
+   "rmse_g1": 0.5369994066976681,
+   "rmse_const": 0.8574631790773402
+  },
+  {
+   "ctx": "hct116",
+   "n": 11857,
+   "rmse_model": 0.6502897143363953,
+   "rmse_g1": 0.567503120485326,
+   "rmse_const": 0.7270492836446607
+  }
+ ],
+ "pass_all_ctx": false
+}

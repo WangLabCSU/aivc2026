@@ -1,0 +1,142 @@
+{
+ "bench_hepg2": {
+  "n_targets": 100,
+  "n_covered": 96,
+  "fallback_g1": [
+   "CYS1",
+   "HIST1H2BM",
+   "LPA",
+   "POU5F1B"
+  ],
+  "g_raw": {
+   "n": 96,
+   "mean": 1.5465,
+   "median": 1.4724,
+   "iqr": [
+    1.2017,
+    1.7405
+   ],
+   "sat_lo": 0.0,
+   "sat_hi": 0.0
+  },
+  "g_recenter_mean": 1.5465,
+  "g_recenter_min": 0.6058,
+  "g_recenter_max": 1.9398
+ },
+ "submit_A": {
+  "n_targets": 300,
+  "n_covered": 289,
+  "fallback_g1": [
+   "C5orf22",
+   "FOXO4",
+   "GLI3",
+   "GLYR1",
+   "MAN2A1",
+   "MAPK12",
+   "RAB5A",
+   "SCAF8",
+   "SPATA20",
+   "UNK",
+   "UROS"
+  ],
+  "g_raw": {
+   "n": 289,
+   "mean": 1.7191,
+   "median": 1.711,
+   "iqr": [
+    1.6012,
+    1.8396
+   ],
+   "sat_lo": 0.0,
+   "sat_hi": 0.0
+  },
+  "g_mean_recenter": 1.7191
+ },
+ "submit_B": {
+  "n_targets": 300,
+  "n_covered": 289,
+  "fallback_g1": [
+   "C5orf22",
+   "FOXO4",
+   "GLI3",
+   "GLYR1",
+   "MAN2A1",
+   "MAPK12",
+   "RAB5A",
+   "SCAF8",
+   "SPATA20",
+   "UNK",
+   "UROS"
+  ],
+  "g_raw": {
+   "n": 289,
+   "mean": 1.7009,
+   "median": 1.7024,
+   "iqr": [
+    1.5984,
+    1.8064
+   ],
+   "sat_lo": 0.0,
+   "sat_hi": 0.0
+  },
+  "g_mean_recenter": 1.7009
+ },
+ "submit_C": {
+  "n_targets": 300,
+  "n_covered": 289,
+  "fallback_g1": [
+   "C5orf22",
+   "FOXO4",
+   "GLI3",
+   "GLYR1",
+   "MAN2A1",
+   "MAPK12",
+   "RAB5A",
+   "SCAF8",
+   "SPATA20",
+   "UNK",
+   "UROS"
+  ],
+  "g_raw": {
+   "n": 289,
+   "mean": 1.7448,
+   "median": 1.7438,
+   "iqr": [
+    1.6149,
+    1.8603
+   ],
+   "sat_lo": 0.0,
+   "sat_hi": 0.0
+  },
+  "g_mean_recenter": 1.7448
+ },
+ "train_implied_g": {
+  "n": 24398,
+  "mean": 1.5756,
+  "median": 1.4345,
+  "iqr": [
+   1.029,
+   1.9407
+  ],
+  "sat_lo": 0.0152,
+  "sat_hi": 0.0487
+ },
+ "train_implied_g_hepg2": {
+  "n": 2288,
+  "mean": 1.5719,
+  "median": 1.4629,
+  "iqr": [
+   1.1416,
+   1.8806
+  ],
+  "sat_lo": 0.0031,
+  "sat_hi": 0.028
+ },
+ "params": {
+  "lam_local": 16.0,
+  "clip": [
+   0.5,
+   3.0
+  ]
+ }
+}
