@@ -1,0 +1,35 @@
+{
+  "artifact": "outputs/v06_training/metric_lock.json",
+  "created_utc": "2026-10-15T09:30:00Z",
+  "authority": "docs/team/impl_v06_progress.md entry 2026-10-15T07:55Z [team-lead/PI] METRIC RULING (two-tier)",
+  "tier_a_encoder_init": {
+    "metric": "ridge_r2_hvg_recon_a1.0",
+    "constants_frozen": {
+      "seed": 20261015,
+      "n_cells_per_ctx": 256,
+      "probe_split": "0-127 train / 128-255 val",
+      "ridge_alpha": 1.0,
+      "norm_target_sum": 11940.0,
+      "contexts_n": 6
+    },
+    "result_artifact": "outputs/v06_training/encoder_init_lock.json",
+    "result_created_utc": "2026-10-15T09:18:40Z",
+    "winner": "se600m_retrain",
+    "winner_score": -0.1697911980251471,
+    "top3": ["se600m_retrain", "zeroshot_jurkat", "fewshot_rpe1"],
+    "note": "9/9 candidates loaded (zero load_failed); sweep finished ~37 min AFTER training launch, so init_from was already locked at launch time"
+  },
+  "tier_b_trained_model_selection": {
+    "metric": "bench avg_score (overall) 单一指标",
+    "validation_set": "本地 bench 5 面板固定种子采样 (contexts.yaml seed 0, n_perts 100 不变)",
+    "use": "trained-model selection across epochs/arms",
+    "gate_lock_reference": "outputs/gates/v06_gate_lock_2026-10-15.json validation_metric_lock"
+  },
+  "active_training_init": {
+    "init_from": "data/public/models/ST-HVG-Replogle/fewshot/k562/checkpoints/best.ckpt",
+    "sweep_rank": "6/9",
+    "sweep_score": -2.0696762998898826,
+    "disposition": "launched 08:41Z before sweep finished 09:18Z; retained as gate4 ablation arm; se600m_retrain-init arm designated follow-up once GPU frees; NO silent swap mid-run"
+  },
+  "no_change_clause": "指标与验证集锁定一次后不得因中间读数调整 (prereg §4 训练期自由度单次锁定)"
+}
