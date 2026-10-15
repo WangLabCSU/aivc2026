@@ -62,6 +62,15 @@ OFFICIAL_POINTS = {
     ("bizard", "20261012_bizard_v10_lam55"): dict(
         local="bzbiz10skip_lam55", official={"pds": 0.3045, "mse": 0.0, "nmae": -0.1743,
                                              "fid": -0.0141, "reach": 0.0815, "jac": 0.0003}),
+    ("bizard", "20261014_bizard_v02_lam47"): dict(  # bizard-v0.2 entry BWy91Q4UXdusW6QcxjCU submitted 2026-10-14T12:00:27.712661Z Rank 908 Overall 0.045655
+        local="bzbiz10skip_lam47", official={"pds": 0.2956, "mse": 0.0, "nmae": -0.0798,
+                                             "fid": -0.0182, "reach": 0.0774, "jac": -0.0011}),
+    ("bizard", "20261015_bizard_v03_lam37"): dict(  # bizard-v0.3 entry SgXJeIQwv7taWP4B0GND submitted 2026-10-15T03:52:47.721537Z Rank 886 Overall 0.050214
+        local="bzbiz10skip_lam37", official={"pds": 0.2816, "mse": 0.0, "nmae": -0.0069,
+                                             "fid": -0.0376, "reach": 0.0684, "jac": -0.0042}),
+    ("bizard", "20261015_bizard_v04_lam35"): dict(  # bizard-v0.4 entry 58kzxoM9gGrF1QOdXS5k submitted 2026-10-15T04:22:34.450657Z Rank 887 Overall 0.049122
+        local="bzbiz10skip_lam35", official={"pds": 0.2773, "mse": 0.0, "nmae": 0.0020,
+                                             "fid": -0.0442, "reach": 0.0651, "jac": -0.0055}),
 }
 
 
