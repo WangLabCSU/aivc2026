@@ -9,16 +9,22 @@ Gates read from this artifact: 门2 = fid 非负 >= 5/6; 门3 = pds 回退 <= 0.
 
 Delta sources (option a default; --delta-source submit switches the two new
 contexts to the literal submit delta -> degenerate all-NTC-copy eval):
-  4 reused bench panels (终选A frozen chain, read as-is, no re-clip):
-    Q_HepG2   -> v03/agg_delta_Q_HepG2.parquet
-    R_Jurkat  -> v03/agg_delta_R_Jurkat.parquet
-    S_RPE1    -> v03/agg_delta_S_RPE1.parquet
-    S_HCT116  -> v03/gen2/pred_g2_c3_S_HCT116.parquet
+  4 reused bench panels (终选A frozen chain, read as-is, no re-clip).
+  Vintage provenance (bit-exact rebuild proof, 2026-10-15 archaeology): the
+  frozen bz04_final_c3s / bz03g2_agg preds were built from the gen2/ vintage
+  (data/interim/bizard/v03/gen2/, Oct 6) — rebuilt-from-gen2 preds match the
+  frozen preds with max diff 0.0; the top-level v03/agg_delta_{ctx}.parquet
+  files (Oct 4) are an older vintage and do NOT reproduce them.
+    Q_HepG2   -> v03/gen2/agg_delta_Q_HepG2.parquet
+    R_Jurkat  -> v03/gen2/agg_delta_R_Jurkat.parquet
+    S_RPE1    -> v03/gen2/agg_delta_S_RPE1.parquet
+    S_HCT116  -> v03/gen2/pred_g2_c3_S_HCT116.parquet (g2_c3 single bird;
+                 bz04_final_c3s used the c3 bird for S_HCT116 only)
   new contexts (option a):
     gwps, k562_ess -> v03/heu_agg_gwps.parquet (logfc->delta rename, clip ±4.0;
                      exact K562 source table of the v0.5 heuristic bird —
                      v03_run.heuristic_delta semantics, v0.5-lineage-legitimate)
-  P_H1 (non-gate) -> agg_delta_P_H1.parquet: fresh re-eval used only as a
+  P_H1 (non-gate) -> gen2/agg_delta_P_H1.parquet: fresh re-eval used only as a
     driver correctness self-check vs the frozen per_metric table.
 
 Mechanics: calls bench_bird.build_pred / run_celleval / score_ctx directly and
@@ -62,11 +68,11 @@ SELF_CHECK_CTX = "P_H1"  # non-gate, fresh re-eval vs frozen only
 RUN_ORDER = [SELF_CHECK_CTX] + REUSED + NEW_CTXS
 
 DELTA_HEUR = {
-    "Q_HepG2": V03 / "agg_delta_Q_HepG2.parquet",
-    "R_Jurkat": V03 / "agg_delta_R_Jurkat.parquet",
-    "S_RPE1": V03 / "agg_delta_S_RPE1.parquet",
+    "Q_HepG2": V03 / "gen2/agg_delta_Q_HepG2.parquet",
+    "R_Jurkat": V03 / "gen2/agg_delta_R_Jurkat.parquet",
+    "S_RPE1": V03 / "gen2/agg_delta_S_RPE1.parquet",
     "S_HCT116": V03 / "gen2/pred_g2_c3_S_HCT116.parquet",
-    "P_H1": V03 / "agg_delta_P_H1.parquet",
+    "P_H1": V03 / "gen2/agg_delta_P_H1.parquet",
     "gwps": V03 / "heu_agg_gwps.parquet",
     "k562_ess": V03 / "heu_agg_gwps.parquet",
 }
