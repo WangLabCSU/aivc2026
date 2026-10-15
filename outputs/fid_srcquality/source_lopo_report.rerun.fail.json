@@ -1,0 +1,170 @@
+{
+  "built": "2026-10-14",
+  "executor": "cb-expert",
+  "script": "scripts/build_fid_srcquality_04_lopo.py",
+  "inputs": {
+    "gene_source_votes.parquet": {
+      "sha256": "172199eff8320c1fa557522cf65d9df28b4d2c6e26590afc4df2b23fd59c5eee",
+      "build_meta_rows": 836263207,
+      "build_meta_sig_rows": 1952465
+    },
+    "source_context_weights.parquet": {
+      "sha256": "ec3a0f8a4132ec9df5f6928ca39a721410a9e034a409642eca02c54742402b14"
+    }
+  },
+  "frozen_refs": {
+    "module_spectra_z_frozen.csv.sha256": "4274f7576007ac73de1aee20ee4c477063014b5f392bc4af24cefaed4ac3cb8e",
+    "rho_9ctx_frozen.csv.sha256": "b3b25925f00aa0f884346db53be9e010c8d77638f140de8ae9220b4e4cf6cdb2",
+    "refs/essentialome_targets.csv.sha256": "df59a8ea1a95f66cb8fbf925a86d21231cb95be622f3c19a03c33ac9a49ba177"
+  },
+  "pre_registered": {
+    "pool_C2": [
+      "gwps",
+      "hct116_all",
+      "jurkat_all",
+      "k562_ess_all"
+    ],
+    "holdouts": {
+      "rpe1": "rpe1_all",
+      "hepg2": "hepg2_all"
+    },
+    "tau": 0.25,
+    "beta": 0.7,
+    "gate": "PASS = 加权符号恢复率 ≥ 等权 + 2pp，且 rpe1/hepg2 两留出源同时成立（AND）",
+    "rho_used_rule": "rho_used = max(rho_raw, 0)，永不翻号；Σρ_used=0 → 等权 fallback（细化二）",
+    "N_counting": "N = clip 前 sig 投票源数（细化一）；N<3 → w′ = 0.7 + 0.3·w",
+    "morphology_E_clause": "两留出源唯一正 ρ 投票源均为 hct116（0.5515/0.6848）→ LOPO 实质 = hct116 单源加权 vs 4 源等权；预声明即检验对象，非偏差"
+  },
+  "holdout_results": {
+    "rpe1": {
+      "holdout_source": "rpe1_all",
+      "context": "rpe1",
+      "holdout_sig_units": 814255,
+      "eval_units_ge1vote": 109251,
+      "dropped_no_vote": 705004,
+      "recovery_weighted": 0.8705641138296217,
+      "recovery_equal": 0.8692826610282743,
+      "margin_pp": 0.12814528013473936,
+      "pass_ge2pp": false,
+      "n_zero_delta_weighted": 0,
+      "n_zero_delta_equal": 0,
+      "fallback_units": 87334,
+      "fallback_frac": 0.7993885639490714,
+      "hct116_sig_units": 21917,
+      "N_distribution": {
+        "1": 82202,
+        "2": 17678,
+        "3": 7056,
+        "4": 2315
+      },
+      "n_units_N_lt3": 99880,
+      "frac_N_lt3": 0.9142250414183852,
+      "rho_used_zero_voter_rows_frac": 0.8518981525279419,
+      "units_with_any_rho0_voter_frac": 0.8768432325562238,
+      "w_mean": 0.9976729427343152,
+      "frac_w_at_beta_floor": 0.005427867937135586,
+      "per_source_single_source_diagnostics": {
+        "gwps": {
+          "units": 28752,
+          "recovery_single": 0.8815734557595993,
+          "equal_baseline_same_units": 0.883486366165832,
+          "weighted_same_units": 0.8843906510851419
+        },
+        "hct116_all": {
+          "units": 21917,
+          "recovery_single": 0.9690651092759045,
+          "equal_baseline_same_units": 0.9626773737281562,
+          "weighted_same_units": 0.9690651092759045
+        },
+        "jurkat_all": {
+          "units": 64675,
+          "recovery_single": 0.8505141090065713,
+          "equal_baseline_same_units": 0.8553846153846154,
+          "weighted_same_units": 0.8570081175106301
+        },
+        "k562_ess_all": {
+          "units": 32642,
+          "recovery_single": 0.9171006678512346,
+          "equal_baseline_same_units": 0.917161938606703,
+          "weighted_same_units": 0.917744010783653
+        }
+      },
+      "target_level_vote_distribution_holdout_universe": {
+        "1": 80,
+        "2": 208,
+        "3": 726,
+        "4": 1313
+      }
+    },
+    "hepg2": {
+      "holdout_source": "hepg2_all",
+      "context": "hepg2",
+      "holdout_sig_units": 456583,
+      "eval_units_ge1vote": 80144,
+      "dropped_no_vote": 376439,
+      "recovery_weighted": 0.900928329007786,
+      "recovery_equal": 0.90027949690557,
+      "margin_pp": 0.06488321022160015,
+      "pass_ge2pp": false,
+      "n_zero_delta_weighted": 0,
+      "n_zero_delta_equal": 0,
+      "fallback_units": 61526,
+      "fallback_frac": 0.7676931523258136,
+      "hct116_sig_units": 18618,
+      "N_distribution": {
+        "1": 55080,
+        "2": 15655,
+        "3": 7069,
+        "4": 2340
+      },
+      "n_units_N_lt3": 70735,
+      "frac_N_lt3": 0.8825988221201837,
+      "rho_used_zero_voter_rows_frac": 0.8408132903545747,
+      "units_with_any_rho0_voter_frac": 0.8671391495308445,
+      "w_mean": 0.9975373494376788,
+      "frac_w_at_beta_floor": 0.005477640247554402,
+      "per_source_single_source_diagnostics": {
+        "gwps": {
+          "units": 24750,
+          "recovery_single": 0.9328888888888889,
+          "equal_baseline_same_units": 0.9345858585858586,
+          "weighted_same_units": 0.9330909090909091
+        },
+        "hct116_all": {
+          "units": 18618,
+          "recovery_single": 0.9658395101514663,
+          "equal_baseline_same_units": 0.9630465141261145,
+          "weighted_same_units": 0.9658395101514663
+        },
+        "jurkat_all": {
+          "units": 43326,
+          "recovery_single": 0.8681853852190371,
+          "equal_baseline_same_units": 0.875594331348382,
+          "weighted_same_units": 0.8766098878271708
+        },
+        "k562_ess_all": {
+          "units": 30263,
+          "recovery_single": 0.9550275914483032,
+          "equal_baseline_same_units": 0.9530780160592143,
+          "weighted_same_units": 0.9518884446353633
+        }
+      },
+      "target_level_vote_distribution_holdout_universe": {
+        "1": 92,
+        "2": 217,
+        "3": 735,
+        "4": 1314
+      }
+    }
+  },
+  "gate": {
+    "pass": false,
+    "rule": "weighted ≥ equal + 2pp both holdouts (AND)"
+  },
+  "disclosure_notes": [
+    "eval 单元级读数；冻结 §9 预注册 {2:38,3:623,4:1732} 为目标级对照列（见各 holdout 的 target_level_vote_distribution_holdout_universe）",
+    "norman_all 按 REV C2 剔出投票池（导出保留全行）；rpe1_all/hepg2_all 为留出源不进共识",
+    "N 计数按细化一：clip 前 sig 源数；ρ_used=0 源计入 N 贡献 0 权",
+    "fallback 单元 Δ* = 等权均值，w 按等权口径 A.1（细化二）"
+  ]
+}
