@@ -89,6 +89,8 @@ def main() -> None:
     ap.add_argument("--arm", required=True, choices=["dl", "birds", "birds_dl", "bench-cmds"])
     ap.add_argument("--contexts", default=",".join(BENCH_CTX))
     ap.add_argument("--dl-dir", default=str(DL_DIR))
+    ap.add_argument("--fused-dir", default=str(FUSED_DIR),
+                    help="融合输出目录 (round-2 消融须指向新目录, 防覆盖 round-1 fused)")
     ap.add_argument("--extra-members", default="", help="逗号分隔的额外融合成员 parquet 路径")
     args = ap.parse_args()
     contexts = args.contexts.split(",")
@@ -96,8 +98,9 @@ def main() -> None:
 
     if args.arm == "birds_dl":
         extra = [Path(p) for p in args.extra_members.split(",") if p]
+        fused_dir = Path(args.fused_dir)
         for ctx in contexts:
-            fuse_birds_dl(ctx, dl_dir, FUSED_DIR, extra)
+            fuse_birds_dl(ctx, dl_dir, fused_dir, extra)
         return
 
     if args.arm == "bench-cmds":
