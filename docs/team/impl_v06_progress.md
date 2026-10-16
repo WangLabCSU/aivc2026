@@ -72,3 +72,10 @@
 - 推论: (b) 的 truth 证据 (top-k 0.8553) 测在 dualsrcdeep signature 链 (|Δ|~O(0.1-2), λ7.0 尾部折叠~1.28 有实质量); 集中化 A/B 必须在该链做。load_delta 冻结 top_k 键 (per-target 全局|Δ| top-K 保留其余置0) 即现成实现, bench twin 配置 bench-dualdeep-lam70-mf14 + top_k∈{500,1000,2000} 直测, 对照=dualdeep_lam70mf14_Q (pds 0.8156/nmae 0.9830/fid 0.5870/reach 0.4217/jac 0.0762)。
 - 判据: fid/reach/jac 任一结构性改善且 nmae 不塌 → v0.8 = lam70mf14 + top_k 最优档; 全平 → (b) 在链上也 nilpotent, v0.8 转弃。
 - bizard-v0.7 10-17 UTC 00:00 窗照发不变; 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter024 续 (10-16 UTC 20:55) — (b) 第二轮 signature 链 top_k A/B: 全指标单调恶化, (b) 裁定出局
+- bench twin lam70mf14 × top_k (Q_HepG2, 对照 anchor 无 top_k): k500 pds0.8225(+)/mse0.0263(+)/fid0.5402(-0.047)/reach0.3147(-0.107)/jac0.0633(-0.013)/nmae1.0198(+3.7%差); k1000 fid0.5695/reach0.3409/jac0.0678/nmae1.0073 全劣于 anchor; k2000 fid0.5831/reach0.3776/jac0.0723/nmae0.9927 仍全方向劣。k 越小恶化越重, 单调向 anchor 收敛。
+- 结论: 真值链上 per-target |Δ| 尾截 = 砍掉 reach/fid 有用信号换 mse 微利, 方向四项全负 → 与 bizard gen2 链 nilpotent 结论合并: (b) top-k 集中化双链证伪, v0.8 裁定出局。
+- 教训对齐: truth top-k sign_agree 0.8553 是"大|Δ|基因方向更可信"的筛后统计, 不等于"砍尾能提分" — reach 需要的是广度不是纯度; wilcoxon DE 集过窄直接塌 fid/reach/jac。
+- v0.8 无新立项: (a) blend 已出局, (b) 双链证伪, (c) context-specific λ 依赖 300 官方目标无验证路径且 λ 轴到顶已判。三候选全清 → v0.8 结构项空窗; 主线退守: 10-17 UTC bizard-v0.7 (lam70mf14) 照发, 其官方回数即 v0.8 决策输入。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
