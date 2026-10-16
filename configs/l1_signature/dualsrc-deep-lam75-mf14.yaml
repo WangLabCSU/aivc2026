@@ -1,0 +1,16 @@
+# iter022 v0.7 主线探针 1/2: dualsrcdeep 方向/幅度分离 — λ7.5 方向 × λ6.5 幅度帽 (mf14)
+# 官方λ曲线五点终态峰值确证λ6.5 (0.0506/0.0764/0.0872/0.0886/0.0809)，
+# λ75 官方 0.0809 唯一拖累 = nmae -0.1548 幅度过冲；pds/fid/reach/jac 四项 λ7.5 全最优。
+# 固定 mf14 (官方唯一验证过的帽) 测纯 λ 轴: λ ∈ {6.5 已测 0.0886, 7.0, 7.5}。
+# 若 nmae 回到 λ65 的 -0.0656 而方向四项保持 λ75 值 → Overall ≈ 0.0957。
+datasets: [gwps, hct116_all]
+lambda_real: 7.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261016_dualsrcdeep_lam75mf14

@@ -1,0 +1,14 @@
+# iter021 v0.7 主线探针 2/2: dualsrcdeep 固定 mf14 帽的纯 λ 轴中点 (λ7.0)
+# 与 lam75-mf14 构成固定帽 λ 括号 {6.5 已测 0.0886, 7.0, 7.5}，解耦 λ 与 max_fold。
+# 其余键与 dualsrc-deep-lam75.yaml 完全一致。
+datasets: [gwps, hct116_all]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261016_dualsrcdeep_lam70mf14
