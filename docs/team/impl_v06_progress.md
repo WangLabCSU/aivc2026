@@ -57,3 +57,11 @@
 - **行动**: 今晚 CPU 侧先做 (a) 的 agreement 统计: dualsrcdeep λ65 delta vs bizard 方向头 delta 符号一致率 (Q_HepG2 5.6k 基因), 一致率 >0.65 才值得做混合 bundle; 产 tmp/delta_agreement_stats.json。
 - 额度 10-16 2/2; bizard-v0.7 (λ70mf14) 明窗照发 — 若 agreement 路线今天就绪可换, 以实测一致率定。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter023 续 (2026-10-16 20:25Z): (a) 出局 / (b) top-k 集中化拿到 truth 级证据
+- **(a) Δ方向头 blend 裁决出局**: agreement 定稿 dualsrcdeep vs bizard-v02 符号一致率 A 0.6432 / B 0.6256 / C 0.6327 (均值 0.634 未过 0.65 门; |Δ|加权 0.7501-0.7655, tmp/delta_agreement_stats.json); truth 层补刀: bizard 提交头 300 官方目标与本地 bench 100 目标零交集, blend 在本地无 truth 验证路径 → 出局入档。
+- **目标集错配教训入档**: data/raw/controls/pert_counts.csv (300 官方评测目标) 与 data/interim/local_bench/Q_HepG2/targets.json (100 bench 代理目标) 交集=0; 首版 truth 探针 bizard 头 0 配对即此因, bench truth 只能验证签名侧头。
+- **(b) top-k 集中化 truth 证据 (tmp/delta_heads_vs_truth.json)**: dualsrcdeep 头 (gwps+hct116_all 均权) vs Q_HepG2 truth (99 targets × top-50 |lfc| 基因 vs NTC bulk log2fc, 4695 配对): 全基因 sign 0.6584 (|lfc|加权 0.6959); 头内按 |Δ| top-k 集中后命中率单调上升 — k=500 **0.8553** / k=1000 0.8262 / k=2000 0.8030 → 大 |Δ| 基因方向高度可信, 与 iter023 fid yield 惩罚诊断 (需集中显性基因) 同向。
+- **v0.8 裁决**: (b) 立项 — 在 delta 侧按 |Δ| per-target rank 做集中化/收缩 (λ 轴不动), 先 local bench Q_HepG2 验证 pds/fid 响应再定 bundle; (c) context-specific λ 排后。
+- 额度 10-16 2/2; bizard-v0.7 (λ70mf14, sha256 019b9542) 10-17 UTC 00:00 窗照发 (scripts/submit_bizard_v07_1017.sh 就绪)。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
