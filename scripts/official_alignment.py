@@ -159,7 +159,9 @@ def predict_official(tag: str, family: str, ctx: str = "Q_HepG2") -> dict:
         f = fit.get("family", {}).get(family, {}).get(m) or fit["global"].get(m)
         out[m] = round(f["a"] * v + f["b"], 4) if f else None
     known = [x for x in out.values() if x is not None]
-    out["overall_pred"] = round(float(np.mean(known)), 4) if len(known) >= 5 else None
+    # 官方公式 Overall=(pds+mse+nmae+fid+reach+jac)/6, mse 官方恒 0 且无校准点 → 按 6 分母求和。
+    # 历史: 此处曾用 mean(known)=sum/5, 恒定膨胀 Overall/5≈+0.017 (λ65 反演 0.5316/6=0.0886 与官方吻合)。
+    out["overall_pred"] = round(float(np.sum(known)) / 6, 4) if len(known) >= 5 else None
     out["local_raw"] = {k: round(v, 4) for k, v in lr.items()}
     out["local_anchor"] = local_anchor(tag, ctx)
     return out
