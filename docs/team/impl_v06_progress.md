@@ -65,3 +65,10 @@
 - **v0.8 裁决**: (b) 立项 — 在 delta 侧按 |Δ| per-target rank 做集中化/收缩 (λ 轴不动), 先 local bench Q_HepG2 验证 pds/fid 响应再定 bundle; (c) context-specific λ 排后。
 - 额度 10-16 2/2; bizard-v0.7 (λ70mf14, sha256 019b9542) 10-17 UTC 00:00 窗照发 (scripts/submit_bizard_v07_1017.sh 就绪)。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter024 (10-16 UTC 20:30) — (b) top-k A/B 第一轮: bizard gen2 链尾截 nilpotent, 战场转移到 signature 链
+- bzv08 A/B (bench_bird λ2.5 Q_HepG2, 变体=per-target |Δ| q25 尾收缩×0.15/置0): overall none 0.4139892 / shrink15 0.4139517 / hardzero 0.4139516 — 三者差 <1e-4, 无效应。
+- 机制: bizard gen2 agg_delta 弱尾 |Δ| 均值 0.00046 (q25 以上带 0.0415), 2^2.5×0.00046≈1.0008 折叠 → 对 DE/wilcoxon/任意指标不可见; 该 delta 表天然已集中, 尾截无可移除质量。硬零 25% 行连 nmae 都不动 (0.423851→0.423822)。
+- 推论: (b) 的 truth 证据 (top-k 0.8553) 测在 dualsrcdeep signature 链 (|Δ|~O(0.1-2), λ7.0 尾部折叠~1.28 有实质量); 集中化 A/B 必须在该链做。load_delta 冻结 top_k 键 (per-target 全局|Δ| top-K 保留其余置0) 即现成实现, bench twin 配置 bench-dualdeep-lam70-mf14 + top_k∈{500,1000,2000} 直测, 对照=dualdeep_lam70mf14_Q (pds 0.8156/nmae 0.9830/fid 0.5870/reach 0.4217/jac 0.0762)。
+- 判据: fid/reach/jac 任一结构性改善且 nmae 不塌 → v0.8 = lam70mf14 + top_k 最优档; 全平 → (b) 在链上也 nilpotent, v0.8 转弃。
+- bizard-v0.7 10-17 UTC 00:00 窗照发不变; 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
