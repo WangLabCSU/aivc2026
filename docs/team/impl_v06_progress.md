@@ -49,3 +49,11 @@
 - 提交脚本: 复制 scripts/submit_bizard_v06_1016.sh 仅改 F/L/LOG → scripts/submit_bizard_v07_1017.sh, UTC 00:00 后启动。
 - 额度: 10-16 2/2 用满 (v0.5 0.00066 / v0.6 0.08094 现任最佳); 下窗 10-17 UTC。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## 2026-10-16 19:40Z iter023 — v0.7 λ轴已到顶: 转战 v0.8 方向项结构性改进 (Δ方向头 blend 方案)
+- **判定逻辑**: λ70mf14 honest ≈0.0857, λ 轴内插天花板 ≈0.089 (λ65 官方峰 0.0886 + 校准余量) — 即便 λ70 发回达标, 距 top-3 门 0.3187 仍差 3.6×; 纯 λ/max_fold 扫描属参数精修, 需方向项 step-change。四方向项官方 λ65 实测: pds 0.5022/fid -0.0340/reach 0.1267/jac 0.0023 (合计 0.5972/6 = 0.0995 占 Overall 96%: mse≡0 + nmae -0.0656)。
+- **方向项结构诊断 (official_alignment_v1.json 11点)**: pds 家族斜率 a=1.667 截距 -0.975 → 官方 pds 对 local 高度敏感 (local 0.85→官方 0.44); fid 官方-0.034~-0.108 全负带 (de_wilcoxon_direction_fidelity_yield_raw: 方向对但 yield 惩罚未达显性 DE 基因集), 提升空间在把非零 delta 集中到 wilcoxon 显性基因上。
+- **v0.8 候选方向 (按可执行性排序)**: (a) **Δ方向头 blend**: dualsrcdeep 方向四项已全场最优 + bizard 方向头 (λ47 家族 pds 官方 0.285) → 构造混合 delta (dualsrcdeep 幅度 × bizard 方向符号 agreement gate), 零新训练只组合现成 parquet; (b) Δ top-k 集中化: 把 λ65 delta 按 |lfc| 重排, wilcoxon 显性基因份额 ↑; (c) context-specific λ (A/B/C 各自最优 λ 不共享)。非冻结项, 不动 BizardNet 方向头本体/λ链/affine。
+- **行动**: 今晚 CPU 侧先做 (a) 的 agreement 统计: dualsrcdeep λ65 delta vs bizard 方向头 delta 符号一致率 (Q_HepG2 5.6k 基因), 一致率 >0.65 才值得做混合 bundle; 产 tmp/delta_agreement_stats.json。
+- 额度 10-16 2/2; bizard-v0.7 (λ70mf14) 明窗照发 — 若 agreement 路线今天就绪可换, 以实测一致率定。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
