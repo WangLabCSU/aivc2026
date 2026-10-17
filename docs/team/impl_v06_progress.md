@@ -165,3 +165,10 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **max_fold 轴**: 维持 line 40/54 原判 — 设计已解耦 (固定 mf14), 纯 λ/max_fold 扫描属参数精修, 不足以覆盖 0.2329 gap。
 - **裁定**: 结构项四维度 (签名源加源/聚合方式/置信度链/新数据族) + 参数轴 (λ/max_fold/采样密度) 全部清点完毕, 无一合法未测项, 无 overall_pred≥0.10 候选。10-17 剩 1 发继续 hold 等 10-18 UTC 00:00 重置。fid/reach 结构性改进仍是唯一未封死路径; 若 stop-hook 后续指令点名新维度, 仍须先过 (a) official-300 coverage law (b) 信息非冗余 (c) 非分布形态扰动 三重门。审计闭环, 无 config 无算力消耗。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正5: housekeeping + fid/reach 正交性首条量化 (2026-10-17 06:25 UTC)
+- **进程清理**: /tmp/diag_dupes.py (PID 1608661) 运行 55h 未退出 — 七源 (target,gene) 重复诊断, 已被 tmp/mult_check.out 取代且剩余 5 源官方交集全 0 (输出无价值), kill 释放 1 核 + 107GB RSS。
+- **stress_alpha 复核**: iter003 (2026-09-30_iter003 L13网格) 已裁「应激正交化无效」— gwps 全局应激签名幅度 |mean logFC|≤0.04 低于 DE 分辨率, α0.3/0.6 与 L1.2 打平, 减不掉东西 — 该 micro-lead 有既有判决, 无需重测。
+- **fid/reach 正交性 (新量化, per_target_anchor.csv n=100 靶)**: 靶级 fid↔reach corr 仅 0.15 (nmae↔reach 0.29, fid↔nmae −0.13) — 两指标在靶级别近似独立改进面; anchor fid 四分位 [0.531, 0.593, 0.658], reach 四分位 [0.133, 0.404, 0.634]。含义: fid 结构改进不必然拖累 reach, 但 heur 标定中 fid LOO 最弱 (0.0457), 单靶杠杆大 — 任何 fid 手术须逐靶复核 overall_pred 而非均值外推。
+- **裁定**: 审计结论不变 — 四维度+参数轴全清, 无 ≥0.10 候选, 10-17 剩 1 发 hold 等 10-18 UTC 00:00 重置。GPU 空闲 (无 se600m 训练在跑)。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
