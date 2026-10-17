@@ -131,3 +131,12 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **风险留痕**: 单 seed Δ+0.0123 vs multi-ref σ≈0.0440 (MC 噪声同量级, 有翻车可能); fid 的 heur 标定 LOO 0.0457 弱 (单点杠杆大)。但方向一致性 (五指标同向 + multi-ref 均值同向) 是既往证伪臂不具备的证据等级, gate 判定按规则通过。
 - **行动**: 3src 提交 config (dualsrc-deep-lam70-mf14-3src.yaml, anchor 逐键一致仅 datasets) 已建, build+prep 链路启动 (make_predictions.py → vcc prep -g/--perts, 与 iter022 同链), → bizard-v0.8 提交。已提交官方 artifact 永不重算。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正: 3src bundle 字节碰撞 — k562_ess 对官方300靶零覆盖, R1 裁定不迁移 (2026-10-17 05:05 UTC)
+- 提交前核查发现 sha256 碰撞: 20261017_dualsrcdeep_lam70mf14_3src.vcc = 019b95422af18ab6... 与 anchor (bizard-v0.7) 逐字节一致 (h5ad 4,260,279,969B / vcc 3,300,311,040B / manifest entries 2,084,179,052 逐项相同)。
+- 根因 (load_delta targets 过滤): k562_ess_all 2057 靶全为必需基因筛选谱, 与官方 pert_counts.csv 300 靶交集=0; make_predictions.py `part = g[target_gene.isin(targets)&isin(covered)]` 把 k562_ess 行全数丢弃 → Δ 与 2src 完全相同 (seed/panel 同) → 字节级重复 artifact。
+- bench 假阳性机制: local_bench 用 bench targets (2394, k562_ess 覆盖 2055) → R1 五指标增益真实但验证对象不是官方提交对象; bench→submission 靶清单错位 = 验证闭环新缺陷 (同族 in-sample 污染: 验证集合≠评估集合)。
+- 处置: vcc cancel 9XItMxvCobntWFW6h5zt --yes (05:00:34Z, status failed "Cancelled by submitter", 槽位已回收) — 10-17 第二发保住; bizard-v0.8 名未发档, 留给下一真实提交。
+- 官方300靶覆盖实测: gwps 272 / hct116_all 282 (并集 299, 未覆盖=SPATA20); k562_ess_all / hepg2_all / jurkat_all / rpe1_all / norman_all / tahoe_p12 交集全部=0 → k562_ess 对官方 Δ 链无任何合法注入通道 (generic 兜底仅 gwps, 可影响仅 SPATA20 1/300 靶, 可忽略) → 结构项裁定 falsified-for-submission, 清单再空窗, 10-17 剩 1 发继续 hold 等 10-18 重置。
+- 教训固化: 验证闭环必须以官方 300 靶复核签名覆盖行数 (parquet 读 target_gene 列一行即判), bench 通过≠提交有效; 后续任何加源/换源候选先跑 official-300 overlap 检查。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
