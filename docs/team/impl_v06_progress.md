@@ -179,3 +179,9 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **上限测算**: 18 个零 reach 靶即便全部拉到 reach-OK 中位 0.404, local reach +0.0728 → 官方 reach +0.0450 (a=0.61898) → overall_pred 仅 +0.0075 — **距 0.10 门差 13 倍**, 且无任何已知杠杆能定向修复这 18 个零交集靶 (细胞型特异生物学, 非模型参数可达)。
 - **裁定**: per-target 结构手术路径 (含「修复零 reach 靶」假说) 正式关闭 — 逐靶收益天花板远低于门, 不建 config 不花算力。至此 fid/reach 逐靶维度的最后一个开放假说也有量化判决。10-17 剩 1 发继续 hold 等 10-18 UTC 00:00 重置。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正7: 工作区清点闭环 — 全部未跟踪 tmp/ 工件均已裁定, 零悬置 leads (2026-10-17 07:45 UTC)
+- **清点动机**: stop-hook 连续质询「循环必须继续」, 对 repo 内所有未跟踪 tmp/ 实验工件逐一定性, 排除「有实验跑完但未入档判决」的悬置状态。
+- **结果 (全部已裁定)**: (1) `tmp/bzv08_topk*` / `bench_topk{500,1000,2000}.yaml` / `run_topk_*` = iter024 top-k 集中化 A/B, 双链证伪出局 (reach 需广度非纯度, 砍尾四项全负); (2) `dualdeep3src_k562 / dualdeep4src_jr_lam70mf14_Q` bench dirs + `anchor_normalized_3src.json` (10-17 00:15) = iter029修正 3src 链, 官方300靶零覆盖 byte-identical 判决, bench 读数仅存档; (3) `tmp/mult_check.{out,err}` = iter029修正4 采样密度轴 (mult=1.00) 入档; (4) `delta_heads_vs_truth.json` / `per_target_*.csv` = iter023 truth 证据 + iter029修正6 per-target 封顶, 均已引用。
+- **裁定**: 工作区零悬置 — 四维度 (签名源/聚合/置信度链/新数据族) + 参数轴 (λ/mf/密度) + per-target 手术, 每个开过的实验都有在档判决。结构审计全谱系无遗漏确证。10-17 剩 1 发继续 hold, 下一动作点 = 10-18 UTC 00:00 重置后候选重估。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
