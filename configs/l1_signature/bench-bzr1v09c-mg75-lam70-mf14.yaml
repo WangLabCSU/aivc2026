@@ -1,0 +1,12 @@
+# iter030-修正6 v0.9c 幅度门控臂 bench 配置 — MG75 (|x|≥q75 保 raw, 尾部全换校准)
+datasets: [gwps_calMG75, hct116_all_calMG75]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261017_bzr1v09c_lam70mf14_mg75
