@@ -172,3 +172,10 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **fid/reach 正交性 (新量化, per_target_anchor.csv n=100 靶)**: 靶级 fid↔reach corr 仅 0.15 (nmae↔reach 0.29, fid↔nmae −0.13) — 两指标在靶级别近似独立改进面; anchor fid 四分位 [0.531, 0.593, 0.658], reach 四分位 [0.133, 0.404, 0.634]。含义: fid 结构改进不必然拖累 reach, 但 heur 标定中 fid LOO 最弱 (0.0457), 单靶杠杆大 — 任何 fid 手术须逐靶复核 overall_pred 而非均值外推。
 - **裁定**: 审计结论不变 — 四维度+参数轴全清, 无 ≥0.10 候选, 10-17 剩 1 发 hold 等 10-18 UTC 00:00 重置。GPU 空闲 (无 se600m 训练在跑)。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正6: per-target 零 reach 结构量化 — 封顶 +0.0075, 远低于门 (2026-10-17 06:45 UTC)
+- **数据源**: outputs/metrics/local_bench/dualdeep_lam70mf14_Q/Q_HepG2_eval/results.csv (cell-eval2 逐靶原始, 100 靶全) — 修正5 的 per_target_anchor.csv 缺失值溯源完成。
+- **结构发现**: reach 空值 18 靶全部 jac==0 (预测 DE 集与真值 sig 零交集 = 结构性零分, 聚合时按 0 计入 count=100, 非缺失); 另有 18 靶 nmae 空但 reach 正常 (合计 nmae 空 36, 聚合 count=64)。
+- **上限测算**: 18 个零 reach 靶即便全部拉到 reach-OK 中位 0.404, local reach +0.0728 → 官方 reach +0.0450 (a=0.61898) → overall_pred 仅 +0.0075 — **距 0.10 门差 13 倍**, 且无任何已知杠杆能定向修复这 18 个零交集靶 (细胞型特异生物学, 非模型参数可达)。
+- **裁定**: per-target 结构手术路径 (含「修复零 reach 靶」假说) 正式关闭 — 逐靶收益天花板远低于门, 不建 config 不花算力。至此 fid/reach 逐靶维度的最后一个开放假说也有量化判决。10-17 剩 1 发继续 hold 等 10-18 UTC 00:00 重置。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
