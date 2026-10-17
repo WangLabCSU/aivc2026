@@ -110,3 +110,13 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **机制解读**: γ<1 把 pred 向 target mean 收缩 → fid/reach/nmae 全塌 (矩阵整体变平, DE 信号同步衰减); γ>1 恢复至 ≈anchor 水平但无一指标超越 anchor (raw fid 0.5715 < anchor 0.5870, reach 0.4218 ≈ anchor 0.4217 打平, pds 0.7623 < 0.8156) — **单调性确认: γ=1 (anchor) 即该变换族的峰值, 两侧皆劣**。γ≠1 不可救 fid/reach, 与 top-k 证伪同构: pred 分布形态扰动 (收缩/集中/砍尾) 一律伤方向指标, anchor 分布已是该链最优。
 - **v0.9 结论更新**: 结构项候选清单再清一项 (sharpen 出局); γ 轴无峰可移。剩余 1 发 10-17 额度继续 hold (无 overall_pred≥0.10 候选), 等 10-18 重置 + 新结构项立项。bench_score 的 multi_ref overall_mean (g0.5: 0.1469±0.0549, g1.5: 0.2274±0.0453) 仅作稳健性参考, 不改变裁定 (heur predict 已含官方标定)。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter028: hepg2 自源结构项裁定 — 弃 (falsified-for-validation, 无需实验) (2026-10-17 03:55 UTC)
+
+- **候选**: 把 hepg2_all.parquet (22,989,228 行 / 2,393 targets / 9,622 genes) 加进 dualsrcdeep Δ 链 (datasets: [gwps, hct116_all, hepg2]), 用同细胞系真实 sc 信号补 fid/reach — v0.9 结构项清单上一项。
+- **LOCO 兼容性核查 (通过)**: 冻结项 「LOCO 变体禁令维持」 管的是评估方案变体 (置信度加权 LOCO 恢复检验: 从一致性计算留出 RPE1/HepG2; 学习型迁移模型 LOCO train/eval 切分), 不是 Δ 源数据组成 — 加签名源不触禁令。
+- **致命缺陷 (in-sample 污染, 判弃)**: configs/local_bench/contexts.yaml Q_HepG2 读 `data/public/scperturb/Nadig2024_hepg2.h5ad`, 而 build_signatures.py DATASETS `"hepg2"` 映射同一文件 — hepg2_all.parquet 就是本地 bench truth 的同实验 pseudobulk。把它放进 twin bench 的 Δ 链 = 让 pred 背诵本地参考自身的 logFC, 本地分 (恰是候选靶向的 fid/reach) 乐观膨胀, 验证闭环 (bench→heur predict→overall_pred≥0.10) 无法合法认证该臂。先例: fusion v1/v2 因 in-sample (训练池含 hepg2/jurkat) 被 「乐观泄漏」 裁定排除出标定拟合 (本地官方校准框架.md:117), 只能单列参考。
+- **官方迁移路径也不成立**: 官方 A/B/C context 匿名 (未证实 HepG2-like), hepg2 特异记忆收益无既定迁移通道; 且 heur affine (n=4) 无 in-sample 点, 从污染本地读数外推 = 违反标定族前提。
+- **裁定**: 弃 (falsified-for-validation) — 该臂在现行验证框架下不可合法评估, 不建 twin bench config, 不花 bench 算力。与 CCL_2 同类: 有数据价值但无合法评估通道的项不入结构项清单。
+- **v0.9 状态**: 结构项清单再度空窗。10-17 剩余 1 发继续 hold (无 overall_pred≥0.10 候选), 等 10-18 UTC 重置。fid/reach 结构性改进仍是唯一未封死路径, 下一轮从新角度立项 (非同源数据 / 评估框架内合法项)。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
