@@ -200,3 +200,21 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **实测** (vcc status 2a8UWn0MwC1l3Xg7ReSJ, published): Overall 0.08580925 不变, Rank 782→789 (榜单滚动, 非分变), **分项刷新**: pds 0.5121 (iter025 记录 0.5086→续微升), **nmae -0.1089 (较在档 -0.094 劣化 -0.0149)**, fid -0.0244, reach 0.1325, jac 0.0036, mse≡0。
 - **判读**: λ70mf14 的 nmae 落在 λ65 (-0.0656) 与 λ75 (-0.1548) 之间单调带内 — 幅度过冲随 λ 单调, 无非单调意外; heur 逐项预测链 (pred 0.08574 vs 实测 0.08581) 再证有效, 分项误差主要在 nmae 项 (预测 -0.094 vs 实测 -0.1089)。**λ 轴正式到顶**: λ70mf14 nmae 实测劣于预测即 λ∈[6.5,7.5] 无更优点, 与决策单第 3 条一致 — λ75mf14 确证负期望, 留库不发。
 - 10-17 剩 1 发 hold 不变; 无新候选。冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter030: 用户指令重开架构轴 — bizard 系列重设计立项 (2026-10-17 08:10 UTC 写入)
+- **指令 (用户原话)**: 「我说了重新设计和开发bizard系列模型啊！要大幅改进进入前3，你竭尽全力。该官方测试时最大化利用，然后本地不断迭代测试优化！」 — 修订 v0.9 门槛 (overall_pred≥0.10 才花): 花发由用户直接授权, 但候选仍须 bench 超 anchor + heur overall_pred 证据才花, 不裸花。
+- **解冻入档 (architecture unfreeze)**: 学习式迁移校准器 (learned cross-context calibrator) 为新开放轴 — LOCO 禁令维持其原文范围 (管评估方案变体, line 117 iter028), 学习式模型训练/验证走 held-out-pert 诚实切分。hepg2 自源陷阱 (iter028: hepg2_all.parquet 即 Q bench truth 文件) → 任何含 hepg2 的训练臂一律 hold out bench-100 靶 (train 2290 / eval 100)。
+- **证伪教训入档**: bzv06dl DL 方向头纯毒 (arm_birds Q 0.3710 → +DL 0.2469–0.2512; DL-only −0.7654; w-scan 单调负) — 重设计**不从 DL 方向头续建**; v10_full_redesign.md 的端到端 BizardNet 计划 (10-08) 其前提 (方向 spearman 0.06~0.22) 已被后续 bench 证伪, 不复活。唯一有正证据的学习式先例: 校准框架 line 93 — S_HCT116 fusion v2@1.5 fid 0.777 vs 启发式 0.672 (+0.106 ≈ 官方 +0.119), 学习式 fid 修复跨上下文稳健且非 in-sample。
+- **跨上下文迁移探针 (task bn0l9qc37, 17,681,299 matched pairs)**: gwps(K562)→hepg2_all(HepG2) 签名 corr 0.2142; per-target spearman median (n=2390) 0.0976; direct transfer MAE 0.0658 vs zero-baseline 0.0577 — **直接迁移劣于零基线, 原样拼接有害, 必须学习校准**。matched pool = gwps∩hepg2_all = 2390 perts; pool∩official300 = 0 (无官方评估污染); pool∩bench100 = 100 (bench 全在 pool 内 → 必须留出)。
+- **fid 杠杆**: heur 标定 n=4 (iter026) fid a≈2.66956 最陡且 LOO 最弱 (0.0457) — 官方 fid −0.0244 是最大单项失分; local fid 0.84→1.0 ≈ 官方 +0.070 ≈ 剩余 gap 0.2329 的 30%。fid↔reach 靶级 corr 0.15 (修正5) — fid 手术不必然拖累 reach。
+- **第一臂 bzr1 设计**: 学习式 per-gene 源组合/残差校准器 — 训练数据 = 6 上下文两两配对的 matched-pert 签名 (输入=源签名 logfc + 基因级协变量, 标签=目标上下文 logfc), 推理时作用于 Δ 链源签名 (gwps/hct116_all) 生成上下文自适应校正项; 验证 = Q_HepG2 bench-100 held-out + S_HCT116 复核双场景, 判据 = fid 结构改善且 nmae 不塌, 全程走闭环 (local_bench → bench_score → official_alignment predict → overall_pred)。
+- **额度**: 10-17 剩 1 发 + 10-18 2 发全部留给过门重设计臂 (不为花而花, 但指令授权积极构造/验证候选, 优先 fid 轴)。v0.8 名未发档留给第一支过门重设计臂。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令(评估方案变体)/PBT奖励) — **解冻: 架构学习轴 (学习式迁移校准器, 用户指令 iter030, held-out-pert 诚实验证强制)**
+
+## iter030-修正1: bzr1 M_ctx v1 诚实留出判决 — 三门全败 FAIL, 残差学习器本身为真 (2026-10-17 09:00 UTC)
+- **执行**: `src/models/bizard/bzr1/train_calibrator.py` draft-3 完整跑通 (int64 key join 替代 pandas merge, 去重 bincount mean; 全 vocab 39,084 基因 × 18,301 perts; 训练 85,114,067 对 / hold 3,740,985 对; XGB reg:pseudohubererror hist+cuda 500 rounds, L20 ~15 min/迭代 — 迭代便宜)。
+- **诚实验证**: Q_HepG2 bench-100 靶全场景留出 (hepg2_all 侧统计同剔)。基线与探针偏差入档: hold 子集 direct corr **0.0007** (探针全池 0.2142) / spearman med 0.0002 / direct mae 0.0782 vs zero 0.0578 — **bench-100 靶即跨上下文迁移失败的抗性子集** (hold 直接迁移 ≈ 零相关, 全池正)。探针全池读数只能作全池参考, 不能当 hold 预期。
+- **模型读数 (hold, 100 靶)**: pred = x + r̂: mae 0.0582 / corr 0.0001 / spearman med 0.0001; **残差学习器诊断 r̂ vs r: corr 0.5863 / spearman med 0.6043 — 模型学到的是真残差结构**。诊断分离 = 失败机理是 pred = x + r̂ 中 x 方差主导且与 y 不相关, 加上 r̂ 反而加了噪声。
+- **GATES (预注册)**: corr_beats_direct False / mae_beats_zero False (0.0582 > 0.0578) / spearman_beats_direct False → **VERDICT: FAIL**。v1 不具备花发资格, 未花。
+- **v2 假设 (按证据强度排序)**: (a) 直接预测 y (目标改 y 非 residual) — residual 诊断已证模型有学习信号, 让它直接拟合 y; (b) residual shrinkage pred = x + γ·r̂, γ 逐基因/逐扰动学习; (c) 门代理再审视 — Δ 链下游是相对幅度/bench 效果, 与绝对 logfc corr 的门是否对齐需在 (a)(b) 出结果后一并诚实复核。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令(评估方案变体)/PBT奖励) — 解冻仅限架构学习轴 (held-out-pert 诚实验证强制)
