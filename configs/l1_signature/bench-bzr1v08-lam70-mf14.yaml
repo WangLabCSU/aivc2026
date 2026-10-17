@@ -1,0 +1,14 @@
+# iter030 v0.8 探针 bench 配置 — bzr1 校准器改写 Δ: datasets 换校准签名 *_cal,
+# 其余逐键镜像 bench-dualdeep-lam70-mf14.yaml (λ7.0/mf14; 历史 max_fold 不一致致过 nmae 退化).
+# 提交侧 twin: dualsrc-deep-lam70-mf14.yaml 同样 datasets 换 [gwps_cal, hct116_all_cal].
+datasets: [gwps_cal, hct116_all_cal]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261017_bzr1v08_lam70mf14

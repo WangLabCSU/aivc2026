@@ -232,3 +232,19 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **per-source 直接迁移基线 (diag_per_source.py, 修复后, HOLD|POOL)**: gwps corr 0.2210|0.2138; hct116_all 0.2235|0.2136; jurkat_all 0.1622|0.1861; rpe1_all 0.3710|0.3471; k562_ess_all 0.2629|0.2551 — 五源全部携带真迁移信号, α* 0.19–0.42, HOLD≈POOL (无 hold 子集伪影)。
 - **遗留注记**: (i) train_meta_v2.json "n_train" 字段误记 hold 大小 (3,740,985), 真训练量 85,114,067; (ii) v1 文件曾被 cp 覆盖为 v2 内容, 已自 b509ccf 恢复并单独打修正3补丁 — v1 真实内容(残差公式)在 git 中, 判决已作废; (iii) 官方 v0.7 链 make_predictions.py 无 intersect1d/load_keys, **不受此 bug 影响**。
 - **下一步 (v0.8 路径)**: 校准器 Δ 链落地 — 用 M_ctx_v2 校准 gwps/hct116_all 源签名生成改进 Δ → 候选 bundle → local_bench → heur overall_pred; fid 为官方最大杠杆 (本地 fid 0.84→1.0 ≈ 官方 +0.070)。
+
+## iter030-修正4: v0.8 纯校准签名 bench 判决 — pds 方向崩, heur -0.0218 FAIL 未花 (2026-10-17 21:00 UTC)
+- **执行**: make_delta_v2.py (M_ctx_v2 校准器全 vocab 推理, 3 源 vocab 并集, bench-100 hold 硬断言, 修2 对齐律无条件 bincount-mean) → gwps_cal/hct116_all_cal 签名 → bench-bzr1v08-lam70-mf14.yaml → local_bench (Q_HepG2) → bench_score → official_alignment predict (family heur) 全链 rc=0。
+- **raw bench (Q_HepG2)**: pds_cosine **0.5520** (v0.7=0.8902, 崩 -0.34) / mse 0.0212 / nmae 0.3060 (改善) / fid 0.9466 (v0.7≈0.84) / reach 0.4714 / jac 0.1608。anchor overall 0.3371; anchors: pds 0.1378 / fid 0.9466 / nmae 0.3060 / reach 0.4714 / jac 0.1608。
+- **heur overall_pred = -0.0218** (global n=12 map +0.0023) — **< 0.0858 门 → FAIL, 未花**。
+- **根因 (pds 机理)**: pds_cosine 尺度不变 → raw 分数下降即真方向退化, 非幅度伪影。校准器输出整体收缩 (gwps yhat q99 0.048 vs raw x q99 0.126; corr(x,yhat) 仅 0.403/0.374), 把 raw 大基因质量压向基因先验 → top-gene 序重构 → 方向崩。fid/nmae/reach/jac 四项全改善 (fid 0.9466 已近 1.0) — 校准幅度信息为真, 但与方向信息不可同时保留 (线性 blend 几何下)。
+- **教训入档**: held-out corr 0.51 的校准器 ≠ bench 方向可保留; 幅度校准与方向保真的冲突是结构性的 (calibrator 以基因先验为锚, 而靶特异方向结构活在 raw 大基因里)。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励) — 解冻仅架构学习轴
+
+## iter030-修正5: v0.9 α-blend 臂 a70 判决 — heur 0.0634 FAIL; α 轴封顶于 α=1≡v0.7, 线性混合轴关闭 (2026-10-17 21:00 UTC)
+- **设计**: blend_cal.py 签名级线性混合 y = α·x_raw + (1-α)·yhat_cal; α=1≡v0.7, α=0≡v0.8; pyarrow dictionary-encode 键对齐 (iter030-修正3 同式), 一次产出 calA50/calA70 两套。
+- **a70 (=0.7) 全链 rc=0 (20:43 UTC)**: raw pds 0.7048 (v0.7 0.8902 / v0.8 0.5520 — 部分回收) / fid 0.6132 / nmae 0.9062 / reach 0.5203 / jac 0.0818; anchor 0.3447; anchors pds 0.5741 / fid 0.9068 / nmae 0.056 / reach 0.411 / jac 0.1204; **heur overall_pred 0.0634 < 0.0858 → FAIL** (较 v0.8 -0.0218 大幅好转但仍不过门)。
+- **α 轴插值封顶 (决策关键)**: 锚点 {α=0: -0.130, α=0.7: +0.380, α=1: +0.509} (sum-of-preds, α=1 即 v0.7 自身 pred 0.0848≈official 0.0858)。pds 预测每 α 单位 +0.73 (0→0.7) 后 +0.45 (0.7→1.0), 边际收益全程为正 → **α 轴极大值 ≈ α=1 = v0.7 本身; fid/nmae/reach 锚随 α 单调下降 (校准只在 α=0 端改善)**。结论: 线性混合轴作为参数化已关闭 — 幅度修正与方向保真在此几何下不可兼得, α→1 即放弃校准收益。
+- **a50 未跑** (预算 ~0.03, 插值劣于 a70, 建链 tmp/run_bench_v09_a50.sh 留存不启动; 轴已插值关闭, 补点无判决价值)。
+- **下一步 (v0.9b 符号门控)**: 冲突根源在校准器动方向 → 门控只在 sign(x)≠sign(yhat) 的分歧基因上收缩 (sign 一致保 raw 全幅)。分歧率/|x|质量敞口诊断随构建落盘; SG50/SG100 两点 bench 待链。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励) — 解冻仅架构学习轴

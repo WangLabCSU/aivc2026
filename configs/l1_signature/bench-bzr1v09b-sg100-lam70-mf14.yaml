@@ -1,0 +1,13 @@
+# iter030-修正6 v0.9b 符号门控臂 bench 配置 — β=1.0 (分歧基因清零)
+# datasets 换门控签名 *_calSG100, 其余逐键镜像 bench-bzr1v08-lam70-mf14.yaml (λ7.0/mf14).
+datasets: [gwps_calSG100, hct116_all_calSG100]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261017_bzr1v09b_lam70mf14_sg100

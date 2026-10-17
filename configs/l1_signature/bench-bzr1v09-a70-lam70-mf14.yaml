@@ -1,0 +1,13 @@
+# iter030-修正5 v0.9 混合臂 bench 配置 — α=0.7 (70% raw + 30% cal)
+# datasets 换混合签名 *_calA70, 其余逐键镜像 bench-bzr1v08-lam70-mf14.yaml (λ7.0/mf14).
+datasets: [gwps_calA70, hct116_all_calA70]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261017_bzr1v09_lam70mf14_a70
