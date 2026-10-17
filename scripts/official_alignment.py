@@ -38,6 +38,9 @@ METRICS = {
 
 # 官方点（来自 submission_ledger / *_online.json）: (family, stem, local_tag, per-metric official raw)
 OFFICIAL_POINTS = {
+    ("heur", "20261017_dualsrcdeep_lam70mf14"): dict(  # bizard-v0.7 entry 2a8UWn0MwC1l3Xg7ReSJ submitted 2026-10-17T00:01:03.545032Z Rank 782 Overall 0.085809
+        local="dualdeep_lam70mf14_Q", official={"pds": 0.5121, "mse": 0.0, "nmae": -0.1089,
+                                                "fid": -0.0244, "reach": 0.1325, "jac": 0.0036}),
     ("heur", "20261005_dualsrcdeep_lam65"): dict(
         local="dualdeep_lam65", official={"pds": 0.5022, "mse": 0.0, "nmae": -0.0656,
                                           "fid": -0.0340, "reach": 0.1267, "jac": 0.0023}),

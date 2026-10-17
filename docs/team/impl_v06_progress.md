@@ -89,3 +89,13 @@ Sat Oct 17 12:43:22 AM UTC 2026
 - **Rank 782 与 Top-3 门 0.3187 差距 = 0.2329** — 纯 λ 轴不可能 (到顶已判), 必须方向侧结构性突破. v0.8 三候选已全出清 (iter024), 结构项空窗确认.
 - **决策**: v0.9 = 等下一发额度 (10-17 1/2 已用, 剩 1 发) + 官方分项作为唯一新输入; λ 轴不再投入 (λ70mf14 已是链顶). 本轮唯一正收益信息: 内插预测带首次官方验证 ✓.
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+Sat Oct 17 02:25:00 AM UTC 2026
+
+## iter026: v0.9 深挖 — heur 家族 per-metric 官方标定修复 + 第12点回填 (2026-10-17 02:25 UTC)
+
+- **标定纠错 (关键)**: 预压缩期结论"per-metric 家族拟合不能跨 bench 链迁移到官方分项"是**错族错误** — 当时把 bizard 家族拟合套在 dualsrcdeep(heur) 链的 λ70mf14 anchor 上。本轮直接比对两个 anchor 的 Q_HepG2_scored.csv 分量尺度 (λ65 pds0.8862/nmae-0.3230/fid0.8440/reach0.2251/jac0.0994 vs λ70mf14_Q pds0.8902/nmae-0.4266/fid0.8445/reach0.2496/jac0.1004) → 尺度几乎一致, **heur 家族才是 dualsrcdeep 链的正确映射**。用旧 11 点 heur 拟合预测 λ70mf14: overall 0.08574 vs 官方实测 0.08581, 误差 ~7e-5 — per-metric 官方预测仪器对 dualsrcdeep/heur 链正式**生效**。
+- **第12点回填 + refit**: `("heur","20261017_dualsrcdeep_lam70mf14")` 入 OFFICIAL_POINTS (official pds0.5121/nmae-0.1089/fid-0.0244/reach0.1325/jac0.0036), refit 后 heur 系数 (n=4): pds a=1.71698 b=-1.01811 / nmae a=0.28068 b=+0.01613 / fid a=2.66956 b=-2.28962 / reach a=0.61898 b=-0.02072 / jac a=0.61446 b=-0.05842。
+- **回代与 LOO**: λ70mf14 in-sample pred 0.08480 (resid -0.0010), λ65 0.08560 (resid -0.0030) — 加点后 overall 级误差 ~1e-3 仍达 gate 判读精度。LOO per-metric: pds 0.0030 / nmae 0.0145 / reach 0.0081 / jac 0.0003 ( tight), fid 0.0457 (max 0.1400 — fid 仍是弱项, 单点杠杆大)。
+- **per-metric 灵敏度 (v0.9 ceiling 框架)**: official = a·local + b (heur, n=4)。pds a≈1.72 陡 (local pds=1.0 → official ≤0.70); fid a≈2.67 最陡 (local fid=1.0 → official ≤0.38); nmae a≈0.28 压缩 (local 大摆官方微动); reach a≈0.62; jac a≈0.61。→ **fid 是官方杠杆最大、标定最不稳的指标**: local fid 从 0.84 → 1.0 的理论官方增益 +0.42/6 ≈ +0.070, 单此一项若做实即超剩余差距 0.233 的 30%。
+- **v0.9 决策框架 (三重约束下)**: λ 轴到顶 / top-k 双链证伪 / blend+DL 出局。唯一未封死路径 = fid/reach 侧的结构性改进, 且现在**有了提交前验证闭环**: local bench 跑分 → heur per-metric 预测 → overall_pred 过 gate 才花额度。判据: 候选须 overall_pred ≥0.10 (保守 gate, 官方 LOO 误差 ~3e-3 级) 才动用 10-17 剩余 1 发; 否则额度 hold 至 10-18 重置。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
