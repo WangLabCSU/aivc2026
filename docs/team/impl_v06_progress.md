@@ -156,3 +156,12 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **新数据族**: scbasecount (35,266 样本仅 5 官方靶, 全为 drug/inhibitor/antibody 非 CRISPR KO → 弃); CCL_2 无公开下载链接不可用作训练数据。
 - **裁定**: 三维度候选全部携记录在案否决判决或冻结封闭, 本轮无合法未测项, 不花算力不建 config。10-17 剩 1 发继续 hold (无 ≥0.10 候选) 等 10-18 UTC 重置。fid/reach 结构性改进仍是唯一未封死路径; 下一轮若开新项须先过 (a) official-300 coverage law (b) 信息非冗余 (c) 非分布形态扰动三重门。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正4: 结构项审计终局 — 采样密度轴封死, 四维度全清 (2026-10-17 06:08 UTC)
+- **背景**: iter029-修正3 封死 聚合方式/置信度链/新数据族 三维度后, 对剩余未裁定 leads (context-specific λ / v04 场景聚合器 port / 采样密度 / max_fold) 逐项终审, 关闭结构项审计。
+- **context-specific λ**: 已裁定出局 (iter024续 line 78 原判在档: 依赖 300 官方靶无验证路径 + λ 轴到顶)。本次补证: 代码层确认 make_predictions.py 预测循环对 6 CONTEXTS 用单一全局 cfg["lambda_real"]/cfg["max_fold"], config 无 per-context 键 → 任何落地都需改代码+无验证路径, 双重不可行。
+- **v04 场景聚合器 port**: 已裁定出局 (iter022 line 40: bz04_final_c3s gen2 家族官方塌方先例 local 0.2741→0.00066 未解 + 无已验证 A/B/C submit 网格映射; Plan B weighted soft_rank w05→w40 全负单调, DL 方向 spearman 0.06~0.22 太弱, 「DL delta 对 8 鸟册融合为纯毒」line 34)。
+- **采样密度轴 (本轮新审, 三项全否)**: (i) entries_per_cell/density_margin 非旋钮 — 仅 validate() 输出读数 (src/models/l0_context_mean/make_predictions.py:119-128), 帽 MAX_TOTAL_ENTRIES=4.75B, 锚 density_margin 0.5611 ≫ 5% 安全线, 无失败模式在档 → 无杠杆; (ii) N_CELLS_PER_PERT=400 硬编码常量 (l0 同文件:27) 非 config 键, 360000=300×400×6 官方 schema 锚定; 400 采样细胞携带的 Δ 完全相同 (factor=2^(λ·dv) 逐 pert 常量), 采样仅注入 Wilcoxon 组内噪声 — 改密度=分布形态扰动 (iter024/iter027 先例: 「anchor 分布已是该链最优」) 且无验证路径 (official-300 ∩ local bench truth = 0), 三重门 (b)信息非冗余/(c)非分布形态扰动 双杀; (iii) 引导子重复加权假说已实测否决 — gwps mult=1.00 (81,162,977 rows/unique pairs), hct116_all mult≈1.0006 (670,122,948/669,741,072), 无静默重复引导子加权 (tmp/mult_check.out)。
+- **max_fold 轴**: 维持 line 40/54 原判 — 设计已解耦 (固定 mf14), 纯 λ/max_fold 扫描属参数精修, 不足以覆盖 0.2329 gap。
+- **裁定**: 结构项四维度 (签名源加源/聚合方式/置信度链/新数据族) + 参数轴 (λ/max_fold/采样密度) 全部清点完毕, 无一合法未测项, 无 overall_pred≥0.10 候选。10-17 剩 1 发继续 hold 等 10-18 UTC 00:00 重置。fid/reach 结构性改进仍是唯一未封死路径; 若 stop-hook 后续指令点名新维度, 仍须先过 (a) official-300 coverage law (b) 信息非冗余 (c) 非分布形态扰动 三重门。审计闭环, 无 config 无算力消耗。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
