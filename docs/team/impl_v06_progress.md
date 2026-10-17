@@ -140,3 +140,11 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - 官方300靶覆盖实测: gwps 272 / hct116_all 282 (并集 299, 未覆盖=SPATA20); k562_ess_all / hepg2_all / jurkat_all / rpe1_all / norman_all / tahoe_p12 交集全部=0 → k562_ess 对官方 Δ 链无任何合法注入通道 (generic 兜底仅 gwps, 可影响仅 SPATA20 1/300 靶, 可忽略) → 结构项裁定 falsified-for-submission, 清单再空窗, 10-17 剩 1 发继续 hold 等 10-18 重置。
 - 教训固化: 验证闭环必须以官方 300 靶复核签名覆盖行数 (parquet 读 target_gene 列一行即判), bench 通过≠提交有效; 后续任何加源/换源候选先跑 official-300 overlap 检查。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正2: hct116_all_3batch 裁定弃 — 同数据旧代备份, 非独立源 (2026-10-17 05:25 UTC)
+- 3batch.parquet 系 build_orion_signatures_v3.py 备份的 hct116_all 旧代 (同 xatlas HCT116_3batches.h5ad, 不同构建参数), 非独立第三源。
+- 官方202共同靶 779万对 logFC: abs差中位数 0.0005 (p90 0.0363, corr 0.52) — 近重复; 加入=给 hct116 双倍权重, 分布形态扰动 (与 top-k/γ 同构), 非新信息注入。
+- 覆盖零增益: 3batch-only vs hct116_all (official)=[]; SPATA20 仍无解 (gwps∪hct116_all∪3batch=299/300)。
+- 裁定: 弃 (同数据冗余源)。通过 coverage law (交集202>0) 但信息量=0, 不建 config 不花算力。v0.8 重复 artifact 已隔离至 tmp/QUARantine_dup/ (outputs/submissions 清空防误提)。
+- 结构项清单仍空窗: 现有九签名源中仅 gwps/hct116_all 有官方交集, 全部加源组合已被枚举穷尽 (k562_ess/hepg2/jurkat/rpe1/norman/tahoe 交集0, 3batch 冗余, norman 3靶可忽略) → 加源路径正式封死; 下一结构项需新信息族 (非签名源维度)。10-17 剩 1 发 hold 等 10-18 重置。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
