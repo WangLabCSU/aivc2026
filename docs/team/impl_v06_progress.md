@@ -99,3 +99,14 @@ Sat Oct 17 02:25:00 AM UTC 2026
 - **per-metric 灵敏度 (v0.9 ceiling 框架)**: official = a·local + b (heur, n=4)。pds a≈1.72 陡 (local pds=1.0 → official ≤0.70); fid a≈2.67 最陡 (local fid=1.0 → official ≤0.38); nmae a≈0.28 压缩 (local 大摆官方微动); reach a≈0.62; jac a≈0.61。→ **fid 是官方杠杆最大、标定最不稳的指标**: local fid 从 0.84 → 1.0 的理论官方增益 +0.42/6 ≈ +0.070, 单此一项若做实即超剩余差距 0.233 的 30%。
 - **v0.9 决策框架 (三重约束下)**: λ 轴到顶 / top-k 双链证伪 / blend+DL 出局。唯一未封死路径 = fid/reach 侧的结构性改进, 且现在**有了提交前验证闭环**: local bench 跑分 → heur per-metric 预测 → overall_pred 过 gate 才花额度。判据: 候选须 overall_pred ≥0.10 (保守 gate, 官方 LOO 误差 ~3e-3 级) 才动用 10-17 剩余 1 发; 否则额度 hold 至 10-18 重置。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+Sat Oct 17 03:40:00 AM UTC 2026
+
+## iter027: gamma sharpening 双臂 A/B 裁定 — 弃 (2026-10-17 03:40 UTC)
+
+- **验证闭环首次全流程跑通**: var-str fix + eliminate_zeros → cell-eval2 (pdex) → bench_score (bundle 模式) → official_alignment predict --family heur。双臂各 ~2.2 min, 全程 4.5 min。修复 1 坑: pred X 含显式零, numba_mwu `_validate_csr` 拒收 → `X.eliminate_zeros()` 前置。
+- **结果 (Q_HepG2, anchor 归一化 per_metric vs anchor raw pds0.8156/nmae0.9830/fid0.5870/reach0.4217/jac0.0762)**:
+  - **sharpen_g0.5 (收缩 γ=0.5)**: raw pds0.7635/mse2.650/nmae1.0297/fid0.5383/reach0.3570/jac0.0700 → per_metric overall 0.1621; heur predict overall_pred **-0.036** (fid 官方 -0.3432 塌方) → 远低于 gate, 弃。
+  - **sharpen_g1.5 (放大 γ=1.5)**: raw pds0.7623/mse2.150/nmae0.9883/fid0.5715/reach0.4218/jac0.0773 → per_metric overall 0.2400; heur predict overall_pred **0.0239** (pds0.2494/fid-0.1329/reach0.1340) → 低于 gate 0.10, 弃。
+- **机制解读**: γ<1 把 pred 向 target mean 收缩 → fid/reach/nmae 全塌 (矩阵整体变平, DE 信号同步衰减); γ>1 恢复至 ≈anchor 水平但无一指标超越 anchor (raw fid 0.5715 < anchor 0.5870, reach 0.4218 ≈ anchor 0.4217 打平, pds 0.7623 < 0.8156) — **单调性确认: γ=1 (anchor) 即该变换族的峰值, 两侧皆劣**。γ≠1 不可救 fid/reach, 与 top-k 证伪同构: pred 分布形态扰动 (收缩/集中/砍尾) 一律伤方向指标, anchor 分布已是该链最优。
+- **v0.9 结论更新**: 结构项候选清单再清一项 (sharpen 出局); γ 轴无峰可移。剩余 1 发 10-17 额度继续 hold (无 overall_pred≥0.10 候选), 等 10-18 重置 + 新结构项立项。bench_score 的 multi_ref overall_mean (g0.5: 0.1469±0.0549, g1.5: 0.2274±0.0453) 仅作稳健性参考, 不改变裁定 (heur predict 已含官方标定)。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
