@@ -185,3 +185,13 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **结果 (全部已裁定)**: (1) `tmp/bzv08_topk*` / `bench_topk{500,1000,2000}.yaml` / `run_topk_*` = iter024 top-k 集中化 A/B, 双链证伪出局 (reach 需广度非纯度, 砍尾四项全负); (2) `dualdeep3src_k562 / dualdeep4src_jr_lam70mf14_Q` bench dirs + `anchor_normalized_3src.json` (10-17 00:15) = iter029修正 3src 链, 官方300靶零覆盖 byte-identical 判决, bench 读数仅存档; (3) `tmp/mult_check.{out,err}` = iter029修正4 采样密度轴 (mult=1.00) 入档; (4) `delta_heads_vs_truth.json` / `per_target_*.csv` = iter023 truth 证据 + iter029修正6 per-target 封顶, 均已引用。
 - **裁定**: 工作区零悬置 — 四维度 (签名源/聚合/置信度链/新数据族) + 参数轴 (λ/mf/密度) + per-target 手术, 每个开过的实验都有在档判决。结构审计全谱系无遗漏确证。10-17 剩 1 发继续 hold, 下一动作点 = 10-18 UTC 00:00 重置后候选重估。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## 10-18 UTC 00:00 重置决策单 (iter029修正7 后固化, 2026-10-17 07:55 UTC 写入, 防崩溃/压缩丢失)
+- **重置 tick 决策树** (按序执行, 不重开已封死项):
+  1. 核时 `date -u` ≥ 2026-10-18 00:00 → 额度 2/2 可用; 否则继续 hold。
+  2. 候选评估唯一入口 = 三重门: (a) official-300 覆盖 (先查后建, 九源已穷尽); (b) 信息非冗余; (c) 非分布形态扰动。任一门不过直接弃, 不建 config。
+  3. 现有在档 bundle 全部已提交或已裁定: λ70mf14=v0.7 已发 (0.08581 现任最佳), λ75mf14 预测 0.0772 备件 (提交=负期望, 除非重估推翻), v04_agg/v05 陈旧 bundle 禁重传 (v0.5 先例)。**无过门候选 → 10-18 两发保持未花, 不为花而花**。
+  4. 若期间出现新信息 (官方放新数据/CCL_2 公开链接/外部新签名源落盘) → 先跑覆盖一行检查再走决策树。
+  5. 结构审计已全封闭 (修正1-7): 签名源/聚合/置信度链/新数据族/λ/mf/采样密度/per-target 手术 — 重置 tick 不得复开, 除非有**新证据** (非旧读数重读)。
+- **终点条件**: 若 10-18 全天无过门候选, top-3 (0.3187) 在当前证据下不可达; loop 继续以 30min 巡检维持, 每次重置日执行本决策单后 noop tick 收敛。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
