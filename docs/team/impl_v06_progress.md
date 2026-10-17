@@ -218,3 +218,17 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **GATES (预注册)**: corr_beats_direct False / mae_beats_zero False (0.0582 > 0.0578) / spearman_beats_direct False → **VERDICT: FAIL**。v1 不具备花发资格, 未花。
 - **v2 假设 (按证据强度排序)**: (a) 直接预测 y (目标改 y 非 residual) — residual 诊断已证模型有学习信号, 让它直接拟合 y; (b) residual shrinkage pred = x + γ·r̂, γ 逐基因/逐扰动学习; (c) 门代理再审视 — Δ 链下游是相对幅度/bench 效果, 与绝对 logfc corr 的门是否对齐需在 (a)(b) 出结果后一并诚实复核。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令(评估方案变体)/PBT奖励) — 解冻仅限架构学习轴 (held-out-pert 诚实验证强制)
+
+## iter030-修正2: bzr1 v2 (direct-y + 目标侧基因先验) 技术 PASS + corr 矛盾追查 (2026-10-17 12:30 UTC)
+- **执行**: `train_calibrator_v2.py` — 弃 pred=x+r̂, 直接拟合 y; 14 特征 = v1 10 列 + (tg_mean/tg_std/tg_q90 目标侧 hepg2 train-pert 基因先验) + src_id。同 hold 协议, XGB 500 rounds cuda t≈771s。
+- **初报读数**: MODEL mae 0.0527 / corr 0.5104 / spMed 0.2383, 三门 True → 技术性 PASS。但 **direct 基线读数 corr 0.2524 与修正1的 0.0007 矛盾**, 且 v1 FAIL 判决建立在同一基线上 — 判决链存疑, 发花冻结。
+- **追查**: reconcile_probe.py (undeduped pandas string-merge 金标准) 独立复算 direct corr **0.2142** (全池, 零重复行) — 与探针 bn0l9qc37 (0.2142) 一致, 两独立路径吻合 → 唯一异常源锁定在 int64 key 管线本身。
+
+## iter030-修正3: 对齐 bug 根因 (np.unique 键排序撕裂值) — v1 FAIL 判决作废, v2 转 REAL PASS (2026-10-17 13:30 UTC)
+- **根因** (`sortedness_probe.py` 决定性): `load_keys` 中 `np.unique(keys)` 排序键后, 值重排仅在 `if len(keys_u) != len(keys)` (有重复行) 时执行。实测 gwps 81,162,977 行 / hepg2_all 22,989,288 行 **均零重复行** 且文件序非 key 单调 → 去重分支恒跳过, 键已排序而值留文件序 → (x,y) 对完全错配。BUGGY 路径 corr **0.0003**, FIXED 路径 (值经 inv 跟随重排) corr **0.2142 = 金标准** — 探针与 reconcile 全部平反, 异常 100% 在 key 管线。
+- **修复**: train_calibrator_v2.py / diag_per_source.py / train_calibrator.py (v1) load_keys 无条件 bincount-mean 重排。
+- **v1 判决作废**: v1 训练数据本身错配 (x,y), 且其门对比的 direct 基线 (0.0007) 也是错配产物 — 双重污染, "pred=x+r̂ FAIL" 结论不得复用。
+- **诚实重推 (v2 fixed, hold 100 靶)**: baseline direct mae 0.0701 / corr **0.2524** / spMed 0.0917; zero mae 0.0575; gene-prior (TGM) mae 0.0555 / corr 0.3703 / spMed 0.2375; **MODEL mae 0.0527 / corr 0.5104 / spMed 0.2383** — 三门 True 转**真 PASS** (corr 2.0× direct, 1.4× gene-prior; mae 三者最优; spMed 2.6× direct)。
+- **per-source 直接迁移基线 (diag_per_source.py, 修复后, HOLD|POOL)**: gwps corr 0.2210|0.2138; hct116_all 0.2235|0.2136; jurkat_all 0.1622|0.1861; rpe1_all 0.3710|0.3471; k562_ess_all 0.2629|0.2551 — 五源全部携带真迁移信号, α* 0.19–0.42, HOLD≈POOL (无 hold 子集伪影)。
+- **遗留注记**: (i) train_meta_v2.json "n_train" 字段误记 hold 大小 (3,740,985), 真训练量 85,114,067; (ii) v1 文件曾被 cp 覆盖为 v2 内容, 已自 b509ccf 恢复并单独打修正3补丁 — v1 真实内容(残差公式)在 git 中, 判决已作废; (iii) 官方 v0.7 链 make_predictions.py 无 intersect1d/load_keys, **不受此 bug 影响**。
+- **下一步 (v0.8 路径)**: 校准器 Δ 链落地 — 用 M_ctx_v2 校准 gwps/hct116_all 源签名生成改进 Δ → 候选 bundle → local_bench → heur overall_pred; fid 为官方最大杠杆 (本地 fid 0.84→1.0 ≈ 官方 +0.070)。

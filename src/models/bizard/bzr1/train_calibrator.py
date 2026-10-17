@@ -60,10 +60,12 @@ def main():
         lf = df["logfc"].values.astype(np.float32)
         del df
         keys_u, inv = np.unique(keys, return_inverse=True)
+        # iter030-修正3 对齐修复: np.unique 排序键后值必须经 inv 跟随重排, 无条件执行
+        # (旧代码仅在有重复行时去重; 无重复时跳过 → 键排序而值留文件序, corr 归零)
+        cnt = np.bincount(inv, minlength=len(keys_u)).astype(np.float64)
+        ssum = np.bincount(inv, weights=lf.astype(np.float64), minlength=len(keys_u))
+        lf = (ssum / cnt).astype(np.float32)
         if len(keys_u) != len(keys):
-            cnt = np.bincount(inv, minlength=len(keys_u)).astype(np.float64)
-            ssum = np.bincount(inv, weights=lf.astype(np.float64), minlength=len(keys_u))
-            lf = (ssum / cnt).astype(np.float32)
             print(f"{name}: dedup {len(keys):,} -> {len(keys_u):,} (mult {len(keys)/len(keys_u):.4f})", flush=True)
         del keys, inv
         return keys_u, lf  # unique, sorted
