@@ -120,3 +120,14 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **裁定**: 弃 (falsified-for-validation) — 该臂在现行验证框架下不可合法评估, 不建 twin bench config, 不花 bench 算力。与 CCL_2 同类: 有数据价值但无合法评估通道的项不入结构项清单。
 - **v0.9 状态**: 结构项清单再度空窗。10-17 剩余 1 发继续 hold (无 overall_pred≥0.10 候选), 等 10-18 UTC 重置。fid/reach 结构性改进仍是唯一未封死路径, 下一轮从新角度立项 (非同源数据 / 评估框架内合法项)。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029: 第三源加源双臂 A/B 裁定 — R1 通过 → bizard-v0.8 GO (2026-10-17 04:30 UTC)
+
+- **候选**: Δ 链第三源扩展 (双源 [gwps,hct116_all] → 三源/四源), 补 fid/reach 方向覆盖。R1=+k562_ess_all, R2=+jurkat_all+rpe1_all; 均对 Q_HepG2 出样 (源 h5ad 与 Nadig2024_hepg2 不同, 无 in-sample 污染; 官方 A/B/C 匿名无泄漏通道)。LOCO 禁令不触 (管评估方案变体非数据源组成, iter028 先例)。
+- **闭环全流程**: local_bench (config-only 加源) → bench_score (bundle+multi-ref) → official_alignment predict --family heur (n=4 标定, iter026 生效)。
+- **R1 (+k562_ess_all) 全五指标优于 anchor** — anchor 归一化: pds 0.8988 vs 0.8902 (+0.0087) / nmae -0.4237 vs -0.4266 (+0.0029) / fid 0.8673 vs 0.8445 (+0.0227) / reach 0.2848 vs 0.2496 (+0.0351) / jac 0.1051 vs 0.1004 (+0.0047), **avg 0.2764→0.2887 (+0.0123)**。raw: pds0.8186>0.8156 / nmae0.9825<0.9830 / fid0.5965>0.5870 / reach0.4431>0.4217 / jac0.0775>0.0762。**heur overall_pred = 0.1016 ≥ gate 0.10** → 10-17 第二发 GO。
+- **R2 (+jurkat_all+rpe1_all) 弃**: pds -0.1566 / nmae -0.4011 collapse (四源均权稀释方向信号, 与 fusion v2 教训同构), overall -0.0420; multi-ref 0.2172±0.0571 也显著弱于 R1 0.2758±0.0440。**加源 ≠ 越多越好, 源的信号质量与主族同向性决定成败** — k562_ess 单源臂通过而双源臂塌方。
+- **与既往证伪的结构性区别**: top-k / γ-sharpening / w133 重加权都是**分布形态扰动** (单臂无超越), R1 是**新出样信息注入** (第三 CRISPR 源), 全指标一致改进而非 trade-off 重塑 — 与 fusion v1/v2 乐观泄漏排除的情形也本质不同 (此臂合法出样)。这是 v0.9 以来首个过 gate 的结构项。
+- **风险留痕**: 单 seed Δ+0.0123 vs multi-ref σ≈0.0440 (MC 噪声同量级, 有翻车可能); fid 的 heur 标定 LOO 0.0457 弱 (单点杠杆大)。但方向一致性 (五指标同向 + multi-ref 均值同向) 是既往证伪臂不具备的证据等级, gate 判定按规则通过。
+- **行动**: 3src 提交 config (dualsrc-deep-lam70-mf14-3src.yaml, anchor 逐键一致仅 datasets) 已建, build+prep 链路启动 (make_predictions.py → vcc prep -g/--perts, 与 iter022 同链), → bizard-v0.8 提交。已提交官方 artifact 永不重算。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)

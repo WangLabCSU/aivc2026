@@ -1,0 +1,14 @@
+# iter029 bizard-v0.8: 三源提交 bundle — anchor (dualsrc-deep-lam70-mf14.yaml) 逐键一致, 仅 datasets + k562_ess_all。
+# 验证闭环: dualdeep3src_k562_lam70mf14_Q 全五指标优于 anchor (avg 0.2764→0.2887), heur overall_pred 0.1016 ≥ gate 0.10。
+# k562_ess_all 对 Q_HepG2 bench 出样 (源 h5ad 与 Nadig2024_hepg2 不同), 官方 A/B/C 匿名无泄漏通道。
+datasets: [gwps, hct116_all, k562_ess_all]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261017_dualsrcdeep_lam70mf14_3src

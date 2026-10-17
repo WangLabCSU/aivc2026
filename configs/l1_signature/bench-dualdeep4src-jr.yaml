@@ -1,0 +1,13 @@
+# iter029 R2: 四源探针 bench — 加 jurkat_all + rpe1_all (Out-of-sample for Q_HepG2)。
+# 与 bench-dualdeep-lam70-mf14.yaml 逐键一致, 仅 datasets 扩展。
+datasets: [gwps, hct116_all, jurkat_all, rpe1_all]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: bench_3src_R2
