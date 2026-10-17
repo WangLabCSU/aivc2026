@@ -148,3 +148,11 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - 裁定: 弃 (同数据冗余源)。通过 coverage law (交集202>0) 但信息量=0, 不建 config 不花算力。v0.8 重复 artifact 已隔离至 tmp/QUARantine_dup/ (outputs/submissions 清空防误提)。
 - 结构项清单仍空窗: 现有九签名源中仅 gwps/hct116_all 有官方交集, 全部加源组合已被枚举穷尽 (k562_ess/hepg2/jurkat/rpe1/norman/tahoe 交集0, 3batch 冗余, norman 3靶可忽略) → 加源路径正式封死; 下一结构项需新信息族 (非签名源维度)。10-17 剩 1 发 hold 等 10-18 重置。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+
+## iter029-修正3: 新维度全枚举负面清点 — 聚合方式/置信度链/新数据族均无合法未测候选 (2026-10-17 06:00 UTC)
+- **背景**: stop-hook 指令「下一结构项须换维度 — 聚合方式/置信度链/新数据族」。对三维度全部已知候选逐一核对既往裁定, 结论=无一具备合法未测资格, 无 overall_pred≥0.10 候选。
+- **聚合方式** (全部有否决记录): top_k (iter024, k500/1000/2000 单调劣于 anchor, k→anchor 单调收敛); w133 dataset_weights {gwps0.7,hct1161.3} (progress line 130 「分布形态扰动, 单臂无超越」; 本次补齐 raw 对比: w133 0.8059/0.9385/0.5810 vs plain 0.8090/0.9235/0.5850, pds/nmae/fid 全劣, 仅 reach +0.0001/jac +0.0012 噪声级微正); γ-sharpening (同 line 130 弃); C3 全局臂权重 (closed FAIL −0.018, cb_v22_c1_freeze.md §7 防复开)。
+- **置信度链** (全部有否决记录): L1.7 方向置信度加权 (2026-09-30 confidence_summary.md: 全组合 fid/overall 下降, LOCO 证明效应方向本身为负, 「置信加权 ≈ 基因选择性 λ 缩水」, reach collapse 主导; 结论信号只能用作子集选择/方向先验而非幅度缩放); A.1 ρ-weighting/target-prior v1 (source_lopo_report.rerun.fail.json: gate.pass=false, rpe1 +0.13pp / hepg2 +0.06pp vs 预注册 +2pp AND 双 holdout → 按 rev2 裁定「门过方可接入、门不过自动顺延」target-prior v1 自动顺延); gene_weights (受 A.1 门禁前置约束); sign_fix (闭环冻结不重启)。
+- **新数据族**: scbasecount (35,266 样本仅 5 官方靶, 全为 drug/inhibitor/antibody 非 CRISPR KO → 弃); CCL_2 无公开下载链接不可用作训练数据。
+- **裁定**: 三维度候选全部携记录在案否决判决或冻结封闭, 本轮无合法未测项, 不花算力不建 config。10-17 剩 1 发继续 hold (无 ≥0.10 候选) 等 10-18 UTC 重置。fid/reach 结构性改进仍是唯一未封死路径; 下一轮若开新项须先过 (a) official-300 coverage law (b) 信息非冗余 (c) 非分布形态扰动三重门。
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
