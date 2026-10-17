@@ -79,3 +79,13 @@
 - 教训对齐: truth top-k sign_agree 0.8553 是"大|Δ|基因方向更可信"的筛后统计, 不等于"砍尾能提分" — reach 需要的是广度不是纯度; wilcoxon DE 集过窄直接塌 fid/reach/jac。
 - v0.8 无新立项: (a) blend 已出局, (b) 双链证伪, (c) context-specific λ 依赖 300 官方目标无验证路径且 λ 轴到顶已判。三候选全清 → v0.8 结构项空窗; 主线退守: 10-17 UTC bizard-v0.7 (lam70mf14) 照发, 其官方回数即 v0.8 决策输入。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
+Sat Oct 17 12:43:22 AM UTC 2026
+
+## iter025: bizard-v0.7 官方回数 — 0.0858 published, Rank 782 (2026-10-17 00:43 UTC)
+
+- **提交**: entry 2a8UWn0MwC1l3Xg7ReSJ, model bizard-v0.7, submitted 2026-10-17T00:01:03Z (attempt 11 过闸, 00:00 UTC 重置后首炮; 23:48 UTC 启动脚本撞 409 × 10 次后自动过闸). 00:27:17 UTC published, 全程 26 min 无卡 launching.
+- **官方成绩**: Overall **0.08580925**, Rank **782**; 分项 pds 0.51206 / mse 0(官方恒0) / nmae -0.10885 / fid -0.02442 / reach 0.13248 / jac 0.00359. Panel vcc2026-val-1, Partition val, Anchor vcc2026-valA/B/C-r4.
+- **与预测对照**: λ70mf14 预测 ≈0.0857 (线性内插天花板 0.089) → 实测 0.08581 命中预测带 (差 +0.0001), λ-shift 内插模型在官方首次**确认**. 上一次 v0.6 同框架实测 (若官方分项可比: 方向四项官方合计 = 0.51206-0.10885-0.02442+0.13248+0.00359 = 0.51487, 占 Overall 96.4% 量级 — 与 iter023 诊断"方向四项占96%"结构一致).
+- **Rank 782 与 Top-3 门 0.3187 差距 = 0.2329** — 纯 λ 轴不可能 (到顶已判), 必须方向侧结构性突破. v0.8 三候选已全出清 (iter024), 结构项空窗确认.
+- **决策**: v0.9 = 等下一发额度 (10-17 1/2 已用, 剩 1 发) + 官方分项作为唯一新输入; λ 轴不再投入 (λ70mf14 已是链顶). 本轮唯一正收益信息: 内插预测带首次官方验证 ✓.
+- 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
