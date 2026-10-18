@@ -1,0 +1,13 @@
+# iter035 幅度轴括号臂 B: NC×1.15 微放大 bench 配置 (sub-cap 安全区, max|v|=3.357<3.807)
+# datasets 换 *_calG115, 其余逐键镜像 bench-bzr1v11-nc-lam70-mf14.yaml.
+datasets: [gwps_calG115, hct116_all_calG115]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_g115

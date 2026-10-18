@@ -1,0 +1,14 @@
+# iter035 幅度轴括号臂 A: NC×0.8 均匀收缩 bench 配置 (sub-cap 安全区)
+# triple proxy-transfer failure 后 bench-in-loop: S08 = NC×0.80, max|v|=2.335.
+# datasets 换 *_calS08, 其余逐键镜像 bench-bzr1v11-nc-lam70-mf14.yaml.
+datasets: [gwps_calS08, hct116_all_calS08]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_s08
