@@ -305,3 +305,12 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **生产链**: config bzr1v13-hy8-lam70-mf14.yaml (镜像 hy12 生产配置, datasets *_calHY8) → make_predictions.py 后台 → vcc prep → submit 脚本带 00:00 UTC 时间闸.
 - **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
 - [10-18 22:02 UTC] sim10 wrong-drop细分证负: disagree仓位仅0.71/8, 清错号只+pds 0.0006; HYf实测(负)反证sim9放大方向→幅度谱轴全闭合, HY8=该构造类最优点. wrapper 1265702 alive, v0.10=HY8 待00:02 UTC.
+
+## 2026-10-18 22:45 UTC — iter035-续6: RS 幅度恢复臂 bench 证负 — 幅度轴闭合, L269 重训为唯一剩余出口
+
+- **RS 臂已构建+bench (零提交)**: per-target s_t = ||NC_t||₂/||yc_t||₂, v_rs = s_t·yc_t (方向=校准器 by-design, 幅度恢复到 NC 范数). 构建诊断: gwps targets=9,866 s_med=2.181 (q10 1.700/q90 2.946), corr(x,RS)=0.405, q99|RS|=0.170, max|RS|=2.473; hct116 targets=17,358 s_med=1.539, corr(x,RS)=0.372, q99|RS|=0.064, max|RS|=1.590. bench coverage 100.
+- **bench 六指标**: pds 0.5480 / nmae 1.0280 / fid 0.6427 / reach 0.6232 / jac 0.0941 / mse 0.02972. heur overall_pred **0.0577** (pds -0.1404/jac 0.0447/nmae -0.1828/fid 0.2792/reach 0.3456; local_anchor 0.1894) — **FAIL 门 0.0859, 零提交**.
+- **判决**: RS pds 0.5480 ≈ pure-calibrated-signature 0.5520 — 幅度恢复**未**回收 pds; nmae 反而劣化 (1.0280 vs pure-cal 0.3060 / HY8 0.9456), 仅 fid/reach/jac 较 HY8 改善. bench 崩是**结构性** (校准方向/排序经 λ=7 × NTC 400-cell 采样均值后的管道响应), 非幅度性. raw-cosine probe (YH 0.3588 > NC 0.1572) 第三次未穿过 bench 链 — 三重代理迁移失败律再现, 唯一可信评估器=bench 链.
+- **幅度恢复轴关闭**. v0.11 候选菜单终局: Δ-chain 修正4 / α-blend 修正5 / sign-mag-gate 修正6 / RS 本轮 — 手术族全禁 (line 269); v04 聚合器移植排除; DL delta 纯毒. **唯一剩余合法出口 = L269 重训指令: 「直接在 fold/2^Δ 空间学习、或以 pds 对齐为目标函数」的方向保持 by-design 重训** — infra 可自 train_bird.py/train_calibrator_v2.py 适配, benchable 经 bench_bird.py (Δ̂ 臂) 或 local_bench.py (signature 臂).
+- 提交链: wrapper 1265702 alive (etime 02:24), v0.10=HY8 待 00:02 UTC 自动发. GPU 空闲 (159 MiB).
+- **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
