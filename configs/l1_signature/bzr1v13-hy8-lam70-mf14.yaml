@@ -1,0 +1,14 @@
+# iter035-续4: NC+yh 混合臂 HY8 (top-8 DE/靶/源 by |yhat|) 官方提交配置 → bizard-v0.10
+# k 曲线: heur 8=0.0915 / 12=0.0905(官方0.0924已兑) / 6=0.0907; anchor 8=0.3154 全场最佳 (12=0.3144, 6=0.3124)
+# datasets 换 *_calHY8, 其余逐键镜像 bzr1v12-hy12-lam70-mf14.yaml.
+datasets: [gwps_calHY8, hct116_all_calHY8]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261019_bizard_v10_hy8
