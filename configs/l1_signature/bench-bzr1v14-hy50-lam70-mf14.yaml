@@ -1,0 +1,13 @@
+# iter035-续2: NC+yh 混合臂 HY bench 配置 — DE(top-25/靶/源 by |yhat|)∩sign 同向处幅度让位校准器, 其余 = NC
+# A70 教训: cosine 主导结构仅 25 位/靶受扰, 幅度让位限局部 (S08 教训: 均匀缩已败, 局部≠均匀).
+datasets: [gwps_calHY50, hct116_all_calHY50]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_hy50

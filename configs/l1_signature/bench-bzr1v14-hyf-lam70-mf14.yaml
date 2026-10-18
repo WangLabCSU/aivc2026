@@ -1,0 +1,13 @@
+# iter035-续2: NC+yh 混合臂 HYf bench 配置 — 同 HY DE 集, 只升不缩 max(|x|,|yhat|) (受控 AMP 括号对)
+# datasets 换 *_calHYf, 其余逐键镜像 bench-bzr1v14-hy-lam70-mf14.yaml.
+datasets: [gwps_calHYf, hct116_all_calHYf]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_hyf

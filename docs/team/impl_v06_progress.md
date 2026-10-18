@@ -274,3 +274,14 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **v0.5 官方结果补记 (从 logs/submit_bizard_v05_1016.log FINAL_STATUS 恢复)**: 2026-10-16T14:48:55Z published, **Overall 0.0006606 / Rank 1028** (pds 0.28178 / mse 0 / nmae 0.04160 / fid -0.36289 / reach 0.06381 / jac -0.02035)。提交~29min 即发布, 卡死2h cancel 规则未触发; entry 50afg20XylIFiivjWBN9 现已 not_found (vcc status), log 为唯一记录。结论: v0.5 系保底提交已处置完毕, 不重算不重提。
 - **dataset_weights 探针判决 (主链 bzr1, bench-in-loop 证据)**: gwps/hct116_calNC 重叠 71.0M 对, sign agree 0.5077 (≈抛硬币); 强对 (max|v|>0.25) 仅 0.23% 且 agree 0.6495。Q_HepG2 truth top50 覆盖: 99/99 靶在 gwps, 86/99 在 hct (13 靶 gwps-only 不受权重影响, 0 靶 hct-only)。对 2703 truth 覆盖对扫描 w_g/w_h 比率: 最大 sign-match 增益 +0.0014 (w_g=1.2: 0.7114 vs 等权 0.7100), 净行分解 +26/-22 (净 4 行), 强真值行 (|tru|>0.5, n=1940) 净 0, 增益行 |s_eq| 0.0015 全在噪声带。**判决: dataset_weights 非对称加权非真实结构杠杆, 不建臂**。
 - **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)** — 主线下一结构臂候选: NC+yh 混合 (DE-gene yh 幅度 + NC sign lock, 须守 A70 教训: 大幅混入 cosine 主导签名崩 pds); dataset_weights 已探明噪声级关闭。
+
+## iter035-续2: HY k 曲线完备 — k*=6, HY6 heur 0.0907 全场新高, 首族过 0.0859 门 (2026-10-18 17:50 UTC)
+
+- **k 曲线终态 (bench-in-loop, Q_HepG2, heur overall_pred, 门=0.0859)**: **k=6 → 0.0907 (NEW BEST)** > k=12 → 0.0905 > k=18 → 0.0891 ≈ k=50 → 0.0890 > k=25 → 0.0887 > v10hcx 0.0896 (官方 0.0859) > v11nc 0.0859 (门). plateau 在 k∈[6,12], 之后劣化; k*=6.
+- **HYf (只升不缩 max(|x|,|yhat|)) 括号对照 0.0786 FAIL** — 放大再次为负 (AMP 家族判决第四次复现), HY 的 pds 增益来自**收缩**让位而非放大.
+- **heur 排序终局**: HY6 0.0907 > HY12 0.0905 > v10hcx 0.0896 > HY18 0.0891 > HY50 0.0890 > HY25 0.0887 > v11nc 0.0859 > S08 0.0844 > HYf 0.0786 ≈ G115 0.0782 > a70 0.0634 >> ampq75 -0.0382.
+- **local official-mode anchor**: HY12 0.3144 > HY6 0.3124 > HY50 0.3122 > HY18 0.3115 > HY25 0.3110 > S08 0.3081 > NC 0.2904 > HCX 0.2751 — HY 族在官方口径下同样全场领先.
+- **构造要点复述**: 基底 NC(x)=x−μ_g+sign 非穿越翻回; DE 集 = per (source,target) top-k by |yhat| (校准器自身置信, 不触 truth); HY = DE∩sign(x)==sign(yhat) 处 v=sign(x)·|yhat|, 其余=NC(x). HY6 de&agree 覆盖率仅 0.13% (gwps) / 0.01% (hct116) — 结构外科级局部干预.
+- **heurs→official 缝隙警告**: v10hcx heur 0.0896 → 官方 0.085867 (gap −0.0037). HY6 线性外推官方 ≈0.0870 (+0.0011 vs v0.8), 薄. 10-18 剩 1 发; 决策 = HY12 (official-mode anchor 0.3144 全场最佳) 作为 bizard-v0.9 提交臂 — anchor 域 (0.3124 vs 0.3144, HY12>+0.002) 与 fid 代理 (HY12 -0.058 vs HY6 -0.0599) 双指标均指向 12, 且 k=12 处曲线平台中心更稳.
+- **提交链已启动 (17:52 UTC)**: production config configs/l1_signature/bzr1v12-hy12-lam70-mf14.yaml (datasets [gwps_calHY12, hct116_all_calHY12], output_stem 20261018_bizard_v09_hy12) → make_predictions.py 后台构建 h5ad (task b97pgz6rn) → vcc prep → submit (模板 scripts/submit_bizard_v08_1017.sh, L=bizard-v0.9).
+- **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
