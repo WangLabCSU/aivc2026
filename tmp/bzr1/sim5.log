@@ -1,0 +1,47 @@
+hold perts=100
+gwps: paired+truth=739,844 t=6s
+hct116_all: paired+truth=810,545 t=51s
+matrix: 100 perts x 6146 genes t=52s
+
+== sim5: pds + fid 代理 + nmae 代理 ==
+A_x (v0.7)         pds=0.8130 fidpx=0.6942 nmaepx=0.8622
+B_yhat (v0.8b)     pds=0.5430 fidpx=0.7710 nmaepx=0.7449
+H_center_x (v0.8)  pds=0.8584 fidpx=0.6158 nmaepx=0.9014
+NC_b1.0 (v0.11)    pds=0.8631 fidpx=0.6942 nmaepx=0.8926
+R_rowcenter        pds=0.8191 fidpx=0.6868 nmaepx=0.8600
+D_double           pds=0.8648 fidpx=0.6128 nmaepx=0.9005
+Z_gene             pds=0.8557 fidpx=0.6158 nmaepx=2.2869
+M_med              pds=0.8653 fidpx=0.6472 nmaepx=0.8847
+NCmed              pds=0.8634 fidpx=0.6942 nmaepx=0.8814
+P1_pc1             pds=0.8208 fidpx=0.5948 nmaepx=0.9333
+P1_pc2             pds=0.8323 fidpx=0.6072 nmaepx=0.9423
+P2_pc1             pds=0.8128 fidpx=0.6186 nmaepx=0.9350
+P2_pc2             pds=0.8218 fidpx=0.6046 nmaepx=0.9447
+HY_flip            pds=0.8507 fidpx=0.6942 nmaepx=0.8723
+W_max              pds=0.6466 fidpx=0.7662 nmaepx=0.7263
+AMP_g1.3           pds=0.8635 fidpx=0.6942 nmaepx=0.8669
+AMP_g1.6           pds=0.8634 fidpx=0.6942 nmaepx=0.8464
+
+== 相对锚点 (A=行0, H=行2, NC=行3) ==
+A_x (v0.7)         dP=+0.0000 dF=+0.0000 dNMAE=+0.0000
+B_yhat (v0.8b)     dP=-0.2700 dF=+0.0768 dNMAE=-0.1173
+H_center_x (v0.8)  dP=+0.0454 dF=-0.0784 dNMAE=+0.0392
+NC_b1.0 (v0.11)    dP=+0.0501 dF=+0.0000 dNMAE=+0.0303  <<<
+R_rowcenter        dP=+0.0061 dF=-0.0074 dNMAE=-0.0023
+D_double           dP=+0.0518 dF=-0.0814 dNMAE=+0.0383
+Z_gene             dP=+0.0427 dF=-0.0784 dNMAE=+1.4247
+M_med              dP=+0.0523 dF=-0.0470 dNMAE=+0.0225
+NCmed              dP=+0.0504 dF=+0.0000 dNMAE=+0.0192  <<<
+P1_pc1             dP=+0.0078 dF=-0.0994 dNMAE=+0.0711
+P1_pc2             dP=+0.0193 dF=-0.0870 dNMAE=+0.0801
+P2_pc1             dP=-0.0002 dF=-0.0756 dNMAE=+0.0728
+P2_pc2             dP=+0.0088 dF=-0.0896 dNMAE=+0.0824
+HY_flip            dP=+0.0377 dF=+0.0000 dNMAE=+0.0100
+W_max              dP=-0.1664 dF=+0.0720 dNMAE=-0.1359
+AMP_g1.3           dP=+0.0505 dF=+0.0000 dNMAE=+0.0046  <<<
+AMP_g1.6           dP=+0.0504 dF=+0.0000 dNMAE=-0.0159  <<<
+
+== sanity ==
+S1 B<A : PASS  S3 |A-0.5121|<0.10 : FAIL (A=0.8130)
+F1 fidpx(HCX)<fidpx(A) : PASS (HCX=0.6158 A=0.6942)
+[done] t=60s

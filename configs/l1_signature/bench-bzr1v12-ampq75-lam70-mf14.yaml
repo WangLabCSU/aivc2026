@@ -1,0 +1,15 @@
+# iter034 v0.12 AMPQ75 (q75选择性放大保号中心化) bench 配置 — 修正10
+# sim5b 证据 (tmp/bzr1/sim5b.log): AMP_q75_2.0 pds d_vs_A=+0.0545 (>NC +0.0501)
+# fid代理 dF=+0.0000 + nmae代理 dN=-0.0256 — 首支三轴同时不劣于v0.7.
+# datasets 换 *_calAMPQ75, 其余逐键镜像 bench-bzr1v11-nc-lam70-mf14.yaml.
+datasets: [gwps_calAMPQ75, hct116_all_calAMPQ75]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_ampq75
