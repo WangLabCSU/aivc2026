@@ -295,3 +295,12 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **预算状态**: 10-18 两发用尽 (v0.6 λ75 0.08094 + v0.9 HY12 0.0924); 10-19 00:00 UTC 重置 2 发.
 - **下一轮候选排序 (过门后才花)**: 需本地新证据 — (a) HY k∈{3,8} 细化括号 (k=6 是边缘值, k∈[6,12] 平台内有更优可能); (b) NC+yh 构造与其他已关闭轴的组合 (仅 anchor 证据支持时); 无过门候选 → 不为花而花.
 - **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
+
+## 2026-10-18 19:21 UTC — iter035-续4: HY k 细化 (k=3,8) 完备 — HY8 双指标新 k*, 准备 bizard-v0.10
+
+- **k 曲线补全 (heur overall_pred / official-mode anchor / bench overall)**: k=3 → 0.0911 / 0.3121; k=6 → 0.0907 / 0.3124; **k=8 → 0.0915 / 0.3154 (双指标新 k\*)**; k=12 → 0.0905 / 0.3144 (官方已兑 0.0924); k=18 → 0.0891; k=25 → 0.0887; k=50 → 0.0890.
+- **HY3 证负**: heur 0.0911 但 anchor 0.3121 最低档, bench pds 0.9329 虽高, jac/nmae 恶化 — 过稀 DE 集信息不足; 排除.
+- **HY8 判定**: heur +0.0010 / anchor +0.0010 双超 HY12, 与 HY12>HY6 的同款双指标逻辑一致 (该逻辑已被 v0.9 官方 0.0924 验证); 预测官方 ≈ 0.0933–0.0935.
+- **预算状态**: 10-19 00:00 UTC (约 4.6h 后) 重置 2 发. 决策 = **bizard-v0.10 = HY8** (第一发), 第二发留待 HY8 结果后依新证据决策.
+- **生产链**: config bzr1v13-hy8-lam70-mf14.yaml (镜像 hy12 生产配置, datasets *_calHY8) → make_predictions.py 后台 → vcc prep → submit 脚本带 00:00 UTC 时间闸.
+- **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
