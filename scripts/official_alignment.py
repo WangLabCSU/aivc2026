@@ -38,6 +38,9 @@ METRICS = {
 
 # 官方点（来自 submission_ledger / *_online.json）: (family, stem, local_tag, per-metric official raw)
 OFFICIAL_POINTS = {
+    ("heur", "20261018_bizard_v08_hcx"): dict(  # bizard-v0.8 entry yOhadwwCK9zr0boVBJtK submitted 2026-10-18T02:45:16Z Rank 791 Overall 0.085867 (HCX 跨pert中心化, vs v0.7 +5e-5)
+        local="bzr1v10hcx_Q", official={"pds": 0.5177, "mse": 0.0, "nmae": -0.1089,
+                                        "fid": -0.0300, "reach": 0.1329, "jac": 0.0035}),
     ("heur", "20261017_dualsrcdeep_lam70mf14"): dict(  # bizard-v0.7 entry 2a8UWn0MwC1l3Xg7ReSJ submitted 2026-10-17T00:01:03.545032Z Rank 782 Overall 0.085809
         local="dualdeep_lam70mf14_Q", official={"pds": 0.5121, "mse": 0.0, "nmae": -0.1089,
                                                 "fid": -0.0244, "reach": 0.1325, "jac": 0.0036}),

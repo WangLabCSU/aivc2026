@@ -156,7 +156,11 @@ def main() -> None:
             if p in dmap.index.get_level_values(0):
                 d = dmap.loc[p].reindex(panel).to_numpy()
                 f = np.power(2.0, mcfg["lambda_real"] * np.nan_to_num(d, nan=0.0)).astype(np.float32)
+                orig = M.data.copy()
                 M = M.multiply(f.reshape(1, -1)).tocsr()
+                # 逐元素上限 = max_fold × 原始计数 (镜像 build_submission — 缺此帽时
+                # z-score 等大 |δ| 签名经 λ 放大会撑爆 max_counts_per_cell → ScaleLimitError)
+                M.data = np.minimum(M.data, mcfg.get("max_fold", 14.0) * orig)
                 M.data = np.clip(np.rint(M.data), 0, None).astype(np.float32)
                 M.eliminate_zeros()
             blocks.append(M)
