@@ -285,3 +285,13 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **heurs→official 缝隙警告**: v10hcx heur 0.0896 → 官方 0.085867 (gap −0.0037). HY6 线性外推官方 ≈0.0870 (+0.0011 vs v0.8), 薄. 10-18 剩 1 发; 决策 = HY12 (official-mode anchor 0.3144 全场最佳) 作为 bizard-v0.9 提交臂 — anchor 域 (0.3124 vs 0.3144, HY12>+0.002) 与 fid 代理 (HY12 -0.058 vs HY6 -0.0599) 双指标均指向 12, 且 k=12 处曲线平台中心更稳.
 - **提交链已启动 (17:52 UTC)**: production config configs/l1_signature/bzr1v12-hy12-lam70-mf14.yaml (datasets [gwps_calHY12, hct116_all_calHY12], output_stem 20261018_bizard_v09_hy12) → make_predictions.py 后台构建 h5ad (task b97pgz6rn) → vcc prep → submit (模板 scripts/submit_bizard_v08_1017.sh, L=bizard-v0.9).
 - **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
+
+## 2026-10-18 18:51 UTC — iter035-续3: bizard-v0.9 官方 PUBLISHED — 0.0924 rank 762 新最高, HY 臂官方兑现
+
+- **官方结果 (entry CV9sGkgWRLsWCPlPmqve, published 18:51 UTC)**: **Overall 0.092378** — rank **762**/791, 超越 v0.8 (0.085867, rank 788) +0.0065, 系列新纪录 (v0.7 0.085809 / v0.6 0.08094 / v0.5 0.00066).
+- **分项**: pds **0.5062** (v0.8 0.4833, +0.023 — NC+yh 收缩让位结构对 pds 的增益官方兑现) / nmae −0.0575 (HCX −0.058 持平) / fid −0.0288 (HCX −0.0270 持平) / reach 0.1310 / jac 0.0034 / mse 0.
+- **heur→official 缝隙实测**: HY12 heur 0.0905 → 官方 0.0924 (gap **+0.0019**, 方向反转为正!) — v10hcx 的 −0.0037 负缝隙不迁移到 HY 族; HY 官方模式 anchor 0.3144 的排序与官方结果一致.
+- **判决**: NC+yh 混合臂 (NC 基底 + top-k by |yhat| DE∩sign-agree 让位) 构造类首战告捷, k 轴确认有效; HYf 负括号 (0.0786) 已证负 → 增益 = 收缩让位, 非放大.
+- **预算状态**: 10-18 两发用尽 (v0.6 λ75 0.08094 + v0.9 HY12 0.0924); 10-19 00:00 UTC 重置 2 发.
+- **下一轮候选排序 (过门后才花)**: 需本地新证据 — (a) HY k∈{3,8} 细化括号 (k=6 是边缘值, k∈[6,12] 平台内有更优可能); (b) NC+yh 构造与其他已关闭轴的组合 (仅 anchor 证据支持时); 无过门候选 → 不为花而花.
+- **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
