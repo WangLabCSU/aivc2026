@@ -1,0 +1,15 @@
+# iter033 v0.11 sign-noncrossing 中心化臂 bench 配置 — NC (修正9)
+# sim4 证据: NC_b1.0 pds d_vs_A=+0.0501 (≥HCX +0.0454) 且 fid 代理与 v0.7 逐位同符号
+# (dF=+0.0000) — 解 v0.8 官方 pds+0.0056/fid-0.0056 精确对冲的根因 (中心化翻弱信号符号).
+# datasets 换 *_calNC, 其余逐键镜像 bench-bzr1v10-hcx-lam70-mf14.yaml.
+datasets: [gwps_calNC, hct116_all_calNC]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_nc

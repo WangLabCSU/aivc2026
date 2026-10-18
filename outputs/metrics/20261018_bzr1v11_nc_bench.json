@@ -1,0 +1,21 @@
+{
+ "tag": "bzr1v11nc_Q",
+ "family": "heur",
+ "date_utc": "2026-10-18T03:43Z",
+ "bench_overall_raw": {
+  "pds_cosine": 0.83232, "expr_mse_unbiased": 0.02872,
+  "de_wilcoxon_lfc_nmae": 0.97231,
+  "de_wilcoxon_direction_fidelity_yield_raw": 0.58151,
+  "de_wilcoxon_direction_reach_raw": 0.41397,
+  "de_wilcoxon_sig_jaccard": 0.07468
+ },
+ "bench_vs": {
+  "hcx (bzr1v10hcx_Q)": {"pds": -0.0007, "mse": -0.0017, "nmae": -0.0139, "fid": +0.0004, "reach": +0.0042, "jac": -0.0004},
+  "v0.7 (dualdeep_lam70mf14_Q)": {"pds": "+0.0168", "mse": "-0.0020", "nmae": "-0.0107", "fid": "-0.0055", "reach": "-0.0077", "jac": "-0.0015"}
+ },
+ "heur_pred": {"pds": 0.5314, "jac": 0.0005, "nmae": -0.0846, "fid": -0.0601,
+               "reach": 0.1284, "overall_pred": 0.0859,
+               "local_raw": {"pds": 0.9381, "jac": 0.095, "nmae": -0.3594, "fid": 0.8316, "reach": 0.2371}},
+ "verdict": "GATE FAIL — heur overall_pred 0.0859 = v0.8官方0.085867 平手, 零边际 (<校准残差±0.005~0.05). sim4 fid代理dF=0未转化为bench fid恢复(仍-0.0055 vs v0.7): NC在bench上仅比HCX fid +0.0004, 说明sim4 fid代理是必要非充分证据. 对冲软化(pds+0.0168对fid-0.0055, 比HCX的+0.0056/-0.0056比率改善3倍)但未打破. NC臂关闭(v0.11暂存, 不提交). 剩余1发HOLD(不为花而花), 额度UTC 00:00刷新.",
+ "next": "pds/fid在中心化族内是零和局部战场 → 轴向转向: (a) NC的mse/nmae/reach全面优于HCX+v0.7, 探索放大该轴; (b) 混合NC+yh (DE基因上yh幅度+NC符号锁); (c) 结构性跳出中心化族, 重设计臂."
+}
