@@ -267,3 +267,10 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - 幅度门控 (大|x|=载体): mg90 只豁免 top-10% 比 v0.8 纯校准还差 → 中等 |x| 带也载方向. MG 诊断: gwps 分歧 |x| 质量散布 q50/75/90/95 带 = 0.076/0.096/0.080/0.031, hct116 = 0.002/0.050/0.126/0.079 — 分歧载体**不可按幅度分域**.
 
 **家族关闭判决**: 校准后 signature 级手术 (α-blend / sign-gate / mag-gate) 五个干预点全部低于门, 排序≈干预广度; fid 锚 (0.88-0.95 vs v0.7 0.84) 永远改善但补不回 pds. 最大值在 α=1 ≡ v0.7. 结论: 任何在"校准输出→替换/混合原值"范式内的后续臂均为负期望, **不再构造**. 真重设计必须换构造 (方向保持by-design: 例如直接在 fold/2^Δ 空间学习、或以 pds 对齐为目标函数), 否则 10-18 两发按重置决策单执行 (无过门候选→保持未花).
+
+## iter035-续: se600m r2 三臂第二轮 bench 全败 + v0.5 官方已发布补记 + dataset_weights 探针噪声级 (2026-10-18 13:35 UTC)
+
+- **r2 三臂第二轮 (bizard_summary mean_overall, 门1 ≥0.395446 = round-1 v0.6-dl 官方还原)**: arm_birds **0.2449** (与 round-1 逐位一致 0.24486 — 确定性复现, 无种子漂移) / arm_birds_dl **0.1207** / arm_dl **-0.8706** — 三臂全 FAIL, 排序与 round-1 完全一致, 无新信息。链路已停 (无运行中进程, bench log 尾部均为终值)。
+- **v0.5 官方结果补记 (从 logs/submit_bizard_v05_1016.log FINAL_STATUS 恢复)**: 2026-10-16T14:48:55Z published, **Overall 0.0006606 / Rank 1028** (pds 0.28178 / mse 0 / nmae 0.04160 / fid -0.36289 / reach 0.06381 / jac -0.02035)。提交~29min 即发布, 卡死2h cancel 规则未触发; entry 50afg20XylIFiivjWBN9 现已 not_found (vcc status), log 为唯一记录。结论: v0.5 系保底提交已处置完毕, 不重算不重提。
+- **dataset_weights 探针判决 (主链 bzr1, bench-in-loop 证据)**: gwps/hct116_calNC 重叠 71.0M 对, sign agree 0.5077 (≈抛硬币); 强对 (max|v|>0.25) 仅 0.23% 且 agree 0.6495。Q_HepG2 truth top50 覆盖: 99/99 靶在 gwps, 86/99 在 hct (13 靶 gwps-only 不受权重影响, 0 靶 hct-only)。对 2703 truth 覆盖对扫描 w_g/w_h 比率: 最大 sign-match 增益 +0.0014 (w_g=1.2: 0.7114 vs 等权 0.7100), 净行分解 +26/-22 (净 4 行), 强真值行 (|tru|>0.5, n=1940) 净 0, 增益行 |s_eq| 0.0015 全在噪声带。**判决: dataset_weights 非对称加权非真实结构杠杆, 不建臂**。
+- **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)** — 主线下一结构臂候选: NC+yh 混合 (DE-gene yh 幅度 + NC sign lock, 须守 A70 教训: 大幅混入 cosine 主导签名崩 pds); dataset_weights 已探明噪声级关闭。
