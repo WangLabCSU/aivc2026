@@ -1,0 +1,13 @@
+# iter031 v0.10 跨pert对比归一臂 bench 配置 — H_center_x (HCX)
+# datasets 换对比归一签名 *_calHCX, 其余逐键镜像 bench-bzr1v09-a70-lam70-mf14.yaml (λ7.0/mf14).
+datasets: [gwps_calHCX, hct116_all_calHCX]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261017_bzr1v10_lam70mf14_hcx

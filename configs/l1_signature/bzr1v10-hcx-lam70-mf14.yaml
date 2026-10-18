@@ -1,0 +1,14 @@
+# iter031 v0.10 跨pert对比归一臂 官方提交配置 — H_center_x (HCX)
+# 首支过门重设计臂: sim3 pds +0.0454 (S1/S2/S3 PASS) → bench heur overall_pred 0.0896
+# > v0.7 官方 0.0858 (+0.0038). datasets 换对比归一签名, 其余逐键镜像 dualsrc-deep-lam70-mf14.yaml.
+datasets: [gwps_calHCX, hct116_all_calHCX]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v08_hcx
