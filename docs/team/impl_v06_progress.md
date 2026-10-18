@@ -304,3 +304,4 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **预算状态**: 10-19 00:00 UTC (约 4.6h 后) 重置 2 发. 决策 = **bizard-v0.10 = HY8** (第一发), 第二发留待 HY8 结果后依新证据决策.
 - **生产链**: config bzr1v13-hy8-lam70-mf14.yaml (镜像 hy12 生产配置, datasets *_calHY8) → make_predictions.py 后台 → vcc prep → submit 脚本带 00:00 UTC 时间闸.
 - **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
+- [10-18 22:02 UTC] sim10 wrong-drop细分证负: disagree仓位仅0.71/8, 清错号只+pds 0.0006; HYf实测(负)反证sim9放大方向→幅度谱轴全闭合, HY8=该构造类最优点. wrapper 1265702 alive, v0.10=HY8 待00:02 UTC.
