@@ -1,0 +1,39 @@
+{
+  "tag": "bzr1v12ampq75_Q",
+  "arm": "iter034 AMPQ75 (NC基础上 q75阈值选择性×2.0保号放大)",
+  "date": "2026-10-18",
+  "sim_evidence": {
+    "sim5b": "AMP_q75_2.0 pds d_vs_A=+0.0545 (>NC +0.0501) fid代理 dF=+0.0000 nmae代理 dN=-0.0256 — 三轴同过门",
+    "note": "该证据被 bench 全面证伪 — 代理第3次失真"
+  },
+  "bench_raw": {
+    "pds": 0.94238,
+    "nmae": -2.76220,
+    "fid": 0.79919,
+    "reach": 0.24445,
+    "jac": 0.08936
+  },
+  "bench_vs": {
+    "NC":    {"pds": 0.93806, "nmae": -0.35941, "fid": 0.83159, "reach": 0.23707, "jac": 0.09500},
+    "HCX":   {"pds": 0.94008, "nmae": -0.44679, "fid": 0.83069, "reach": 0.23027, "jac": 0.09648},
+    "v0.7":  {"pds": 0.89019, "nmae": -0.42656, "fid": 0.84454, "reach": 0.24964, "jac": 0.10044},
+    "deltas_vs": {
+      "NC":   {"pds": 0.00432, "nmae": -2.40279, "fid": -0.03240, "reach": 0.00738, "jac": -0.00564},
+      "HCX":  {"pds": 0.00230, "nmae": -2.31541, "fid": -0.03150, "reach": 0.01418, "jac": -0.00712},
+      "v0.7": {"pds": 0.05219, "nmae": -2.33564, "fid": -0.04535, "reach": -0.00519, "jac": -0.01108}
+    }
+  },
+  "heur_pred": {
+    "pds": 0.535,
+    "jac": -0.0031,
+    "nmae": -0.7581,
+    "fid": -0.1359,
+    "reach": 0.1331,
+    "overall_pred": -0.0382,
+    "local_anchor": -0.1144710969081751
+  },
+  "verdict": "GATE FAIL — 系列最差 heur pred (-0.0382, 门需 >0.0859). ×2.0 放大在 bench 上 nmae 爆炸 (-2.76 vs NC -0.36, Δ-2.40), fid 同步 -0.032 (sim5b 代理双双报 +0.0000). 根因: 放大值 max|v|=5.84 超过 max_fold 14 的 lfc 帽 ≈3.807, 管道内截断+过冲双杀; 代理测的是聚合签名矩阵, bench 测的是 make_predictions→pdex 全管道输出 — 第三次证明代理必要非充分, 唯一可信本地评估 = bench 链 (~6min/run).",
+  "lesson": "幅度轴上凡'放大幅值'类构造必须先过 max_fold/lfc 帽约束; 收缩类则 nmae-单调安全 (|P|→0 时 |P-Y| 不增). 下一臂: NC基础上的弱信号收缩族 (sim6).",
+  "next": "sim6 收缩族筛选 (S_rowmed/HT/ST/WN) — fid 的 n_pred 反向杠杆: 弱符号不确定基因移出 pred 显著集, 若其为错号则 fid 升; 无帽越界风险.",
+  "official_budget": "2026-10-18 0/2 已用 (v0.8 已 published); 今日剩余 1 发, 无过门候选 → HOLD 不为花而花"
+}
