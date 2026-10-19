@@ -338,3 +338,21 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **剩余出路评估** (签名-校准范式内全部主轴已闭):
 - 架构学习轴 (BizardNet 方向头) 为冻结清单中唯一带解冻条款的方向 (held-out-pert 诚实验证强制) — 下一步评估其训练可行性 (se600m 状态核查).
 - HY 类内部已无 >0.0924 期望点; 盲花第 2 发只会重复 rank 762–791 抖动.
+
+## 2026-10-19 02:12 UTC — iter037-续1: 架构学习轴 (BizardNet 方向头) 可行性判决 — 独立载体全线不过门, 重训设计定为 per-target×per-context 幅度学习 + HY 基底
+
+**证据链** (iter037 记录的「se600m 状态核查」+ 架构资产盘点, 本轮收口):
+
+1. **se600m r2 三臂 (iter035-续 13:35 UTC 已录, 此处引用结案)**: arm_birds 0.2449 / arm_birds_dl 0.1207 / arm_dl -0.8706, 全 FAIL 门1 ≥0.395446; arm_birds 与 round-1 逐位一致 (确定性), 无新信息。se600m-init 的 DL 臂同样崩 (arm_dl -0.8706) — 第二个架构类资产独立提交性证负。
+2. **BizardNet skip-head 载体 bench (anchor_v11_sweep.json, official anchor-normalized 口径, Q_HepG2)**: 8 tag λ∈{12,16,18,20} × {v10r,v11} 全读数 — skipv10r_lam12 -0.0241 / skipv11_lam12 -0.0301 / skipv10r_lam16 -0.0105 / skipv11_lam16 -0.0105 / skipv10r_lam18 -0.0070 / skipv11_lam18 -0.0035 / skipv10r_lam20 -0.0093 / **skipv11_lam20 +0.0015 (唯一正值, 仍距 HY8 anchor 0.3154 差 ~0.31)**。anchor pds 全带仅 0.040–0.052 (HY 族 0.31+), nmae −0.40…−0.78, raw mse 1.2–1.9 — 方向头信号存在 (λ↑ 单调改善) 但幅度信噪比差 6 倍, 独立成压不可行。
+3. **anchor_v11fix sweep 无读数**: 7 entry 全 error「agg_results.csv 不存在」— 该 sweep 从未跑通 local_bench, 无证据价值。
+4. **LOCO 代码判决 (bizardnet.py 审计)**: transformer gated 分量跨上下文稀释信号 (gate≈0, 输出高方差低相关); 20-dim skip 线性头是唯一迁移载体 (λ16 0.3521 vs CCRN 0.3474)。
+5. **官方 pds 0.285 vs fid -0.032 分裂**: 方向/形状头达冠军级, 败轴 = 幅度 — 与 iter018 诊断 (per-target×per-context 幅度预测是 redesign 靶心) 一致。
+
+**裁决**:
+- **BizardNet 方向头独立提交性证负** (skip 载体距门 ~0.31, se600m 三臂全败) — 冻结清单「BizardNet 方向头」按解冻条款评估完毕: 现有 checkpoint 无可提交产物。
+- **重训设计方向 (唯一合法出口, 依 L269 + iter018)**: per-target×per-context **幅度**预测, 直接在 fold/2^Δ 空间学习或以 pds 对齐为目标函数; 输出**必须**与 HY 族构造 (NC 基底 + top-k 收缩让位) 集成作幅度/方向修正头, **永不**独立成压 (skip-head 与 raw-DL 独立提交均已 bench 证负)。
+- **解冻条款继续生效**: 任何重训臂必须 held-out-pert 诚实验证 + bench 门 (heur overall_pred > 0.0859 + margin) 过门才花提交。
+- 10-19 第 2 发维持不出手 (无候选期望 >0.0924)。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; BizardNet方向头评估完毕转为重训设计待建)**
