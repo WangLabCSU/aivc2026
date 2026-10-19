@@ -76,6 +76,8 @@ def main():
         print(f"loaded {n}: {len(data[n][0]):,} t={time.time()-t0:.0f}s", flush=True)
 
     # v2 校准器输出 (G3/G4 基线 + 后续 probe 的符号裁判)
+    SRC = [c for c in CTX if c != "hepg2_all"]
+    SRCID = {c: i for i, c in enumerate(SRC)}
     CALY = {}
     for a in SRC:
         if os.path.exists(f"{SIG}/{a}_cal.parquet"):
@@ -135,8 +137,6 @@ def main():
     print(f"ntc aligned {int(mm.sum())}/{NG} t={time.time()-t0:.0f}s", flush=True)
 
     # ---- 源内幅度谱统计 (仅用 source 自身 |x| 结构, 无真值泄漏) ----
-    SRC = [c for c in CTX if c != "hepg2_all"]
-    SRCID = {c: i for i, c in enumerate(SRC)}
     NP_ = len(vocab_p)
     RK = {}; WD = {}; K8 = {}; K50 = {}
     for a in SRC:
@@ -166,9 +166,12 @@ def main():
         x = xa[ia]; y = xb[ib]
         cgsh = (shared % NG).astype(np.int64); cpsh = (shared // NG).astype(np.int64)
         kc, yc = CALY[a]  # 无 cal 输出的源已在 CALY 预置空表
-        pos = np.searchsorted(kc, shared)
-        pos_c = np.minimum(pos, len(kc) - 1)
-        yh = np.where(kc[pos_c] == shared, yc[pos_c], 0.0).astype(np.float32)
+        if len(kc) == 0:
+            yh = np.zeros(len(shared), dtype=np.float32)
+        else:
+            pos = np.searchsorted(kc, shared)
+            pos_c = np.minimum(pos, len(kc) - 1)
+            yh = np.where(kc[pos_c] == shared, yc[pos_c], 0.0).astype(np.float32)
         rk = RK[a][ia]; wd = WD[a][ia]
         X = np.column_stack([
             x, np.abs(x), GME[a][cgsh], GST[a][cgsh], GQ9[a][cgsh],

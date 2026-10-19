@@ -1,0 +1,72 @@
+{
+  "t_sec": 1735.2,
+  "rounds": 500,
+  "seed": 0,
+  "feats": [
+    "x",
+    "ax",
+    "gmean",
+    "gstd",
+    "gq90",
+    "pmean",
+    "pq90",
+    "x_z",
+    "x_rel_p",
+    "x_rel_g",
+    "tg_mean",
+    "tg_std",
+    "tg_q90",
+    "src_id",
+    "rk_desc",
+    "wd",
+    "top8",
+    "top50",
+    "kth8",
+    "kth50",
+    "ax_rel_kth8",
+    "ntc_cv",
+    "ntc_theta"
+  ],
+  "formulation": "amp |y| dual-objective (sq+huber)",
+  "n_train": 85114067,
+  "n_hold": 3740985,
+  "baseline_abs_x": {
+    "mae": 0.0481412410736084,
+    "corr": 0.29562416916381556,
+    "spearman_med": 0.07625487341615246
+  },
+  "baseline_abs_yh": {
+    "mae": 0.05241630971431732,
+    "corr": 0.29687387157716305,
+    "spearman_med": 0.037432449721588545
+  },
+  "baseline_gene_prior_abs": {
+    "mae": 0.04567573964595795,
+    "corr": 0.3844403592170475,
+    "spearman_med": 0.20197771211450918
+  },
+  "model_sq": {
+    "mae": 0.03639495000243187,
+    "corr": 0.5909764305372708,
+    "spearman_med": 0.3130463167217651,
+    "gates": {
+      "G1_mae_beats_x": true,
+      "G2_sp_beats_x": true,
+      "G3_mae_beats_yh": true,
+      "G4_sp_beats_yh": true
+    },
+    "verdict": "PASS"
+  },
+  "model_hu": {
+    "mae": 0.035484496504068375,
+    "corr": 0.5901271009996502,
+    "spearman_med": 0.30975247824955743,
+    "gates": {
+      "G1_mae_beats_x": true,
+      "G2_sp_beats_x": true,
+      "G3_mae_beats_yh": true,
+      "G4_sp_beats_yh": true
+    },
+    "verdict": "PASS"
+  }
+}
