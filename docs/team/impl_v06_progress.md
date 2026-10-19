@@ -356,3 +356,18 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - 10-19 第 2 发维持不出手 (无候选期望 >0.0924)。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; BizardNet方向头评估完毕转为重训设计待建)**
+
+## 2026-10-19 06:05 UTC — iter037-续2: L269 幅度头 v1 落地并开训 — per-(target,gene,context) |y| 预测, 双目标函数, hold-100 预注册门 G1–G4
+
+**动作** (依 iter037-续1 重训设计, 唯一合法出口):
+- `tmp/bzr1/train_amp_v1.py` 写毕 + py_compile 通过 + 后台启动 (PID 1374102, log `logs/train_amp_v1_1019.log`)。
+- 结构: 23 特征 XGB (v2 的 14 列 + 幅度谱 9 列: rk_desc/wd/top8/top50/kth8/kth50/ax_rel_kth8/ntc_cv/ntc_theta), 训练目标 = **|y|** (只学幅度, 方向仍由 HY 构造 sign 门给出 — 冻结条款: 输出只作 HY8 幅度源替换, 永不独立成压)。
+- 双目标函数: reg:squarederror (pds/cosine 对齐, 行内大幅度主导) + reg:pseudohubererror (huber_slope 0.05, 稳健对照); hist/cuda, depth 8, eta 0.05, 500 rounds。
+- 训练/评估切分: 5 源 (SRC = CTX − hepg2_all) × hepg2 真值交集对; **hold = 100 个 bench 靶 (Q_HepG2 perts, 词汇表码位断言 ==100)**, hepg2 源侧统计同样剔 hold — 无泄漏。
+- 基线: |x| (源侧 raw), |yh| (v2 校准器), gene-prior |TGM|; 预注册门 **G1 mae<|x|, G2 sp>|x|, G3 mae<|yh|, G4 sp>|yh|** (G3/G4 = 必须超 v2 校准器的幅度读数)。
+- 输出: M_amp_sq.json / M_amp_hu.json / amp_hold_v1.parquet (probe 集成用 hold 明细) / train_meta_amp_v1.json (全部基线+门+verdict)。
+- 对齐律执行: np.unique 后无条件 bincount-mean 经 inv 重排 (iter030-修正3); 分母 clamp max(·,1e-3); CALY 缺失源 (jurkat/rpe1/k562_ess 无 _cal.parquet) 置空表不崩。
+
+**通过后路径** (未过门则幅度轴终判): amp_hold_v1 → sim5/sim8c probe 替换 |YH| top-8 括号幅度源 (sign 门不变) → bench 链 Q_HepG2 → heur overall_pred > 0.0859 + margin 才出手 (10-20 额度)。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed→仅作重训材料)**
