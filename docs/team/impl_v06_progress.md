@@ -417,3 +417,19 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **下一步**: run2 heur overall_pred 判决 — >0.0859+margin 且 >0.0924 官方期望才出手 bizard-v0.11 (10-20 00:00 UTC 额度)。若 ≤ HY8 的 0.0915+margin → amp 集成轴 (L269 最后合法出口) 封闭, 重估方向。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed)**
+
+## 2026-10-19 10:25 UTC — iter037-续7: amp 集成轴判决 — bench heur 0.0876 < HY8 0.0915, **封闭** (L269 最后合法出口关闭)
+
+**bzr1v16hy8amp 干净重跑判决** (run2, 双 parquet 在场, log `logs/bench_v16_hy8amp_run2.log`):
+- heur overall_pred **0.0876** (pds 0.5092 / nmae −0.0559 / fid −0.0563 / reach 0.1272 / jac 0.0016; local_anchor 0.3033)。
+- vs v14hy8 **0.0915**: Δ = **−0.0039** — sim8c d8 +0.0037 的正读数**未迁移** (第 5 次迁移失败, 与 triple-proxy law 一致)。
+- 分量闭环 (family 级 calib a: pds 0.828/nmae 0.280/fid 2.339/reach 0.635/jac 0.639, 分解合计 −0.00390 = 实测): 主掉分 **nmae −0.0030** (local nmae −0.065, from_replicate −0.2568 vs −0.1917) + **pds −0.0013** (−0.0092)。amp 幅度抬高在 Q_HepG2 上让 Wilcoxon lfc 与真值偏离更大 (幅度过高), pds 排序也轻微受损。
+- 足迹回顾: 仅 457 (gwps) + 320 (hct116) 个 sel 位改动, 双源 HY8 重建 0.000% 差异 — 构造正确, 是**方向性负效应**, 非 bug。
+
+**判决 (按 iter037-续5 预注册)**: heur 0.0876 ≤ HY8 0.0915+margin, 门未过 → **amp 集成轴封闭**。sim8c 侧 d8 +0.0037 是假阳性 (max-form "只增不减" 对 sim 框架成立, 对真 bench 不成立 — sim 框架对幅度谱的偏好与真评分歧)。
+- L269 重训指令的"最后合法出口" (per-target×per-context 幅度学习 + HY 基底集成) 已实测证负。至此 iter037 全部路径 (架构学习轴 sim8 三臂全败 → amp头 G1-G4 PASS 但集成证负) 走完。
+- bizard-v0.11 出手取消 (10-20 00:00 UTC 额度不烧, "不为花而花" — 无 >0.0924 期望候选)。
+
+**下一步 (重估方向)**: 1) 官方测试时最大化检查 — 今日 (10-19) 已烧 1 发 (v0.10=HY8 0.092219 rank 764), 今晚 00:00 UTC 新额度窗口决策是否出手 (需新想法过门); 2) 未探索合法方向盘点: HY 状态组合 (HY8 分量最优但 HY3/HY6 邻近, per-metric 权重结构 0.0915→官方 0.0922 映射已最优化?)、五源聚合再变体 (brYH 括号证负已封)、数据侧 (closed)。诚实评估: 若无新合法轴, 保持 0.092378 等待官方榜变化。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; **amp 集成轴 closed**)**
