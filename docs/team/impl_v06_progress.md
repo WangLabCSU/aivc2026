@@ -447,3 +447,11 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **下一步触发点**: 10-20 00:00 UTC 额度重置 tick 重估; 或任何新证据出现 (官方榜结构变化/新数据族线索)。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
+
+## iter037-守望·2 (2026-10-19 18:30 UTC)
+
+**v0.10 rank 漂移加速**: 13:47 UTC rank 770 → 18:28 UTC **rank 780** (4.7h −10 位, 此前速率 ~5位/13h, 加速 ~5×)。六分量分数不变 (pds 0.5082550 / mse 0 / nmae −0.060502 / fid −0.028896 / reach 0.131019 / jac 0.003440), 纯竞争者灌榜。按 iter025 规则非新证据 (无榜结构变化/新数据族), 不出手。含义: 若漂移速率维持, 到 10-20 00:00 UTC 重置窗口 rank 可能至 ~792; 10-20 两发额度价值随漂移升高, 但 gate 不变 — 仅当候选 heur>0.0859+margin 且官方期望>0.0924 才出手, bizard-v0.11 备用名不变。
+
+**下一步触发点**: 10-20 00:00 UTC 额度重置 tick 重估 (需新证据非旧读数重读); 或新证据出现。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
