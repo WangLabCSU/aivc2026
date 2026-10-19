@@ -371,3 +371,17 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **通过后路径** (未过门则幅度轴终判): amp_hold_v1 → sim5/sim8c probe 替换 |YH| top-8 括号幅度源 (sign 门不变) → bench 链 Q_HepG2 → heur overall_pred > 0.0859 + margin 才出手 (10-20 额度)。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed→仅作重训材料)**
+
+## 2026-10-19 07:15 UTC — iter037-续4: amp头v1 完成 — G1–G4 双模型全PASS, 幅度轴首次过诚实验证门
+
+**结果** (train_meta_amp_v1.json, hold=100 bench靶 3,740,985 对, 训练 85,114,067 行, t=1739s):
+- 修复 2 次 crash (SRC 定义顺序 + 空 CALY searchsorted −1 越界守卫) 后第 3 次启动跑通 (commit 0b97394)。
+- **amp-sq**: mae 0.0364 / corr 0.591 / sp_med 0.3130 — G1(beat |x| mae) G2(beat sp) G3(beat |yh| mae) G4(beat sp) **全PASS**。
+- **amp-hu**: mae 0.0355 / corr 0.590 / sp_med 0.3098 — G1–G4 **全PASS**。
+- 基线: |x| mae 0.0481 sp 0.0763; |yh|(v2校准器) mae 0.0524 sp 0.0374; gene-prior mae 0.0457 sp 0.2020 (模型双指标均超 gene-prior)。
+- 注意: gene-prior sp_med 0.202 远超 |x| 0.076 — 幅度谱信息主要来自基因先验+源内排名, 模型在其之上再 +0.11 sp。
+- 产出: M_amp_sq.json / M_amp_hu.json / amp_hold_v1.parquet (3,740,985 行 hold 明细 src/target_gene/gene/abs_sq/abs_hu)。
+
+**下一步** (按 iter037-续2 预注册路径): amp_hold_v1 → sim5/sim8c probe 替换 |YH| top-8 括号幅度源 (HY8 sel 门不变, 只换幅度) → probe 门 (d_vs_A ≥ +0.045, dF ≥ −0.001, sanity) → bench 链 Q_HepG2 → heur overall_pred > 0.0859 + margin 才出手 (10-20 00:00 UTC 额度, bizard-v0.11)。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed)**
