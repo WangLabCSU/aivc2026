@@ -385,3 +385,20 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **下一步** (按 iter037-续2 预注册路径): amp_hold_v1 → sim5/sim8c probe 替换 |YH| top-8 括号幅度源 (HY8 sel 门不变, 只换幅度) → probe 门 (d_vs_A ≥ +0.045, dF ≥ −0.001, sanity) → bench 链 Q_HepG2 → heur overall_pred > 0.0859 + margin 才出手 (10-20 00:00 UTC 额度, bizard-v0.11)。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed)**
+
+## 2026-10-19 09:00 UTC — iter037-续5: sim11 集成 probe 判决 — 3 候选过双框架门但效应量噪声级, 进 bench 链验证
+
+**sim11 probe** (`tmp/bzr1/hold_sim11.py`, 表 `tmp/bzr1/sim11_table.csv`, log `logs/sim11.log`):
+- 完整性: sim8c 框架 hy8 0.1642 **精确复现** sim8_table (raw 0.1912 / nc 0.1568 同) — sim8c 侧可信; sim5 侧 **S1/S3 FAIL** (hy8 0.8606 > raw 0.8130 方向倒挂; raw 0.8130 vs 历史锚 0.5121±0.10) — sim5 rank-cosine 框架本轮未校准, 只作参考。
+- amp_hold_v1 → (p,g) 聚合 → 6146 列映射: coverage agg2=agg5=1.000。
+- 15 候选 (KDE=8, sign 门 X*YH>0 不变): ADVANCE 门 (d_vs_A ≥ +0.045 & dF ≥ −0.001 & d_vs_HY8 > 0 & d8 ≥ 0) 恰过 **3 个全 5 源聚合**候选:
+  - **amp_max_5src** (括号=|YH|, 幅度=max(|YH|, A_sq_5src)): d8 **+0.0037** (验证框架最大) — **首选**
+  - amp_sq_brYH_5src: d8 +0.0032; amp_hu_brYH_5src: d8 +0.0012
+  - 全部 2src 变体 d_vs_HY8 > 0 失败 (5src 严格更优 — 模型训练用了 5 源, 聚合一致性非必要)
+  - amp_brM_magYH (模型括号) **差于** hy8 (−0.0009/−0.0014) — 括号换模型证负, 选位必须留在 |YH| top-8
+- 诚实标注: 效应量 +0.001~+0.0037 为噪声级 (vs 前3差距 3.5×); 与历史 amp8 (+0.0010) 同量级, 4 次迁移失败先例。唯一进 bench 链的理由: sim8c 框架本轮完整性好 + amp_max 是 max-form (只增不减, 风险下界=HY8)。
+- TOPK=8 溯源验证 (gwps calHY8 全量 81.2M 行): top-8-|yc| 门在 agree 行内恰 **800 行 = 8/靶 × 100 靶**; HY-state 776 行 per-target 中位恰 8 (并列小差); 2,451 max-form 行 + 24,745 NC-fallback 行 (v==x) — 均为 tie 级差异 (~0.3–0.5%), 重建按 build_construct5 模式 TOPK=8 即可对齐。
+
+**下一步** (预注册): 写 `tmp/bzr1/build_amp_hy8.py` (build_construct5 模式, TOPK=8, 100 bench 靶 sel 位幅度=max(|YH|, A_sq_5src), NaN→|yc|; 其余靶保 |yc|) → `{gwps,hct116_all}_calHY8amp.parquet` → config `bench-bzr1v16-hy8amp-lam70-mf14.yaml` → bench 链 Q_HepG2 → heur overall_pred > 0.0859 + margin 且 >0.0924 官方期望才出手 bizard-v0.11 (10-20 00:00 UTC 额度)。若 bench 无增益 → amp 集成轴 (L269 最后合法出口) 封闭, 重估方向。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed)**
