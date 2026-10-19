@@ -1,0 +1,12 @@
+# iter037-续6: HY8 + amp_max_5src 幅度集成 (100 bench 靶 sel 位 max(|yc|, A_sq)) bench 配置 — 其余 = HY8
+datasets: [gwps_calHY8amp, hct116_all_calHY8amp]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261019_bizard_v09_hy8amp

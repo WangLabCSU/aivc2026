@@ -402,3 +402,18 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **下一步** (预注册): 写 `tmp/bzr1/build_amp_hy8.py` (build_construct5 模式, TOPK=8, 100 bench 靶 sel 位幅度=max(|YH|, A_sq_5src), NaN→|yc|; 其余靶保 |yc|) → `{gwps,hct116_all}_calHY8amp.parquet` → config `bench-bzr1v16-hy8amp-lam70-mf14.yaml` → bench 链 Q_HepG2 → heur overall_pred > 0.0859 + margin 且 >0.0924 官方期望才出手 bizard-v0.11 (10-20 00:00 UTC 额度)。若 bench 无增益 → amp 集成轴 (L269 最后合法出口) 封闭, 重估方向。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed)**
+
+## 2026-10-19 10:05 UTC — iter037-续6: build_amp_hy8 修复+完成 — 双源 HY8 重建 0 差异; 首 bench 因缺 hct116 parquet 作废, 干净重跑中
+
+**build_amp_hy8.py 修复与产物** (脚本 `tmp/bzr1/build_amp_hy8.py`, log `logs/build_amp_hy8.log`, t=1965s):
+- IndexError 修复: A-fill 方向翻转 (查 amp_map 端 indexer 而非反), mask 长度=源行数, gwps 一次跑通。
+- **gwps**: raw unique 81,162,977; bench靶行=823,011; amp覆盖=739,844 (89.9%); sel&bench=752; **幅度实改=457 (60.8%)**; corr(x,amp)=0.991; **HY8 重建 vs 既有文件: 不一致 0/81,162,977 (0.000%) max|Δ|=0.0000** — 完美复刻, 全链 (load_x/load_cal_y/NC/de_mask TOPK=8/sel/v_hy8) 验证通过。
+- **hct116_all**: raw unique 669,741,072; bench靶行=3,356,808; amp覆盖=810,545 (24.2%); sel&bench=684; **幅度实改=320 (46.8%)**; corr=0.996; **HY8 重建 0/669,741,072 不一致 (0.000%)** — 完美。
+- 产物: `{gwps,hct116_all}_calHY8amp.parquet` (与 calHY8 同尺寸, 仅 ~457/~320 值不同 — 足迹 = sim11 预测的 top-8×100 靶 sel 位)。
+
+**事故记录**: bench 链 (task byat0pxi6) 在 hct116_all_calHY8amp.parquet 写盘前就启动 (build 仍在 amp-fill 阶段), exit 0 产出 heur overall_pred **0.0296** — 无效读数。bench_bzr1v16hy8amp_Q.log 为空 (0 字节), score 阶段用 bundle 走完; 作废依据: 签名目录 09:45 UTC 无 hct116 parquet, build 05:49 本地才写盘。教训: **依赖后台产物时必须先验证文件存在再启动下游链**。
+- 修复后干净重跑已启动 (run2, 两个 parquet 均在场, 515MB+4.2GB mtime 均为 10-19)。
+
+**下一步**: run2 heur overall_pred 判决 — >0.0859+margin 且 >0.0924 官方期望才出手 bizard-v0.11 (10-20 00:00 UTC 额度)。若 ≤ HY8 的 0.0915+margin → amp 集成轴 (L269 最后合法出口) 封闭, 重估方向。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed)**
