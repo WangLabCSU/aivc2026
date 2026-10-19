@@ -314,3 +314,11 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - **幅度恢复轴关闭**. v0.11 候选菜单终局: Δ-chain 修正4 / α-blend 修正5 / sign-mag-gate 修正6 / RS 本轮 — 手术族全禁 (line 269); v04 聚合器移植排除; DL delta 纯毒. **唯一剩余合法出口 = L269 重训指令: 「直接在 fold/2^Δ 空间学习、或以 pds 对齐为目标函数」的方向保持 by-design 重训** — infra 可自 train_bird.py/train_calibrator_v2.py 适配, benchable 经 bench_bird.py (Δ̂ 臂) 或 local_bench.py (signature 臂).
 - 提交链: wrapper 1265702 alive (etime 02:24), v0.10=HY8 待 00:02 UTC 自动发. GPU 空闲 (159 MiB).
 - **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
+
+## 2026-10-19 00:35 UTC — iter036: v0.10=HY8 官方兑分 0.092219 (rank 764) — k 微调轴官方关闭, HY 类平台 ≈0.0923
+
+- **官方结果**: bizard-v0.10 (HY8) Overall **0.092219** rank 764 (entry A8L3mpuxVO9GsqtI2JxM, 00:03:06 UTC 提交, 00:31 UTC published). 分项: pds 0.5083 (v0.9 0.5062, +0.002) / nmae −0.0605 (v0.9 −0.0575, 改善) / fid −0.0289 持平 / reach 0.1310 持平 / jac 0.0034 / mse 0.
+- **heur→official 缝隙再校准**: HY8 heur 0.0915 → 官方 0.0922 (+0.0007); HY12 heur 0.0905 → 0.0924 (+0.0019). 预测 0.0933–0.0941 高估 ~0.0012 — 双指标 (heur+anchor) k 细化逻辑本次未迁移: HY8 官方 ≤ HY12 (−0.0002). 与 v0.9 的 +0.0019 正缝隙相比, k=8 的 +0.0010 heur 增量被官方噪声吞没.
+- **判决**: k∈[6,12] 为官方平台 ≈0.0922–0.0924, 排序抖动 <0.0005; **HY k 微调轴正式关闭** (官方最优 = v0.9 HY12 0.092378, 构造类最优). 后续候选需 >0.0924 期望才值得花.
+- **10-19 预算**: 第 1 发已花 (v0.10); 第 2 发候选 = V3(K4,β0.5) (probe_v4 唯一 two-win 点, pds 0.8994>NC 0.7935, sp 0.0917≥0.0842) — 走 bench 门, heur > 0.0859+margin 才花; 已知风险: 校准方向类 bench 三连崩 (pure-cal 0.5520/RS 0.5480 pds), K4_b0.5 probe 读数按三重代理迁移失败律不可信, bench 链才是仲裁.
+- **冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**
