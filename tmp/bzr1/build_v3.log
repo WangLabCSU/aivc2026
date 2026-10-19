@@ -1,0 +1,4 @@
+global vocab g=39084 (expect 39084) t=98s
+[gwps] targets=9,866 rows=81,162,977 width=39084 K=4 beta=0.5 t=281s
+[hct116_all] targets=17,358 rows=669,741,072 width=39084 K=4 beta=0.5 t=1459s
+done t=1459s

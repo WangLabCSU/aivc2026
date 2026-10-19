@@ -1,0 +1,18 @@
+# bench-bzr1v16-v3: V3(K=4,β=0.5) direct-y 校准 + 行空间部分去相关 (build_v3.py)
+# 预注册 probe: probe_v4_meta.json K4_b0.5 唯一 two-win 点
+# 已知风险: 校准方向臂 bench 结构性崩 (pure-cal 0.5520 / RS 0.5480); probe 读数不可信
+datasets:
+  - name: gwps_calV3
+    path: data/interim/signatures/gwps_calV3.parquet
+  - name: hct116_all_calV3
+    path: data/interim/signatures/hct116_all_calV3.parquet
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261019_bizard_v11_v3
