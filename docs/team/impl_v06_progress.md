@@ -433,3 +433,17 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **下一步 (重估方向)**: 1) 官方测试时最大化检查 — 今日 (10-19) 已烧 1 发 (v0.10=HY8 0.092219 rank 764), 今晚 00:00 UTC 新额度窗口决策是否出手 (需新想法过门); 2) 未探索合法方向盘点: HY 状态组合 (HY8 分量最优但 HY3/HY6 邻近, per-metric 权重结构 0.0915→官方 0.0922 映射已最优化?)、五源聚合再变体 (brYH 括号证负已封)、数据侧 (closed)。诚实评估: 若无新合法轴, 保持 0.092378 等待官方榜变化。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; **amp 集成轴 closed**)**
+
+## 2026-10-19 10:40 UTC — iter037-终: 方向重估完毕 — 全部合法轴确认封闭, hold 0.092378 等官方榜变化
+
+**重估执行** (本 tick, 10:26–10:40 UTC):
+1. 官方状态复核: v0.10=HY8 published **0.092219 rank 765** (entry A8L3mpuxVO9GsqtI2JxM, 00:03:06 UTC 提交; rank 从 764 漂至 765, 榜活跃); v0.9=HY12 0.092378 rank 762 仍最佳。今日 (10-19) 已烧 1 发, 第 2 发按"不为花而花" hold。
+2. k-curve 原始指标表提取完毕 (summary.json, Q_HepG2): pds 随 k 单调降 (hy3 0.8305→hy50 0.8081), nmae k=12 最优 (0.9454, hy8 0.9456 近平), reach 随 k 单调升 (0.4089→0.4296), fid 平 (0.5815→0.5834), jac 近平。**HY8 heur 峰值 = pds-vs-nmae/reach 的 tradeoff 最优点, 无未消费的 per-metric 冗余**。
+3. make_predictions.py 残余旋钮清查: stress_alpha — iter003 既有判决「应激正交化无效」(gwps 全局应激 |mean logFC|≤0.04 低于 DE 分辨率), 无需重测; flip_genes/alignment — 无 HY config 启用, 且属 signature 手术族 (L269 closed); dataset_weights/gene_weights — 均 closed。
+4. HY 状态组合假说否决: 混合-k 无机制意义 (k 在构造期一次性施加); per-target 自适应 k 属 per-target 手术 (iter025 量化封死「逐靶收益天花板远低于门」); HY 变体聚合属聚合族 + brYH 括号证负双重封闭。
+
+**终局判决**: 17 条轴全部在档封闭 (λ/幅度/校准→方向构造/签名手术/签名源/k 微调/聚合/置信度链/新数据族/per-target 手术/dataset_weights/方向头独立提交/DL delta/sim10 wrong-drop/brYH/五源聚合/数据侧/amp 集成)。**无 >0.0924 官方期望候选 → bizard-v0.11 不出手, 10-19 第 2 发不出, 10-20 00:00 UTC 窗口按同门重估** (需新证据非旧读数重读, iter025 重置规则)。当前态势 = 保持 0.092378 (rank 762) 等待官方榜变化, loop 转低频守望。
+
+**下一步触发点**: 10-20 00:00 UTC 额度重置 tick 重估; 或任何新证据出现 (官方榜结构变化/新数据族线索)。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
