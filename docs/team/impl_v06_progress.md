@@ -566,3 +566,5 @@ entry **8GoyezvGtSKDD7J8pubb**, 提交 ~15:47Z, scoring job 已起。额度 10-2
 **(2) nmae/fid/reach/jac 与 v0.9 逐位一致** — Δ 只作用于 top 幅度帽, 官方指标结构对 mf 不敏感。u 0.87→1.74 的本地 mse 变化同样官方不可见 (mse 双侧 0 封底)。
 
 **(3) 今日决算**: 2/2 用满, 信息收获 = 官方 u(λ) 下段采样 (mse 轴闭, 轴19) + mf 官方首点 (轴20)。**两个新记忆入库** (official-mse-axis-closed + 待写 mf-closed)。当前最优仍 v0.9 0.092378 (rank 762)。剩余路径: 无新 Δ 源/新模型类 → 持有等榜。
+
+## iter042 (2026-10-20T16:36Z) 榜巡: v0.12 rank 785 (vs 783), v0.11 entry 已出查询窗口; 无异常
