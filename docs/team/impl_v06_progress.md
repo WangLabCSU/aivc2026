@@ -479,3 +479,14 @@ Sat Oct 17 03:40:00 AM UTC 2026
 
 **结论**: bizard-v0.11 继续备用, 10-20 额度 0/2 继续持有 (无 >0.0924 期望候选)。ECRD 探针结论为本轴终审, 除非出现新数据源。
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
+
+## iter038-babysit (2026-10-20 07:30 UTC) — 心跳核账: 三臂r2终读 + v05在档确认, 无异常
+
+**(1) 三臂bench第二轮已终读** (bzv06dl_r2, lam=2.5): arm_birds 均值 **0.24486** (=round-1 0.24486 复现一致) / arm_birds_dl 0.12066 (round-1 0.1075, 同量级) / arm_dl −0.87058 (round-1 −0.894, 复现)。**门1 (≥0.395446) 三臂全部未过** — DL delta 头纯毒 (arm_dl −0.87), birds+dDL 混合反而拖累 (0.245→0.121), 与 iter037 前判决一致: se600m/birds 学习式 Δ 路线 bench 层面确认无支撑, 与 probe2 残差全负互证。此轴维持 closed, 不再投算力。
+
+**(2) v05 提交状态**: entry 50afg20XylIFiivjWBN9 **published** (0.00066 rank 1028), 非卡 launching — 10-16 日志为历史终态, 无 cancel/重提动作需要。当前最优仍 bizard-v0.9 (HY12) 0.092378 rank 762。
+
+**(3) 额度**: 10-20 已用 0/2, 无 gate 清空候选 → 继续持有。
+
+**(4) 结论**: 心跳三项核账全部闭合, 无待办异常。ECRD/birds/DL 学习式路线三重证据 (bench r1+r2 / probe2 残差负 / 三臂r2复现) 终审封闭。bizard-v0.11 备用, 等新证据。
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
