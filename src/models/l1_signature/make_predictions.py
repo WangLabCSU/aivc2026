@@ -280,6 +280,15 @@ def build_submission(cfg: dict) -> tuple["ad.AnnData", dict]:  # noqa: F821
                     scaled = blk.data * factor[blk.indices]  # 按列索引缩放，保持 CSR 顺序
                     # 逐元素上限 = max_fold × 该细胞原始计数（防 λ 高时无帽过冲，保留采样方差）
                     blk.data = np.minimum(scaled, cfg["max_fold"] * orig)
+                # 细胞总计数帽（cell-eval2 ScaleLimitError 1e6；λ/mf 大时按比例收缩超限细胞）
+                tot = np.zeros(blk.shape[0], dtype=np.float64)
+                np.add.at(tot, blk.nonzero()[0], blk.data)
+                over = tot > 1_000_000
+                if over.any():
+                    indptr_d = np.diff(blk.indptr)
+                    row_of = np.repeat(np.arange(blk.shape[0]), indptr_d)
+                    scale_r = np.where(tot[row_of] > 1_000_000, 999_999.0 / np.maximum(tot[row_of], 1), 1.0)
+                    blk.data = blk.data * scale_r
                 blk.data = np.clip(np.rint(blk.data), 0, None).astype(np.float32)
                 blk.eliminate_zeros()
                 pert_blocks.append(blk)
