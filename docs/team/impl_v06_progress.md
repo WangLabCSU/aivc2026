@@ -594,3 +594,7 @@ entry **8GoyezvGtSKDD7J8pubb**, 提交 ~15:47Z, scoring job 已起。额度 10-2
 ## iter042-13 (2026-10-20T22:48Z) 榜巡: v0.12 rank 787 持平, 无异常
 
 ## iter042-14 (2026-10-20T23:19Z) 榜巡: v0.12 rank 787→786, 无异常
+
+## iter042-15 (2026-10-20T23:50Z) 榜巡: v0.12 rank 788, 无异常; 附: --json 口径披露官方 raw mse u=6.19 (mf28 使官方 u 从 ~1 域跳到 6.19, mse 仍 0 封底 — 佐证轴19/20判决)
+
+v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1.0367。mf28 的幅度帽放宽使官方 raw u 爆 6×, 但 mse score 双侧封底恒 0 — 官方指标结构对幅度帽在 mse 维完全不敏感 (score 已 0, raw 再差也无梯度)。这解释了 v0.12 与 v0.9 六分项 score 逐位一致而 rank 微动的全部机理。
