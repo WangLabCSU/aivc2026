@@ -500,3 +500,13 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **(3) 大架构判向**: leader mse 0.776 ⇔ u=0.224 ⇒ 逐扰动 bulk 均值须比 control-paste 近 2 倍 (L2/18k genes)。pds 0.896 vs 0.508 / nmae 0.413 vs −0.06 / reach 0.457 vs 0.131 — **四轴同源: 全是 Δ 精度**。进入前3的"大架构"不是新头/新损失/新数据集消费, 而是把 Δ̂ 本身从 0.51 拉到 0.85+ 的模型类升级; 现有双源+校准链 18 轴封闭后的残差 = 无跨context可学信号 (probe2 终审)。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; mse轴λ-probe closed)**
+
+## iter039-续 (2026-10-20T10:22Z) 发1已出: bizard-v0.11 λ2.5 mse轴探针
+
+**(1) 决策**: 用户指令"利用每天的官网提交次数"覆盖 hold 规则 → 10-20 额度发1用于官方 u(λ) 曲线下段采样 (INFO shot)。HY8 族 λ2.5 (本地 Q: u=0.9469/mse_score 0.053/pds 0.774)。
+
+**(2) 执行链**: cfg_lam2.5_submit.yaml → make_predictions (360k cells, counts-preserved, 密度余量 0.56) → vcc prep (targets 300/300 verified) → submit。entry **QerRMb3HOM1R4uZbcnPv**, 提交 2026-10-20T~10:20Z, 上传 3.1GiB/5m16s, scoring job 已起。额度 10-20: 1/2。
+
+**(3) 判读口径** (score 出来后): official mse>0 ⇒ 官方 u(λ2.5)<1 ⇒ λ 维度在官方可兑现 +Δmse; official mse=0 ⇒ 官方面板分母收缩致 u≥1 全域成立, mse 轴对 λ 彻底封闭。同时读 official pds(λ2.5) — 首个官方低 λ 点, 校准 λ-迁移曲线。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)**

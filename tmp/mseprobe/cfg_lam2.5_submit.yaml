@@ -1,0 +1,13 @@
+# iter039: mse轴官方探针 — HY8 族 λ2.5 (bench u=0.9469→mse_score 0.053, pds 0.774 本地)
+# 目的: 官方 u(λ) 曲线首次下段采样 (23发全为 λ≥4.7 有效档, 官方 mse 恒 0)
+datasets: [gwps_calHY8, hct116_all_calHY8]
+lambda_real: 2.5
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261020_bizard_v11_lam25
