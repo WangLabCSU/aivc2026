@@ -490,3 +490,13 @@ Sat Oct 17 03:40:00 AM UTC 2026
 
 **(4) 结论**: 心跳三项核账全部闭合, 无待办异常。ECRD/birds/DL 学习式路线三重证据 (bench r1+r2 / probe2 残差负 / 三臂r2复现) 终审封闭。bizard-v0.11 备用, 等新证据。
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
+
+## iter039 (2026-10-20T10:05Z) mse轴机制判决 — λ微扫闭轴 + 大架构判向
+
+**(1) mse scoring 机制终读** (cell_eval2 scales/scoring): scored mse = clamp(1 − u, 0, 1), u = `expr_mse_unbiased_capped_norm` 官方标度 base=1.0 (control-paste=0分)。23发官方全 0 ⇒ 官方 u ≥ 1.0 恒成立。
+
+**(2) λ 微扫 (HY8 族, Q_HepG2, 5点)**: λ0→u 1.008 / λ0.25→1.0013 / λ0.5→0.9899 / λ1→0.9663 / λ2.5→0.9469 / λ7→0.870 (对照: control-paste 0.765, 复制锚 −0.069)。**全家族 u 下限 0.85**, ×2^(λΔ) 缩放原理上限 ~+0.13 mse 分 (+0.022 overall), 若官方 u 随面板分母收缩 ≥1 则 +0。oracle 臂 (xgbamp_oracle3) u=4.9 更差。⇒ λ-probe 预期收益 +0.000~0.009, **不值得消耗每日发** (额度继续持 v0.11 门)。
+
+**(3) 大架构判向**: leader mse 0.776 ⇔ u=0.224 ⇒ 逐扰动 bulk 均值须比 control-paste 近 2 倍 (L2/18k genes)。pds 0.896 vs 0.508 / nmae 0.413 vs −0.06 / reach 0.457 vs 0.131 — **四轴同源: 全是 Δ 精度**。进入前3的"大架构"不是新头/新损失/新数据集消费, 而是把 Δ̂ 本身从 0.51 拉到 0.85+ 的模型类升级; 现有双源+校准链 18 轴封闭后的残差 = 无跨context可学信号 (probe2 终审)。
+
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; mse轴λ-probe closed)**
