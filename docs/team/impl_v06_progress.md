@@ -552,3 +552,7 @@ v0.11 (λ2.5, Overall −0.0072) rank 1085→1088 (55min +3, 与 v0.10 漂移节
 ## iter041-续 (2026-10-20T15:20Z) λ90+mf28 组合臂判决 — λ90 证负, mf28 单独为发2候选
 
 λ90+mf28 bench: pds 0.7319 (vs mf28@λ70 的 0.8264), nmae 打满 −6 clamp, official_pred −0.2494。**λ90 证负** (官方 λ 链最优段维持 λ70 判决, 过冲摧毁 nmae/fid), 不再上探 λ。发2 候选定格: **bizard-v0.12 = HY8 族 λ70 + mf28** (mf 首个官方数据点; local pds +0.127 / official_pred 0.0918, 校准点全在 mf14 族 → pds 响应可能低估)。额度 10-20 1/2, 发2 决策窗口: 若 16:00 UTC 前无更强候选即发。
+
+## iter041-发2 (2026-10-20T15:47Z) bizard-v0.12 (λ70+mf28) 已提交
+
+entry **8GoyezvGtSKDD7J8pubb**, 提交 ~15:47Z, scoring job 已起。额度 10-20: **2/2 用满**。判读口径: (a) pds vs 0.5177 (v0.9) — mf 轴官方首点; (b) nmae 是否塌 (local u 翻倍至 1.74 提示 bulk 过冲风险); (c) overall vs 0.092378。score 出后本账。
