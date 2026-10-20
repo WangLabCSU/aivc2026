@@ -461,3 +461,21 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **判决**: 17 轴封闭判决不变; gate 不变 (heur>0.0859+margin 且官方期望>0.0924); 无 gate 清空候选 → bizard-v0.11 继续备用, 10-20 第 1 发持有 ("不为花而花")。无预置 .vcc 工件 (find 确认)。
 **下一步触发点**: 新证据出现 (榜结构变化/新数据族线索/gate 清空候选); 否则继续守望, fallback 1800s。
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
+
+## iter038 (2026-10-20 07:3x UTC) — NFS 故障恢复 + ECRD 决策探针2 完成: 前提否决, ECRD-no-go
+
+**基础设施恢复**: 2026-10-20 早间 NFS wanglab 子树权限墙被管理员解除 (根因: 用户改了 wanglab 组权限, 但本会话进程组列表为登录时快照、无 gid 1003; 组 ACL 对老进程不生效)。Bash/读写全链路恢复, 无数据损坏。教训已入 memory nfs-repo-outage-20261020。
+
+**ECRD 决策探针2 (tmp/bzarch_probe2.py, 141 eligible targets 中前 40)**:
+- 跨 Flex 组 per-target 伪批量 logFC (vs 同组 NTC): spearman 中位 F1-F2 0.385 / F1-F3 0.351 / F2-F3 0.428
+- pearson 中位 0.61/0.63/0.66 — 但这是幅度谱共享 (高表达基因普遍 |Δ| 大) 驱动
+- **关键否决证据**: 每靶减去三组均值后的 context-specific 残差, 组间 spearman 中位 **-0.48/-0.45/-0.43 (全负!)**
+- 解读: 残差完全不可跨组复现 (负相关≈纯噪音甚至反向), "context-specific 可学成分" 为零。probe1 NTC cos 0.9998 的警告被坐实: Flex_1/2/3 本质是同 context 的重复测量, 组间 logFC 差异 = 采样噪音, 不是 context 信号。
+- 按探针判据 (spearman~0.9→坏 / 0.5-0.7→好) 实测 0.35-0.43 且残差负 → 落在"最坏"档: 连"跨组均值基线"的增益空间都没有 context 结构可学。
+
+**判决**: ECRD (Embedding-Conditioned Response Decoder, SE-600M embedding 学 Δ(target,context) 迁移) **前提否决, no-go**。vcc2025 Flex 组间无 context-specific 信号 → 学不到"响应如何随 context 变化"。第 18 条轴封闭: **大架构 ECRD / vcc2025 跨 Flex 迁移轴 closed (probe2 残差全负)**。
+- 附带含义: vcc2025 与当前挑战仅 25/300 靶重叠 + Flex 组间无 context 结构 → 该数据族对当前 Δ 构造无增量信息 (与 iter029 新数据族 closed 判决一致, 现有机理证据)。
+- se600m 三臂先例 (arm_dl -0.894) + 本探针 → "学习式 Δ 替换" 路线在当前数据条件下整体无支撑。
+
+**结论**: bizard-v0.11 继续备用, 10-20 额度 0/2 继续持有 (无 >0.0924 期望候选)。ECRD 探针结论为本轴终审, 除非出现新数据源。
+**冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet 方向头独立提交 closed; amp 集成轴 closed; stress_alpha 既有判决不重测)**
