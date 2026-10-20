@@ -522,3 +522,7 @@ Sat Oct 17 03:40:00 AM UTC 2026
 **(3) 额度**: 10-20 已用 1/2。发2 持有 (无 gate 清空候选; bzr1v16hy8amp heur 0.0876 < 0.0924 期望)。等官方榜 v0.11 rank 漂移观察。
 
 **冻结未动(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; mse轴λ-probe closed; 低λ方向 closed)**
+
+## iter040 (2026-10-20T11:06Z) 官方榜巡检 — v0.11 探针 rank 漂移观察
+
+v0.11 (λ2.5, Overall −0.0072) rank 1085→1088 (55min +3, 与 v0.10 漂移节奏一致 ~1 rank/1.5h, 榜尾涌入)。v0.9/v0.10 entry 已从 status API 不可查 (仅近期 entry 可查), rank 锚用 log 记录: v0.10=764。无新证据, 额度 10-20 1/2 持有, 无 gate 清空候选 (bzr1v16hy8amp 0.0876 < 0.0924)。
