@@ -1,0 +1,12 @@
+# iter041: λ90 + mf28 组合臂 (发2 候选)
+datasets: [gwps_calHY8, hct116_all_calHY8]
+lambda_real: 90.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 28.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: mfprobe_lam90mf28
