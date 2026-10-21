@@ -661,3 +661,20 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 **风险注记**: vcc2025 与 val 面板的跨 context 迁移衰减未知 (官方 λ-shift 律); 13靶 sig-frac 0.42-0.58 在 HCT116 语境衰减后可能近 hct116_all 水平。bench 双指标 (heur + anchor) 判读, 单一指标不触发提交。
 
 **冻结未动**(全部既往判决; 本条开启轴21 = vcc2025 训练集第三票, 预注册门如上)
+
+## iter043-13 (2026-10-21T07:31Z) 轴21 侦察完成: vcc2025 全三split并集25官方靶, 训练集13靶强信号确认 — 注入通道明确
+
+**更正与完备化**: ledger iter038 的 25/300 = vcc2025 全三 split 并集 (Training 13 + Validation 4 + Test 8), iter043-12 的 13 = 仅 Training。25 靶清单已核。
+
+**13 官方靶 (Training) 签名质量** (iter043-12): sig-frac 0.42-0.58, 面板映射 99.98% — 强。
+**12 官方靶 (Validation 4 + Test 8) 谱质量分化**: 强臂 = MAX 0.705 / MED19 0.592 / NELFE 0.503 / PSMG1 0.520 / ZBTB39 0.445 (非官方靶, 可作 calib), 官方靶弱臂 = ACLY 0.033 / HDAC8 0.002 / NFE2L1 0.003 / SLIRP 0.005 / ANKZF1 0.005 / MED15 0.021 / MED25 0.055 / PLAGL2 0.003 / ZNF32 0.000 — **Validation/Test 的官方靶读数普遍近零** (指南筛选设计如此, 官方 25 靶中仅 Training 13 靶 + ADNP 0.232 + BRPF1 0.081 + ZFP62 0.161 有中等信号)。
+
+**注入方案定稿**: vcc2025 有效官方靶覆盖 = 13 强 (Training) + 3 中 (ADNP/ZFP62/BRPF1) = **16/300 靶有真值同分布第三票**; 另 137 Training 靶 (平均 sig-frac 高) 作 vcc2025 内部 NTC/校准结构用。
+- Δ 注入规则: 16 官方靶处 Δ_vcc2025 以家族λ衰减 (λ_trans 待 bench 标定, 初值同族 ×1.4 移位律已证伪 → 直接同族 λ70 实测), 与 gwps/hct116 冲突时**让位给 vcc2025** (真值同分布 > 跨源推断)。
+- vcc2025_train.parquet 已落盘 (1,473,836 行 × 150 靶, 基因面板映射 99.98%)。
+
+**下一步 (iter043-15)**: bench 构造臂 = 现行 v0.9 构造 (HY12) + 16靶 vcc2025 Δ 注入 → Q_HepG2 heur/anchor 双读数 → 门 (heur>0.0859+margin 且官方期望>0.0924) → 过门即发 bizard-v0.13 (今日额度 0/2 未动)。
+
+**风险**: 16/300 = 5.3% 靶面, 官方 overall 期望上限 +0.004 量级; Q_HepG2 bench 语境是 HepG2, vcc2025 是 Flex 语境 (官方 A/B/C 同族) — 跨面板衰减未知。**该轴的真正价值是打开"真值同分布注入"通道, 即使本发不过门, 通道对未来新数据持续有效。**
+
+**冻结未动**(全部既往判决; 轴21 预注册门如 iter043-12)
