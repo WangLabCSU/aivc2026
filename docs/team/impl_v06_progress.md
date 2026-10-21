@@ -598,3 +598,15 @@ entry **8GoyezvGtSKDD7J8pubb**, 提交 ~15:47Z, scoring job 已起。额度 10-2
 ## iter042-15 (2026-10-20T23:50Z) 榜巡: v0.12 rank 788, 无异常; 附: --json 口径披露官方 raw mse u=6.19 (mf28 使官方 u 从 ~1 域跳到 6.19, mse 仍 0 封底 — 佐证轴19/20判决)
 
 v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1.0367。mf28 的幅度帽放宽使官方 raw u 爆 6×, 但 mse score 双侧封底恒 0 — 官方指标结构对幅度帽在 mse 维完全不敏感 (score 已 0, raw 再差也无梯度)。这解释了 v0.12 与 v0.9 六分项 score 逐位一致而 rank 微动的全部机理。
+
+## iter043-1 (2026-10-21T00:48Z) 新额度日开局 + vcc挂死根因确诊(keyring非网络) — 板面正常, 今日决策窗开启
+
+**事件**: 00:25 UTC 榜巡 `vcc status 8GoyezvGtSKDD7J8pubb` 连挂 6 次 (>120s/次, 含 --json)。strace 取证: 进程只 poll D-Bus session bus (/run/user/1003/bus, secret-service keyring 解锁应答), **零 AF_INET socket** — 网络层从未发起。curl virtualcellchallenge.org 200/1.4s 正常。修复: `env -u DBUS_SESSION_BUS_ADDRESS` 秒回。
+
+**判读**: (1) keyring 锁定态无限轮询 = vcc CLI 本地挂, 与官方 scoring/launching 无关 — 此前"卡死2h即cancel"规则区分出第三种卡法 (本地 keyring 卡, 不烧额度); (2) 修复后 status 秒回: **v0.12 rank 788, Overall 0.092247, 六分项与 iter041-终 完全一致** — 板面正常, 夜间无漂移异常 (v0.9 0.092378 rank 762 仍最佳在档)。
+
+**新额度日 (10-21) 决策窗**: 0/2。20 轴封闭在档, 提交形式工程穷尽; 唯一有大期望值的路径 = Δ 精度模型类升级 (现有源 18 轴封闭 + 六源交集 0)。候选盘点: 无新 Δ 源 → 无候选过门 (heur >0.0859+margin 且官方期望 >0.0924)。**今日预案**: (a) 若无新证据 → 持有 (不为烧而烧, 官方无梯度轴已 20 条); (b) 周度复刻预案待启 (v0.9 原样重传防 rank 漂移, 仅当 rank 显著恶化才触发 — 当前 762 正常); (c) loop 转低频守望 + 本地 CPU 侧知识整理。
+
+**新增记忆**: vcc-keyring-dbus-hang (env -u DBUS_SESSION_BUS_ADDRESS 秒判 + 提交脚本须包 timeout, 防把 keyring 挂误判成 launching 卡烧 cancel)。
+
+**冻结未动**(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet方向头独立提交 closed; amp集成轴 closed; stress_alpha 不重测; λ/mf/λ90 幅度族官方封闭; mse轴封闭)
