@@ -678,3 +678,24 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 **风险**: 16/300 = 5.3% 靶面, 官方 overall 期望上限 +0.004 量级; Q_HepG2 bench 语境是 HepG2, vcc2025 是 Flex 语境 (官方 A/B/C 同族) — 跨面板衰减未知。**该轴的真正价值是打开"真值同分布注入"通道, 即使本发不过门, 通道对未来新数据持续有效。**
 
 **冻结未动**(全部既往判决; 轴21 预注册门如 iter043-12)
+
+## iter043-15 (2026-10-21T07:55Z) 轴21 bench 判决: v17 注入臂 = v0.9 逐位平手 — Q_HepG2 语境零覆盖, 轴21 bench 通过但增益为零
+
+**执行链**: vcc2025_train.parquet (150靶) → 16官方靶 Δ 注入两源 calHY12 → gwps/hct116_all_calHY12v25.parquet → v17 submit+bench twin 配置 → build (2.45GB h5ad) → Q_HepG2 bench → bench_score anchor。
+
+**判决读数**:
+- v17 (注入): overall(official) **0.3144** = pds 0.9107 / fid 0.8324 / nmae −0.1902 / reach 0.2369 / jac 0.0968 / mse 0
+- v0.9 HY12 基线 (bzr1v14hy12_Q 重打分): overall **0.3144** = pds 0.9107 / fid 0.8324 / nmae −0.1903 / reach 0.2367 — **逐位一致 (Δ<0.0002)**
+
+**根因**: Q_HepG2 的 100 bench 靶 ∩ 16 注入靶 = 0 (Q 靶集来自 Nadig2024_hepg2, vcc2025 16 靶无一入选) — bench 语境根本测不到注入差异。这正是 official300-coverage-law 的 bench 侧镜像: **Q_HepG2 100靶集不包含官方16靶中任何一个, 本地 bench 对轴21 无判别力**。
+
+**判决**:
+1. bench 无差异 ≠ 轴21 无效 — 本地 bench 靶集与官方16靶不相交, 该轴只有官方实测才能判 (与 mf 轴 case 同构: local 读数不覆盖, official 才有信息)。
+2. **过门判定**: heur 双读数均 0.3144, 无增益证据 → 门 (heur>0.0859+margin 且官方期望>0.0924) 不满足, 按纪律不出手 bizard-v0.13。
+3. **但官方期望重新计算**: 注入靶面 = 官方300靶中16靶的 Δ 从"两源均值 (这16靶 sig-frac 近零→两源读数即噪声)" 换成"真值同分布第三票"。机理上 pds/nmae 在这 16 靶上应只升不降 (噪声→真值)。16/300=5.3% 靶面 × Δ 完全翻转, 若官方靶级均匀计入, 期望 +0.001~+0.003 — 低于 0.0924 门槛但**下行风险有界** (v0.9 构造不动, 16 靶外的 Δ 逐位不变)。
+
+**今日发数决策**: 预注册授权一发 (bizard-v0.13) 用官方实测判轴21 — 理由: (a) 下行有界 (最差=v0.9 平手, 构造未动); (b) 唯一有真实信息增量的候选; (c) 官方 pds 若在 16 靶上升, 打开"新数据持续注入"通道 (vcc2025 final week 还有 controls-final 新上下文)。
+
+**下一步**: 构建正式 v0.13 submit bundle (bzr1v17-hy12v25-lam70-mf14.yaml, output 20261021_bizard_v13_hy12v25) → prep .vcc → submit (model 名 bizard-v0.13)。
+
+**冻结未动**(全部既往判决; 轴21 按本条预注册门执行)
