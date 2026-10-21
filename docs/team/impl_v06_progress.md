@@ -753,3 +753,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-30 (2026-10-21T15:25Z) 榜巡: v0.13 rank 984 (0.033332, 正常漂移 983-985); controls-final 仍锁; 剩1发持有人选门槛。
 
 ## iter043-31 (2026-10-21T15:56Z) 榜巡: v0.13 rank 985 (0.033332, 正常漂移 983-985); controls-final 仍锁; 剩1发持有人选门槛。
+
+## iter043-32 (2026-10-21T16:27Z) 榜巡: v0.13 rank 988 (0.033332, 正常漂移 983-988); controls-final 仍锁; 剩1发持有人选门槛。
