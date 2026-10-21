@@ -642,3 +642,22 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-10 (2026-10-21T05:39Z) 榜巡: v0.12 rank 782→781, 无异常
 
 ## iter043-11 (2026-10-21T06:09Z) 榜巡: v0.12 rank 781→782, 无异常
+
+## iter043-12 (2026-10-21T06:52Z) 第三票侦察突破: vcc2025 训练集含官方300靶中13靶的真实扰动数据, 谱质量碾压现源 — 新轴21 开启
+
+**背景**: 用户令"大的模型架构改进"。20 轴封闭后唯一大杠杆 = Δ 精度第三票。系统盘点 data/public/ 全库存 (scperturb 7 数据集 / vcc2025 / tahoe 66G / xatlas 249G / scbasecount)。
+
+**核心发现 (vcc2025 adata_Training.h5ad, 221,273 cells × 18,080 genes, 150 靶)**:
+1. **官方 val 300 靶 ∩ vcc2025 训练靶 = 13 靶**: AKT2/HSBP1/MED13/MTA1/RNF2/SHPRH/SIN3B/SMARCA5/STAT6/TARBP2/TRAPPC6A/TWF2/ZNF714, 每靶 166-2787 真实 perturbation cells (非 NTC)。
+2. **谱质量断崖对比** (伪批量 logFC, sig-frac |lfc|>0.25): **vcc2025 均值 0.4478** (SIN3B 0.576 / SMARCA5 0.504 / RNF2 0.460), 而 **gwps 同 13 靶 ~0.002 (近零读数), hct116_all ~0.000 (中位|lfc| 0.001)** — 既有两源在这13靶上全是噪声, vcc2025 是**真值同分布的强信号源** (官方自家上一季数据, 同管线)。
+3. **合规性**: vcc2025 是官方公开训练集 (vcc datasets list 在档 + data/public/vcc2025/ 在盘) — 非外部爬取, 用作 Δ 源合法。
+
+**计划 (iter043-13 起)**:
+1. 全量 150 靶伪批量 logFC 签名提取 → `data/interim/signatures/vcc2025_train.parquet` (今日内)。
+2. 三源聚合臂 (gwps_calHY12 + hct116_all_calHY12 + vcc2025) 构造 → Q_HepG2 bench heur 读数。
+3. 门: heur > 0.0859+margin 且官方期望 > 0.0924 → **今日发 bizard-v0.13** (13 靶增量作用于官方 300 靶中 4.3%, pds/nmae 有望真升 — 这是第一个"真值同分布第三票", 与 ECRD/k562_ess 交集0案例本质不同)。
+4. 13 靶覆盖到顶也仅 4.3% 靶面 — 官方 overall 期望 +0.001~+0.004 量级, 过门概率低但这是**唯一有真实信息增量的轴**, 且 bench 增益若强 (如 +0.005) 可作为模型类升级起点 (vcc2025 剩 137 靶作 calib/监督)。
+
+**风险注记**: vcc2025 与 val 面板的跨 context 迁移衰减未知 (官方 λ-shift 律); 13靶 sig-frac 0.42-0.58 在 HCT116 语境衰减后可能近 hct116_all 水平。bench 双指标 (heur + anchor) 判读, 单一指标不触发提交。
+
+**冻结未动**(全部既往判决; 本条开启轴21 = vcc2025 训练集第三票, 预注册门如上)
