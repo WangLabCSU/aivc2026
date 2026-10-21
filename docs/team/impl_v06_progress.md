@@ -699,3 +699,13 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 **下一步**: 构建正式 v0.13 submit bundle (bzr1v17-hy12v25-lam70-mf14.yaml, output 20261021_bizard_v13_hy12v25) → prep .vcc → submit (model 名 bizard-v0.13)。
 
 **冻结未动**(全部既往判决; 轴21 按本条预注册门执行)
+
+## iter043-16 (2026-10-21T08:20Z) 发1 GO 并已提交: bizard-v0.13 (entry u2oI7b7p8tY9cWhQWyKU) — 轴21 官方实测中
+
+**执行**: v0.13 submit bundle build (360000×18533, entries 2.08G, max_per_cell 72378, integer ✓) → prep 遇 /tmp 满 (70G root 89%,errno 28) → TMPDIR 指向 NFS staging 重试成功 → .vcc 3,298,232,320 B → submit chain PID 4126161 → 上传 17m08s (3.1 MiB/s) → **entry u2oI7b7p8tY9cWhQWyKU, scoring 已启动** (10-21 额度 1/2)。
+
+**运维注记**: (1) root 盘 /tmp 只剩 7.9G, 3.3GB .vcc prep 必须走 TMPDIR=/data/.../tmp/vcc_prep (NFS 64T 空闲) — 已实证可用, 后续 prep 一律带此前缀; (2) 提交链用 DBUS_SESSION_BUS_ADDRESS= 空值防 keyring 挂死。
+
+**预期判读表** (官方 vs v0.9): 若 16 靶注入有效 → pds/nmae 微升, overall ≥ 0.093; 若跨面板衰减吃掉信号 → 平手 ~0.0922-0.0924; 若 Flex 语境迁移反噬 (fid 类错误) → 微降但 v0.9 构造未动, 下行有界。
+
+**冻结未动**(全部既往判决)
