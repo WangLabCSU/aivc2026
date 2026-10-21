@@ -610,3 +610,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 **新增记忆**: vcc-keyring-dbus-hang (env -u DBUS_SESSION_BUS_ADDRESS 秒判 + 提交脚本须包 timeout, 防把 keyring 挂误判成 launching 卡烧 cancel)。
 
 **冻结未动**(λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励; 校准→方向构造族 closed; BizardNet方向头独立提交 closed; amp集成轴 closed; stress_alpha 不重测; λ/mf/λ90 幅度族官方封闭; mse轴封闭)
+
+## iter043-2 (2026-10-21T01:14Z) 榜巡: v0.12 rank 788→786, 无异常
