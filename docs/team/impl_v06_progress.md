@@ -727,3 +727,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 **冻结未动**(全部既往判决; 轴21 closed)
 
 ## iter043-18 (2026-10-21T09:12Z) 榜巡: v0.12 entry (8GoyezvGtSKDD7J8pubb) 已出查询窗口 (No such submission); v0.13 rank 985→986 (缓沉, 判决后正常); v0.9 0.092378 rank 762 仍最佳在档 (log anchor)
+
+## iter043-19 (2026-10-21T09:42Z) 榜巡: v0.13 rank 986→985, 无异常
