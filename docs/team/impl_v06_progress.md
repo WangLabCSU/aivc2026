@@ -735,3 +735,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-21 (2026-10-21T10:44Z) 榜巡: v0.13 rank 982→985, 无异常
 
 ## iter043-22 (2026-10-21T11:15Z) 榜巡: v0.13 rank 985 持平, 无异常
+
+## iter043-23 (2026-10-21T11:45Z) 榜巡: v0.13 rank 985 持平, 无异常
