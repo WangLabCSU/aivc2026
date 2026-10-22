@@ -810,3 +810,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-58 (2026-10-22T14:31Z) 10-23候选备货启动: HY-k bench 全曲线复核 (pds_cosine: HY6 0.8283 > HY8 0.8262 > HY12 0.8227 > HY18 0.8195 > HY50 0.8081; nmae/fid 基本持平) → k 越小 pds 越好。预生成候选C v0.16 = HY6 × final × no-generic (λ70, gen PID 2533160); 候选D v0.17 = HY12 × λ62 × no-generic (λ 同族微调最低风险)。10-23 两发 = k 轴 (HY6) + λ 轴 (λ62) 各一个正交探索点, 均保持 no-generic 保守基座。
 
 ## iter043-59 (2026-10-22T15:20Z) 备货完成: v0.16 (HY6×final×no-generic) 生成+校验通过+prep .vcc 就绪 (3.19GB); v0.17 (HY12×λ62×no-generic) 生成+校验通过 (density margin 57.9%, max_cell 62k), prep 启动。10-23 额度 2 发弹药就绪: 发1=v0.16 (k 轴), 发2=v0.17 (λ 轴)。
+
+## iter043-60 (2026-10-22T15:32Z) 10-23发射计划: UTC 00:00 (本地 20:00) 额度重置后按序发 v0.16 (HY6 k轴) → 确认 published → v0.17 (HY12 λ62)。当前 UTC 15 时, 距重置 ~8.5h; 主 loop 每 30min tick 监控跨日时刻。
