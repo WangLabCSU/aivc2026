@@ -1,0 +1,15 @@
+# iter043-58: 终局候选D = HY12 × λ62 × no-generic。
+# λ 链 bench 已知: λ70 = v0.9 锚; λ2.5 官方腰斩; λ 敏感域 62-78 未在官方实测 (×1.4移位律跨族证伪,
+# 但同族 λ 微调仍是最低风险幅度探索), HY6/λ62 与 HY12/λ70 构成 k×λ 二维探索的两个正交点。
+# 10-23 发 2 备选 (若 HY6 生成顺利)。
+datasets: [gwps_calHY12, hct116_all_calHY12]
+lambda_real: 6.2
+lambda_generic: 0.0
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls_final
+pert_counts_file: pert_counts.csv
+output_stem: 20261023_bizard_v17_final_hy12_lam62_nogeneric

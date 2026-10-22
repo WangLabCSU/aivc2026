@@ -1,0 +1,15 @@
+# iter043-58: 终局候选C = HY6 (bench pds 0.8283 最优k) × final D/E/F × no-generic
+# HY6 在 bench pds_cosine 上最优 (0.8283 vs HY12 0.8227), 且 k 小 → 签名更窄更准,
+# 对 final new-171 near-zero 靶保持纯 NTC (λ_generic=0 同 v0.15 预注册结论)。
+# 10-23 发 1。
+datasets: [gwps_calHY6, hct116_all_calHY6]
+lambda_real: 7.0
+lambda_generic: 0.0
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls_final
+pert_counts_file: pert_counts.csv
+output_stem: 20261023_bizard_v16_final_hy6_nogeneric
