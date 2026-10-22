@@ -804,3 +804,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-55 (2026-10-22T11:20Z) v0.14 终局首发 published: entry AU6y2WVVRPxOfx6AD7xp, mode=FINAL (counts toward final scoring), partition=test, panel vcc2026-test-1, anchor set testD/E/F-r1 — final 面板流程全链打通 (prep 0.3.0 语法→上传16min→scoring ~30min→published)。成绩隐藏 (官方规则), 本发价值 = 流程验证 + v0.9 复刻在 final 面板的盲发基准。10-22 final 额度已用 1/2。
 
 ## iter043-56 (2026-10-22T12:46Z) 终局候选B v0.15 生成+提交: final new-171 靶签名强度剖析 → 168/171 near-zero (sig-frac<0.02, 仅 DPY30 0.040 / LTO1 0.030 弱真实), generic 应激兜底 = 错向噪声风险 (v0.13 nmae -0.34 教训的外推) → 预注册候选B: λ_generic 0.15→0.0, 未覆盖靶纯 NTC 采样。v0.15 = v0.14 复刻减 generic (entries 2.00B 同构, 全校验过), prep 通过, 提交链 PID 2353064。10-22 final 额度 2/2 用满。两发盲发 (v0.14 泛化/generic-on vs v0.15 纯NTC/conservative) 构成 final 面板 first-principles 对照组。
+
+## iter043-57 (2026-10-22T13:08Z) v0.15 published: entry 8RozCc72GWn0w93y4qqu (mode=FINAL, panel vcc2026-test-1)。10-22 final 额度 2/2 用满: v0.14 (replica/generic-on, AU6y2WVVRPxOfx6AD7xp) + v0.15 (no-generic/conservative, 8RozCc72GWn0w93y4qqu) 已构成盲发对照组。待宣奖日 (11-19) 才能解卷。明日 (10-23) 额度 2 发恢复, 候选空间: HY8/HY25 变体、λ 细调 (62-78)、seed 集成 — 全部以 v0.9 构造为锚。
