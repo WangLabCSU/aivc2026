@@ -1,0 +1,12 @@
+# iter043-63: v0.20 k-ensemble (HY6/8/12 平均 logfc) bench 配置 — Q_HepG2 holdout
+datasets: [gwps_calHYkens, hct116_all_calHYkens]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_hykens

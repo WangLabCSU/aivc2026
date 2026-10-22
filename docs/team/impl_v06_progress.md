@@ -824,3 +824,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-64 (10-22 19:05 UTC): v0.20 gen→prep 自动链挂载
 - chain_v20_prep.sh (PID 2749520): 轮询 gen PID 2748548 退出后自动 vcc prep (0.3.0 语法, -g/--perts 显式)
 - v0.20 就绪链全自动: 生成 (~1-2h) → prep → 10-25 直接 submit
+## iter043-65 (10-22 19:50 UTC): v0.20 备货完成 + 本地 bench 启动
+- v0.20 h5ad 生成完成 (19:20 UTC), max_per_cell 66272, validate 通过; prep 成功 (3.19GB .prep.vcc, 15:38 local)
+- 10-25 发射弹药就绪: v0.20 (HYkens k轴ensemble, 新轴)
+- bench-bzr1v20-hykens-lam70-mf14.yaml + bench 链已启动 (PID 2791194, Q_HepG2): 对比 HY6 0.8283 / HY8 0.8262 / HY12 0.8227
+- 判据: hykens pds > HY6 0.8283 → 10-25 首发换 v0.20; 否则 k 轴闭合, 沿用网格内最优
