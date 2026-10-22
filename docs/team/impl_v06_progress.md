@@ -808,3 +808,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-57 (2026-10-22T13:08Z) v0.15 published: entry 8RozCc72GWn0w93y4qqu (mode=FINAL, panel vcc2026-test-1)。10-22 final 额度 2/2 用满: v0.14 (replica/generic-on, AU6y2WVVRPxOfx6AD7xp) + v0.15 (no-generic/conservative, 8RozCc72GWn0w93y4qqu) 已构成盲发对照组。待宣奖日 (11-19) 才能解卷。明日 (10-23) 额度 2 发恢复, 候选空间: HY8/HY25 变体、λ 细调 (62-78)、seed 集成 — 全部以 v0.9 构造为锚。
 
 ## iter043-58 (2026-10-22T14:31Z) 10-23候选备货启动: HY-k bench 全曲线复核 (pds_cosine: HY6 0.8283 > HY8 0.8262 > HY12 0.8227 > HY18 0.8195 > HY50 0.8081; nmae/fid 基本持平) → k 越小 pds 越好。预生成候选C v0.16 = HY6 × final × no-generic (λ70, gen PID 2533160); 候选D v0.17 = HY12 × λ62 × no-generic (λ 同族微调最低风险)。10-23 两发 = k 轴 (HY6) + λ 轴 (λ62) 各一个正交探索点, 均保持 no-generic 保守基座。
+
+## iter043-59 (2026-10-22T15:20Z) 备货完成: v0.16 (HY6×final×no-generic) 生成+校验通过+prep .vcc 就绪 (3.19GB); v0.17 (HY12×λ62×no-generic) 生成+校验通过 (density margin 57.9%, max_cell 62k), prep 启动。10-23 额度 2 发弹药就绪: 发1=v0.16 (k 轴), 发2=v0.17 (λ 轴)。
