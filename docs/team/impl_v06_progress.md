@@ -821,3 +821,6 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - 新配置 bzr1v22-final-hykens-nogeneric.yaml (v0.20): datasets=[gwps_calHYkens, hct116_all_calHYkens], λ7.0, generic 0.0, final controls D/E/F, stem 20261025_bizard_v20_final_hykens_nogeneric
 - 生成已后台启动 (PID 2748548, logs/gen_v20_hykens.log); 10-25 发射位预定
 - 轴逻辑: HY6/HY8/HY12 平均 logfc ≈ 无限宽核极限, 平滑单 k 窗口伪影; λ70 沿 v0.9 锚
+## iter043-64 (10-22 19:05 UTC): v0.20 gen→prep 自动链挂载
+- chain_v20_prep.sh (PID 2749520): 轮询 gen PID 2748548 退出后自动 vcc prep (0.3.0 语法, -g/--perts 显式)
+- v0.20 就绪链全自动: 生成 (~1-2h) → prep → 10-25 直接 submit
