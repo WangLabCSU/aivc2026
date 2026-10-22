@@ -842,3 +842,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-68 (10-22 20:47 UTC): 崩溃恢复 tick — 定时器在位, 等待 UTC 重置
 - launch_1023.log 确认 timer 存活 (armed 19:48, target 00:02 UTC); v0.16 未发射 (预期, 距重置 3h15m)
 - 备份心跳与主 loop 双活确认; 无异常
+## iter043-69 (10-22 22:17 UTC): 恢复 tick — 定时器在位, 距 UTC 重置 1h45m
+- launch timer 正常等待; v0.16/v0.17 弹药+链全就绪; 无异常
