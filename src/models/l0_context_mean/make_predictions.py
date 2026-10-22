@@ -20,7 +20,12 @@ import pandas as pd
 import scipy.sparse as sp
 
 ROOT = Path(__file__).resolve().parents[3]
-CONTEXTS = ("A", "B", "C")
+# iter043-53: final 阶段 panel vcc2026-test-1 上下文为 D/E/F (controls_final manifest)。
+# 保留 A/B/C 兼容 val 复刻; make_predictions 由 config 的 controls_dir 推断:
+# controls_final → D/E/F, 否则 A/B/C。
+CONTEXTS_VAL = ("A", "B", "C")
+CONTEXTS_FINAL = ("D", "E", "F")
+CONTEXTS = CONTEXTS_VAL
 # 提交硬约束（virtualcellchallenge.org / vcc-cli wiki, 2026-09 核实）
 MAX_TOTAL_ENTRIES = 4_750_000_000
 MAX_PER_CELL_COUNTS = 1_000_000
@@ -31,7 +36,14 @@ def load_config(path: Path) -> dict:
     import yaml
 
     with open(path) as f:
-        return yaml.safe_load(f)
+        cfg = yaml.safe_load(f)
+    # iter043-53: 按 controls_dir 推断上下文集合 (final 阶段 D/E/F)
+    global CONTEXTS
+    if "controls_final" in str(cfg.get("controls_dir", "")):
+        CONTEXTS = CONTEXTS_FINAL
+    else:
+        CONTEXTS = CONTEXTS_VAL
+    return cfg
 
 
 def context_mean_counts(h5ad_path: Path, min_mean_cpm: float) -> tuple[np.ndarray, dict]:

@@ -18,10 +18,15 @@ import scipy.sparse as sp
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
+from src.models.l0_context_mean import make_predictions as _l0  # noqa: E402
 from src.models.l0_context_mean.make_predictions import (  # noqa: E402
-    CONTEXTS, MAX_TOTAL_ENTRIES, N_CELLS_PER_PERT, N_PERTS, context_mean_counts, load_config,
+    MAX_TOTAL_ENTRIES, N_CELLS_PER_PERT, N_PERTS, context_mean_counts, load_config,
     validate,
 )
+# iter043-53: CONTEXTS 由 load_config 按 controls_dir 切换 (final=D/E/F);
+# from-import 是 import 时快照, 必须经模块属性访问才能看到 load_config 的 global 更新。
+def _contexts():
+    return _l0.CONTEXTS
 
 
 def load_delta(cfg: dict, panel: pd.Index, targets: list[str]) -> tuple[pd.DataFrame, dict]:
@@ -250,6 +255,7 @@ def build_submission(cfg: dict) -> tuple["ad.AnnData", dict]:  # noqa: F821
     blocks, ctx_stats = [], {}
     sampling = bool(cfg.get("cell_sampling", False))
     rng = np.random.default_rng(cfg.get("seed", 0))
+    CONTEXTS = _contexts()
     for ctx in CONTEXTS:
         a_ctx = ad.read_h5ad(controls_dir / f"context_{ctx}.h5ad")
         X_ntc = sp.csr_matrix(a_ctx.X)
