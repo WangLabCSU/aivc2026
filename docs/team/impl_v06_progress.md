@@ -834,3 +834,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - 3 个 timer 挂载 (PID 2822969/70/71): UTC 10-23 00:02 → v0.16→v0.17; 10-24 00:02 → v0.18→v0.19; 10-25 00:02 → v0.20 (+保留第2发位)
 - 每个 timer: 等 UTC 重置 → 依次跑 submit 链 → grep published 判定 → LAUNCH_DONE 标记 (logs/launch_10XX.log)
 - 会话即使崩溃, 定时器仍发射; 心跳 cron 兜底检查 launch 日志即可
+## iter043-67 (10-22 20:00 UTC): k-ensemble 轴 bench 闭合
+- v0.20 hykens Q_HepG2 bench: pds 0.82646, nmae 0.94609, fid 0.58168, reach 0.41282, jac 0.07512
+- 对照: HY6 0.82828 > hykens 0.82646 > HY12 0.8227; ensemble 落在 HY8/HY12 之间, 不敌 HY6
+- 判定: k 轴闭合 (HY6 最优); ensemble 平均抹平窗口锐度损 pds, nmae 微优不足弃
+- 10-25 v0.20 照发 (盲射期覆盖平滑签名点, 无风险); 若 11-05 闭合弹从弹药库选, 优先 HY6×λ70 / HY8×λ70
