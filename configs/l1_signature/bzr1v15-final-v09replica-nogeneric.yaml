@@ -1,0 +1,15 @@
+# iter043-56: 终局候选B = v0.14 复刻但关闭 generic 兜底 (λ0.15→0)。
+# 依据: final new-171 靶签名近零 (168/171 sig-frac<0.02), generic 应激签名 = 错向噪声
+# (v0.13 教训: 错向Δ → nmae -0.34)。B 版未覆盖靶 = 纯 NTC 采样 (nmae 无假信号, pds 机会线)。
+# 官方 blind 无法对照, 用 val 面板 local bench 无判别力 (bench无final上下文) → 预注册逻辑优先。
+datasets: [gwps_calHY12, hct116_all_calHY12]
+lambda_real: 7.0
+lambda_generic: 0.0
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls_final
+pert_counts_file: pert_counts.csv
+output_stem: 20261022_bizard_v15_final_nogeneric
