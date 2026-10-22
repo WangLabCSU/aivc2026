@@ -812,3 +812,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-59 (2026-10-22T15:20Z) 备货完成: v0.16 (HY6×final×no-generic) 生成+校验通过+prep .vcc 就绪 (3.19GB); v0.17 (HY12×λ62×no-generic) 生成+校验通过 (density margin 57.9%, max_cell 62k), prep 启动。10-23 额度 2 发弹药就绪: 发1=v0.16 (k 轴), 发2=v0.17 (λ 轴)。
 
 ## iter043-60 (2026-10-22T15:32Z) 10-23发射计划: UTC 00:00 (本地 20:00) 额度重置后按序发 v0.16 (HY6 k轴) → 确认 published → v0.17 (HY12 λ62)。当前 UTC 15 时, 距重置 ~8.5h; 主 loop 每 30min tick 监控跨日时刻。
+
+## iter043-61 (2026-10-22T16:35Z) 10-24备货启动: v0.18 = HY8 × final × no-generic (k 轴中点), v0.19 = HY12 × λ78 × no-generic (λ 上界, 与 λ62 夹住 λ70 锚 — ×1.4 移位律跨族证伪但同族微调仍最低风险, 62/70/78 三点可插值)。v0.18 生成启动; 距 UTC 重置 7.4h。

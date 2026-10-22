@@ -1,0 +1,14 @@
+# iter043-61: 10-24 备货 (bzr1v20-final-hy8-nogeneric)
+datasets:
+- gwps_calHY8
+- hct116_all_calHY8
+lambda_real: 7.0
+lambda_generic: 0.0
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls_final
+pert_counts_file: pert_counts.csv
+output_stem: 20261024_bizard_v18_final_hy8_nogeneric
