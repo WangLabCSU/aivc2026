@@ -829,3 +829,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - 10-25 发射弹药就绪: v0.20 (HYkens k轴ensemble, 新轴)
 - bench-bzr1v20-hykens-lam70-mf14.yaml + bench 链已启动 (PID 2791194, Q_HepG2): 对比 HY6 0.8283 / HY8 0.8262 / HY12 0.8227
 - 判据: hykens pds > HY6 0.8283 → 10-25 首发换 v0.20; 否则 k 轴闭合, 沿用网格内最优
+## iter043-66 (10-22 19:50 UTC): 三连无人值守发射定时器布防
+- submit_bizard_v20_1025.sh 生成 (v16 克隆: 路径/模型名/日志对齐); 5发弹药 .prep.vcc 全就绪 (v16/v17/v18/v19/v20)
+- 3 个 timer 挂载 (PID 2822969/70/71): UTC 10-23 00:02 → v0.16→v0.17; 10-24 00:02 → v0.18→v0.19; 10-25 00:02 → v0.20 (+保留第2发位)
+- 每个 timer: 等 UTC 重置 → 依次跑 submit 链 → grep published 判定 → LAUNCH_DONE 标记 (logs/launch_10XX.log)
+- 会话即使崩溃, 定时器仍发射; 心跳 cron 兜底检查 launch 日志即可
