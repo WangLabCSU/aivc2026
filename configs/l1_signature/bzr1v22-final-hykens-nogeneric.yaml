@@ -1,0 +1,16 @@
+# iter043-63: 10-25 备货 (bzr1v22-final-hykens-nogeneric) — k-ensemble 新轴
+# 签名 = HY6/HY8/HY12 三档 k 的 logfc 逐 (target,gene) 平均 (gwps_calHYkens + hct116_all_calHYkens)
+# 假设: 多 k 平滑降低单 k 的窗口伪影, 接近 "无限宽核" 极限; λ70 沿用 v0.9 锚点
+datasets:
+- gwps_calHYkens
+- hct116_all_calHYkens
+lambda_real: 7.0
+lambda_generic: 0.0
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls_final
+pert_counts_file: pert_counts.csv
+output_stem: 20261025_bizard_v20_final_hykens_nogeneric

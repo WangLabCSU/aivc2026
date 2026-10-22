@@ -816,3 +816,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-61 (2026-10-22T16:35Z) 10-24备货启动: v0.18 = HY8 × final × no-generic (k 轴中点), v0.19 = HY12 × λ78 × no-generic (λ 上界, 与 λ62 夹住 λ70 锚 — ×1.4 移位律跨族证伪但同族微调仍最低风险, 62/70/78 三点可插值)。v0.18 生成启动; 距 UTC 重置 7.4h。
 
 ## iter043-62 (2026-10-22T17:33Z) 10-24备货完成: v0.18 (HY8×final×no-generic) 生成+校验+prep 全通过 (3.19GB .vcc 就绪); v0.19 (HY12×λ78×no-generic) 生成+校验+prep 全通过 (3.19GB .vcc 就绪); 两发提交脚本就绪。弹药库: 10-23 发 v0.16/v0.17, 10-24 发 v0.18/v0.19 — 4 发覆盖 k∈{6,8,12}×λ∈{62,70,78} 网格 (no-generic 基座)。距 UTC 重置 6.4h。
+## iter043-63 (10-22 18:57 UTC): v0.20 k-ensemble 签名备货启动
+- HY-k ensemble 数据就绪: gwps_calHYkens (81.16M rows, 9866 targets) + hct116_all_calHYkens (669.7M rows, 17358 targets), 双侧 nulls=0, schema 对齐 [target_gene,gene,logfc]
+- 新配置 bzr1v22-final-hykens-nogeneric.yaml (v0.20): datasets=[gwps_calHYkens, hct116_all_calHYkens], λ7.0, generic 0.0, final controls D/E/F, stem 20261025_bizard_v20_final_hykens_nogeneric
+- 生成已后台启动 (PID 2748548, logs/gen_v20_hykens.log); 10-25 发射位预定
+- 轴逻辑: HY6/HY8/HY12 平均 logfc ≈ 无限宽核极限, 平滑单 k 窗口伪影; λ70 沿 v0.9 锚
