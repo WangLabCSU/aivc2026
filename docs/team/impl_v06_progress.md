@@ -839,3 +839,6 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - 对照: HY6 0.82828 > hykens 0.82646 > HY12 0.8227; ensemble 落在 HY8/HY12 之间, 不敌 HY6
 - 判定: k 轴闭合 (HY6 最优); ensemble 平均抹平窗口锐度损 pds, nmae 微优不足弃
 - 10-25 v0.20 照发 (盲射期覆盖平滑签名点, 无风险); 若 11-05 闭合弹从弹药库选, 优先 HY6×λ70 / HY8×λ70
+## iter043-68 (10-22 20:47 UTC): 崩溃恢复 tick — 定时器在位, 等待 UTC 重置
+- launch_1023.log 确认 timer 存活 (armed 19:48, target 00:02 UTC); v0.16 未发射 (预期, 距重置 3h15m)
+- 备份心跳与主 loop 双活确认; 无异常
