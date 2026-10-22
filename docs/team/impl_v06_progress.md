@@ -787,3 +787,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-47 (2026-10-22T00:09Z) 榜巡: UTC日已重置 (10-22); v0.13 published 0.033332, Rank 行暂从查询输出消失 (查询窗口滚动), 最新榜巡锚 993; controls-final 仍锁; 10-22 额度 2/2 可用但无候选过门槛 (22轴封闭), 继续持有。
 
 ## iter043-48 (2026-10-22T00:40Z) 榜巡: v0.13 published 0.033332, Rank 行暂滚出查询窗口 (查询窗口滚动, 榜巡锚 993); controls-final 仍锁; 10-22 额度 2 发持有中 (无候选过门槛)。
+
+## iter043-49 (2026-10-22T01:12Z) 榜巡: v0.13 published 0.033332, Rank 行仍滚出查询窗口 (正常); controls-final 仍锁; 10-22 额度 2 发持有中。
