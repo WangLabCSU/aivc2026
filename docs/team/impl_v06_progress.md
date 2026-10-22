@@ -791,3 +791,6 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-49 (2026-10-22T01:12Z) 榜巡: v0.13 published 0.033332, Rank 行仍滚出查询窗口 (正常); controls-final 仍锁; 10-22 额度 2 发持有中。
 
 ## iter043-50 (2026-10-22T01:44Z) 榜巡: v0.13 published 0.033332 (首次 SSL 瞬断, 30s 重试成功 — 网络瞬态非故障); controls-final 仍锁; 10-22 额度 2 发持有中。
+
+## iter043-51 (2026-10-22T05:15Z) 终局阶段开启: 官方邮件确认 final phase — 截止11-05 23:59 UTC (剩14天22h, ~29发额度, 只最后一发计奖, val榜冻结成绩11-19公布); vcc CLI 0.2.2→0.3.0 升级完成; controls-final 下载完成 (643MB zip→data/raw/controls_final/, context D/E/F, 每context 300perts+18400 NTC, ground truth 138400 cells/ctx 不提供); final 300靶: 与val 300重叠129, 新增171; 联合签名覆盖 299/300 (仅ANG缺, hct116覆盖282, gwps 277)。/tmp ENOSPC已清 (95
+## iter043-51 (2026-10-22T05:15Z) 终局阶段开启: 官方邮件确认 final phase — 截止11-05 23:59 UTC (剩14天22h, ~29发额度, 只最后一发计奖, val榜冻结成绩11-19公布); vcc CLI 0.2.2→0.3.0 升级完成; controls-final 下载完成 (643MB zip→data/raw/controls_final/, context D/E/F, 每context 300perts+18400 NTC, ground truth 138400 cells/ctx 不提供); final 300靶: 与val 300重叠129, 新增171; 联合签名覆盖 299/300 (仅ANG缺, hct116覆盖282, gwps 277)。/tmp ENOSPC已清 (95%→80%)。
