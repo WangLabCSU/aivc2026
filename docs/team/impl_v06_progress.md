@@ -881,3 +881,11 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - timer1024/1025 存活; 距 10-24 发射 ~11.9h; 无异常
 ## iter043-81 (10-23 12:26 UTC): 常规tick — 静默期
 - timer1024/1025 存活; 距 10-24 发射 ~11.6h; 无异常
+
+## iter043-82 (10-23 13:05 UTC): 阶段汇总 — 终局时间线确认 + 发射计划复核
+- 官方邮件(用户转发)确认 final 规则: 截止 11-05 23:59 UTC (whoami deadline=2026-11-06T00:00:00Z 一致); 每日 2 发 final 额度; **只最后一发计奖**; 成绩 11-19 公布; 提前数小时收官建议
+- 10-23 双发已收: v0.16 (HY6, YHqgjInyD7Aoe1H2lVku, 卡2h cancel重提后 published) + v0.17 (HY12λ62, 8PWIw0tv4ATZnfNTkWD8, published); note: nHNR7C1pOi5BYCMOeRlQ(首次卡死entry)现 not_found — cancel 后从 API 消失, 属正常
+- timer1024/1025 (PID 2822970/71) 存活; 10-24 00:02 UTC 自动发 v0.18 (HY8) → v0.19 (HY12λ78); 10-25 发 v0.20 (hykens)
+- 弹药库余额: v18/v19/v20 .prep.vcc 就绪 (3.19GB×3); 发射后弹药库清空, 后续需新备货
+- heur overall_pred 全网格 (bench twin Q_HepG2 → official_alignment /6): HY6 0.0907 / HY8 0.0915 / HY12λ70 0.0905 / hykens 0.0914 / (v0.9 锚 dualdeep 0.0857 官方实测 0.0858) — 网格内部差异 <0.001, 均为噪声级, 与 k 轴闭合判定一致
+- 距 10-24 发射 ~11h; 无异常
