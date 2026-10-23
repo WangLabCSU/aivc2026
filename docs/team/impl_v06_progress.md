@@ -845,3 +845,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-69 (10-22 22:17 UTC): 恢复 tick — 定时器在位, 距 UTC 重置 1h45m
 - launch timer 正常等待; v0.16/v0.17 弹药+链全就绪; 无异常
 ## iter043-70 (10-22 23:47 UTC): tick — 距发射 15min, 定时器在位
+## iter043-71 (10-23 00:26 UTC): v0.16 发射成功, 上传完赛, 等待 scoring
+- timer 00:02:11 准点触发; attempt 1 上传 3.0GiB 4m30s (11.3 MiB/s), entry nHNR7C1pOi5BYCMOeRlQ
+- 上传后 SSL 瞬断 (server side, UNEXPECTED_EOF); status 确认: launching, FINAL, submitted 00:02:15Z — 上传与入队成功
+- 期间 vcc status 也遇同 SSL 错, 2min 后恢复 — 官方服务瞬时抖动, 非我方问题
+- 链式逻辑: submit 脚本会在 loop 中继续 poll; published 后自动发 v0.17 (lam62)
