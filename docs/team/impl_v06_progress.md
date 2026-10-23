@@ -857,3 +857,6 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - entry nHNR7C1pOi5BYCMOeRlQ launching 140min 超红线 (v0.14/v0.15 均 1.5-2.5h, 140min+无published迹象) → vcc cancel --yes 成功
 - slot 释放; v0.16 重提链已启动 (PID 3065257, 同脚本 24attempt×1h), 今日 10-23 额度: 重提后 v0.16 用 1 发, v0.17 待其 published 后链发
 - 注: 主 loop tick 21:55/22:24 期间被心跳先手执行红线判定 (ledger 62min 旧, 触发恢复条款); 重提后 v0.17 由同一 timer1023 的第二段逻辑... 否 — timer1023 在 v16 链 SUBMIT_CHAIN_DONE 后才查 published; 重提链是新进程, published 后 timer 判定 [ok] 并接 v0.17
+## iter043-74 (10-23 02:53 UTC): v0.16 重提成功进入 scoring
+- 新 entry YHqgjInyD7Aoe1H2lVku, 上传后已 status=scoring (比上次的 launching 进一步); 链 poll 运行中
+- 10-23 额度: v0.16 1发已用; v0.17 待 published 后 timer 第二段接发
