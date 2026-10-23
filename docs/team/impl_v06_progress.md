@@ -850,3 +850,6 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - 上传后 SSL 瞬断 (server side, UNEXPECTED_EOF); status 确认: launching, FINAL, submitted 00:02:15Z — 上传与入队成功
 - 期间 vcc status 也遇同 SSL 错, 2min 后恢复 — 官方服务瞬时抖动, 非我方问题
 - 链式逻辑: submit 脚本会在 loop 中继续 poll; published 后自动发 v0.17 (lam62)
+## iter043-72 (10-23 01:22 UTC): v0.16 scoring 80min 仍 launching — 正常窗口内
+- entry nHNR7C1pOi5BYCMOeRlQ status=launching (80min); v0.14/v0.15 历史口径 ~1.5-2.5h, 未达 2h cancel 红线
+- submit 链 poll 正常运行中
