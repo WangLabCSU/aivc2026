@@ -895,3 +895,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - timer1024/1025 存活 (uptime 18h10m); 距 10-24 发射 ~10.1h; 无异常
 ## iter043-85 (10-23 14:29 UTC): 常规tick — 静默期
 - timer1024/1025 存活 (uptime 18h41m); 距 10-24 发射 ~9.5h; 无异常
+## iter043-86 (10-23 14:54 UTC): loop 接管 tick — 新 session 恢复主 loop
+- 上 session loop 断于 iter043-85 (14:29); 本 tick 由新 session 接管, /loop 动态自续模式
+- timer1024/1025 (PID 2822970/71) 存活 (uptime 19h07m); 弹药复核 v18/v19/v20 .prep.vcc 全在 (3.19GB×3), submit 脚本接线正确
+- 距 10-24 00:02 UTC 发射 v0.18 (HY8) → v0.19 (HY12λ78) ~9.1h; 无异常
+- 已知待办: timer1025 第2发未接线 (占位); 10-26 起弹药需新备货 (候选 HY6×λ70 / HY8×λ70), 11-05 截止前逐日补
