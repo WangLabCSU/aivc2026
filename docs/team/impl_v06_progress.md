@@ -860,3 +860,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-74 (10-23 02:53 UTC): v0.16 重提成功进入 scoring
 - 新 entry YHqgjInyD7Aoe1H2lVku, 上传后已 status=scoring (比上次的 launching 进一步); 链 poll 运行中
 - 10-23 额度: v0.16 1发已用; v0.17 待 published 后 timer 第二段接发
+## iter043-75 (10-23 03:53 UTC): 10-23 双发全部 published ✅ LAUNCH_1023_DONE
+- v0.16 (HY6, entry YHqgjInyD7Aoe1H2lVku): published (重提后 ~50min scoring 完成)
+- v0.17 (HY12×λ62, entry 8PWIw0tv4ATZnfNTkWD8): published, timer 自动接发无人工干预
+- 10-23 额度用满 2/2; 弹药库消耗: v16/v17 ✅, 剩 v18/v19 (10-24), v20 (10-25)
+- k-λ 网格发射进度: HY6✅ HY12λ62✅ → 明日 HY8, HY12λ78 → 后日 hykens
