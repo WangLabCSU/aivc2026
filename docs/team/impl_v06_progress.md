@@ -902,3 +902,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - 已知待办: timer1025 第2发未接线 (占位); 10-26 起弹药需新备货 (候选 HY6×λ70 / HY8×λ70), 11-05 截止前逐日补
 ## iter043-87 (10-23 15:27 UTC): 常规tick — 静默期
 - timer1024/1025 存活 (uptime 19h39m); 距 10-24 发射 ~8.6h; 无异常
+## iter043-88 (10-23 15:58 UTC): 常规tick — 静默期
+- timer1024/1025 存活 (uptime 20h10m); 距 10-24 发射 ~8.1h; 无异常
