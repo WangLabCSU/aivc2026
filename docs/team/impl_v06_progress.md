@@ -865,3 +865,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - v0.17 (HY12×λ62, entry 8PWIw0tv4ATZnfNTkWD8): published, timer 自动接发无人工干预
 - 10-23 额度用满 2/2; 弹药库消耗: v16/v17 ✅, 剩 v18/v19 (10-24), v20 (10-25)
 - k-λ 网格发射进度: HY6✅ HY12λ62✅ → 明日 HY8, HY12λ78 → 后日 hykens
+## iter043-76 (10-23 10:23 UTC): loop恢复 tick — 10-23 双发已收, 定时器全在位
+- v0.16 (HY6, YHqgjInyD7Aoe1H2lVku) / v0.17 (HY12λ62, 8PWIw0tv4ATZnfNTkWD8) 均 published, LAUNCH_1023_DONE
+- timer1024 (PID 2822970, target 10-24 00:02 UTC: v0.18→v0.19) + timer1025 (PID 2822971, v0.20) 存活确认
+- 弹药复核: v18/v19/v20 .prep.vcc 全在 (3.19GB×3), submit 脚本接线正确
+- 无待办异常; 下个节点 10-24 00:02 UTC 自动发射, 距今 ~13.7h
