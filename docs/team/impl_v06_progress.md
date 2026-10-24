@@ -936,3 +936,5 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - timer1024/1025 存活 (uptime 27h55m); v18 弹药在位 (3.19GB); 一切就绪
 ## iter043-104 (10-24 00:14 UTC): v0.18 准点发射, attempt 1 进行中
 - timer 00:02:16 触发 (准点); 3.19GB 上传中, 日志尚无 ENTRY_ID, 正常窗口
+## iter043-105 (10-24 00:29 UTC): v0.18 上传完成, scoring 中
+- 上传 15m11s (3.3 MiB/s, 偏慢); entry FKkQQh21MIHwTrhE8bHx; 00:21:55 起 scoring
