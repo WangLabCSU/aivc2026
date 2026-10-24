@@ -941,3 +941,7 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 ## iter043-106 (10-24 00:56 UTC): v0.18 published ✅, v0.19 scoring 中
 - v0.18 (HY8, FKkQQh21MIHwTrhE8bHx) published, SUBMIT_CHAIN_DONE; timer 自动接发 v0.19 (lam78)
 - v0.19 (Yt94J8oI8BShjjOuraHH) 上传 12m30s, 00:51 起 scoring; 10-24 额度 2/2 已用; 红线 02:31 UTC
+## iter043-107 (10-24 01:22 UTC): 10-24 双发全部 published ✅ LAUNCH_1024_DONE
+- v0.18 (HY8, FKkQQh21MIHwTrhE8bHx) + v0.19 (HY12λ78, Yt94J8oI8BShjjOuraHH) 均 published
+- 网格 5/6 点覆盖完成; timer1025 存活, 10-25 00:02 UTC 发 v0.20 (hykens), 距今 ~22.7h
+- 明日静默期待办: 11-05 闭合弹备货 (HY6×λ70 / HY8×λ70 候选, build+prep 需数小时, 早备早稳)
