@@ -938,3 +938,6 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - timer 00:02:16 触发 (准点); 3.19GB 上传中, 日志尚无 ENTRY_ID, 正常窗口
 ## iter043-105 (10-24 00:29 UTC): v0.18 上传完成, scoring 中
 - 上传 15m11s (3.3 MiB/s, 偏慢); entry FKkQQh21MIHwTrhE8bHx; 00:21:55 起 scoring
+## iter043-106 (10-24 00:56 UTC): v0.18 published ✅, v0.19 scoring 中
+- v0.18 (HY8, FKkQQh21MIHwTrhE8bHx) published, SUBMIT_CHAIN_DONE; timer 自动接发 v0.19 (lam78)
+- v0.19 (Yt94J8oI8BShjjOuraHH) 上传 12m30s, 00:51 起 scoring; 10-24 额度 2/2 已用; 红线 02:31 UTC
