@@ -1,0 +1,12 @@
+# iter043-15 轴21 bench twin (镜像 v17 submit cfg, bench 口径)
+datasets: [gwps_calHY12v25, hct116_all_calHY12v25]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261021_bzbench_v17_hy12v25

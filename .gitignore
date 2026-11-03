@@ -28,6 +28,12 @@ slurm-*.out
 .vscode/
 .idea/
 .DS_Store
+
+# ---------- 运行时/隔离区 (iter043-139) ----------
+tmp/.watchdog_*.lock
+tmp/QUARantine_dup/
+tmp/bzr1/amp_hold_v1.parquet
+tmp/bzarch_probe2_lfcs.npy
 *.swp
 
 # --- 例外: 小体积产物入 git（提交分数快照/校准框架，大文件 h5ad/vcc 仍不入）---

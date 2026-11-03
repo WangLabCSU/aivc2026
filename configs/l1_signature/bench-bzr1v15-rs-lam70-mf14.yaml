@@ -1,0 +1,13 @@
+# iter035-续6: 幅度恢复臂 RS (校准方向不变, 逐靶幅度重标定 ||NC||/||yc||) bench 配置
+# 依据 probe_pds_decomp: YH 方向优于 NC, 崩因 = 幅度收缩沉入 NTC 噪声; RS 只修幅度
+datasets: [gwps_calRS, hct116_all_calRS]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261018_bizard_v09_rs

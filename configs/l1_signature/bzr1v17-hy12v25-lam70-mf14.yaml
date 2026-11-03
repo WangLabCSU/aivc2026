@@ -1,0 +1,13 @@
+# iter043-15 轴21: HY12 + vcc2025 16官方靶注入 → bizard-v0.13 候选
+# datasets 换 *_calHY12v25, 其余逐键镜像 bzr1v12-hy12-lam70-mf14.yaml (v0.9 逐键).
+datasets: [gwps_calHY12v25, hct116_all_calHY12v25]
+lambda_real: 7.0
+lambda_generic: 0.15
+max_abs_delta: 4.0
+max_fold: 14.0
+min_mean_cpm: 0.05
+cell_sampling: true
+seed: 0
+controls_dir: data/raw/controls
+pert_counts_file: pert_counts.csv
+output_stem: 20261021_bizard_v13_hy12v25
