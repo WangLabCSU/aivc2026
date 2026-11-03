@@ -1022,3 +1022,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - **新装 scripts/submit_final_watchdog.sh (统一发射链)**: launching/任一phase 卡死>2h 红线 → cancel --yes 重发 (v23 老链无此逻辑只记 FAIL); 全 vcc 调用包 timeout; DBUS 清空; flock 防双发; PUBLISHED_OK 幂等; GUARD 护栏后不新发只等终态 (官方: 截止前受理、在途 processing 仍计奖)
 - **执行**: (1) 11-03 03:22 UTC 复跑 v0.22 演练链 (setsid 脱离, guard 21:00 UTC); (2) 闭合弹 v0.23 改用 **at -t 202611042002** (本地 11-04 20:02 EST = UTC 11-05 01:02, job 2, atd 存活且重启后会补跑) — 废弃裸 sleep-loop timer (两个已全部饿死, 不可信)
 - 终局预案不变: v0.22/v0.23 同 v18 bundle (HY8×λ70), Nov 5 guard 21:00 UTC, 2h 红线自动 cancel+refire
+## iter043-141 (11-03 04:05 UTC): v0.22 published ✅ 存档闭环 — 三件套交付
+- **bizard-v0.22 published** (entry 7hpdoYjVOSgydX5KBDUB, 03:22:18 提交→03:39 scoring→~04:00 published, 全程 ~38min 无卡顿; watchdog 链首发即成): 演练+CLI 0.3.0 保温+last 刷新 (同 v18 bundle HY8×λ70, 零下行)
+- **闭合弹就位**: at job 2 (11-04 20:02 EST = UTC 11-05 01:02) → scripts/submit_final_watchdog.sh bizard-v0.23, GUARD 21:00 UTC, 2h 停滞红线自动 cancel+refire; 本链已由 v0.22 全链路验证
+- **材料存档四批 commit**: 8fe9ebc (watchdog链+断链复活) / 7ce6730 (ledger 26→48行全补 v0.2-v0.23 + docs/team/final_phase_archive_2026.md + README final面板节) / f8752c8 (submit脚本v09-v21+网格configs+历史定时器) / 001fc84 (tmp探索工件全量, M_ctx权重/缓存/zip按gitignore排除) — 工作树清零
+- 终局态势: last = v0.22 (网格最优), 11-04 静默 (额度不用), 11-05 01:02 UTC v0.23 闭合 → 23:59 截止, 11-19 解卷
