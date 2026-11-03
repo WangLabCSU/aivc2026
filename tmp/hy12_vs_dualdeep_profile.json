@@ -1,0 +1,9 @@
+{
+ "both_nz": 3195165,
+ "sign_agree_dd_vs_hy": 0.9950788143961267,
+ "flipped": 15724,
+ "pearson": 0.9922158466956822,
+ "amp_ratio_median": 0.9994259476661682,
+ "truth_sign_dualdeep": 0.658359957401491,
+ "truth_sign_hy12": 0.6534611288604899
+}

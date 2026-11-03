@@ -1,0 +1,42 @@
+[bench hy3] 18:52:24 start
+[bench hy3] rc=0 18:54:55
+[score hy3] rc=0 18:54:59
+[bench hy8] 18:54:59 start
+[bench hy8] rc=0 18:58:00
+[score hy8] rc=0 18:58:04
+[pred hy3] rc=0 18:58:05
+[pred hy8] rc=0 18:58:05
+[pred om] rc=0 18:58:07
+{
+ "pds": -0.1318,
+ "jac": -0.1343,
+ "nmae": -0.1186,
+ "fid": -1.418,
+ "reach": -0.1353,
+ "overall_pred": -0.323,
+ "local_raw": {
+  "pds": 0.1367,
+  "jac": -0.1159,
+  "nmae": -0.4807,
+  "fid": 0.2511,
+  "reach": -0.1783
+ },
+ "local_anchor": -0.0645333039561672
+}
+{
+ "pds": 0.5116,
+ "jac": -0.012,
+ "nmae": -0.2292,
+ "fid": -0.1685,
+ "reach": 0.0947,
+ "overall_pred": 0.0328,
+ "local_raw": {
+  "pds": 0.9141,
+  "jac": 0.0755,
+  "nmae": -0.8752,
+  "fid": 0.7852,
+  "reach": 0.1841
+ },
+ "local_anchor": 0.1806208929320864
+}
+[chain done] 18:58:07

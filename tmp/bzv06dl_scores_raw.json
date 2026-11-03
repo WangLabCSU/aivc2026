@@ -1,0 +1,325 @@
+{
+ "bzv06dl_arm_birds": {
+  "P_H1": {
+   "pds_cosine": 0.6751515151515152,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.1916185961769448,
+   "de_wilcoxon_lfc_nmae": 0.9886962555543722,
+   "de_wilcoxon_direction_reach_raw": 0.0806450580442411,
+   "de_wilcoxon_sig_jaccard": 0.0236987623584687
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.7352525252525253,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.6058134504213346,
+   "de_wilcoxon_lfc_nmae": 0.8788315148094367,
+   "de_wilcoxon_direction_reach_raw": 0.4741935776266892,
+   "de_wilcoxon_sig_jaccard": 0.079357330533225
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.7682828282828279,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.6230366501146826,
+   "de_wilcoxon_lfc_nmae": 0.85406566357581,
+   "de_wilcoxon_direction_reach_raw": 0.4521755664134262,
+   "de_wilcoxon_sig_jaccard": 0.074673472120773
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.597979797979798,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4366962446135669,
+   "de_wilcoxon_lfc_nmae": 0.8384156632914216,
+   "de_wilcoxon_direction_reach_raw": 0.5676793082852019,
+   "de_wilcoxon_sig_jaccard": 0.5224998361927363
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.7166666666666665,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5412155948937122,
+   "de_wilcoxon_lfc_nmae": 0.8982099219867985,
+   "de_wilcoxon_direction_reach_raw": 0.3251908761852447,
+   "de_wilcoxon_sig_jaccard": 0.1130598897485835
+  }
+ },
+ "bzv06dl_arm_birds_dl": {
+  "P_H1": {
+   "pds_cosine": 0.7039393939393941,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.3378728296425778,
+   "de_wilcoxon_lfc_nmae": 1.1192872186278098,
+   "de_wilcoxon_direction_reach_raw": 0.0623653212306767,
+   "de_wilcoxon_sig_jaccard": 0.0705453321945609
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.7091919191919189,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5852753903971655,
+   "de_wilcoxon_lfc_nmae": 0.9437399167822336,
+   "de_wilcoxon_direction_reach_raw": 0.3783014462956339,
+   "de_wilcoxon_sig_jaccard": 0.0707266353797082
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.695353535353535,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.61170271511863,
+   "de_wilcoxon_lfc_nmae": 0.9383360231474716,
+   "de_wilcoxon_direction_reach_raw": 0.4146207706232912,
+   "de_wilcoxon_sig_jaccard": 0.0660237427673165
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.6449494949494945,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.7318647327059635,
+   "de_wilcoxon_lfc_nmae": 1.19826358839132,
+   "de_wilcoxon_direction_reach_raw": 0.5442341842418449,
+   "de_wilcoxon_sig_jaccard": 0.1185521220959275
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.6754545454545452,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5105290805710377,
+   "de_wilcoxon_lfc_nmae": 0.9299806721372468,
+   "de_wilcoxon_direction_reach_raw": 0.271658529646279,
+   "de_wilcoxon_sig_jaccard": 0.10188092363428
+  }
+ },
+ "bzv06dl_arm_dl": {
+  "P_H1": {
+   "pds_cosine": 0.4992929292929291,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5202240590071874,
+   "de_wilcoxon_lfc_nmae": 8.679346569376014,
+   "de_wilcoxon_direction_reach_raw": 0.0382854585049968,
+   "de_wilcoxon_sig_jaccard": 0.1488334225744814
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.5019191919191919,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4855075028932177,
+   "de_wilcoxon_lfc_nmae": 1.721394523134845,
+   "de_wilcoxon_direction_reach_raw": 0.1559810161310377,
+   "de_wilcoxon_sig_jaccard": 0.0658692490433847
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.5042424242424243,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5167624935003701,
+   "de_wilcoxon_lfc_nmae": 2.1616504138336268,
+   "de_wilcoxon_direction_reach_raw": 0.2407407938138808,
+   "de_wilcoxon_sig_jaccard": 0.0429787292324745
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.5013131313131313,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4892895983681276,
+   "de_wilcoxon_lfc_nmae": 2.480161718166185,
+   "de_wilcoxon_direction_reach_raw": 0.3619408120013545,
+   "de_wilcoxon_sig_jaccard": 0.002282586789511
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.4991919191919192,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4587611769179902,
+   "de_wilcoxon_lfc_nmae": 2.192046155873619,
+   "de_wilcoxon_direction_reach_raw": 0.0948076151324136,
+   "de_wilcoxon_sig_jaccard": 0.0929379042287916
+  }
+ },
+ "bzv06dl_r2_arm_birds": {
+  "P_H1": {
+   "pds_cosine": 0.6751515151515152,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.1916185961769448,
+   "de_wilcoxon_lfc_nmae": 0.9886962555543722,
+   "de_wilcoxon_direction_reach_raw": 0.0806450580442411,
+   "de_wilcoxon_sig_jaccard": 0.0236987623584687
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.7352525252525253,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.6058134504213346,
+   "de_wilcoxon_lfc_nmae": 0.8788315148094368,
+   "de_wilcoxon_direction_reach_raw": 0.4741935776266892,
+   "de_wilcoxon_sig_jaccard": 0.079357330533225
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.7682828282828279,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.6230366501146826,
+   "de_wilcoxon_lfc_nmae": 0.8540656635758102,
+   "de_wilcoxon_direction_reach_raw": 0.4521755664134262,
+   "de_wilcoxon_sig_jaccard": 0.074673472120773
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.597979797979798,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4366962446135669,
+   "de_wilcoxon_lfc_nmae": 0.8384156632914216,
+   "de_wilcoxon_direction_reach_raw": 0.5676793082852019,
+   "de_wilcoxon_sig_jaccard": 0.5224998361927363
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.7166666666666665,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5412155948937122,
+   "de_wilcoxon_lfc_nmae": 0.8982099219867987,
+   "de_wilcoxon_direction_reach_raw": 0.3251908761852447,
+   "de_wilcoxon_sig_jaccard": 0.1130598897485835
+  }
+ },
+ "bzv06dl_r2_arm_birds_dl": {
+  "P_H1": {
+   "pds_cosine": 0.7131313131313132,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.3449500117616192,
+   "de_wilcoxon_lfc_nmae": 1.11846636030181,
+   "de_wilcoxon_direction_reach_raw": 0.0603067465971644,
+   "de_wilcoxon_sig_jaccard": 0.0731667773531069
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.728282828282828,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5605488785568714,
+   "de_wilcoxon_lfc_nmae": 0.9404121170919006,
+   "de_wilcoxon_direction_reach_raw": 0.3705791876524678,
+   "de_wilcoxon_sig_jaccard": 0.0624126970670291
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.7126262626262624,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.6129253135710034,
+   "de_wilcoxon_lfc_nmae": 0.9267496356093043,
+   "de_wilcoxon_direction_reach_raw": 0.399069798691318,
+   "de_wilcoxon_sig_jaccard": 0.067828066852981
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.6436363636363633,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.7094129785614215,
+   "de_wilcoxon_lfc_nmae": 1.1108630720849964,
+   "de_wilcoxon_direction_reach_raw": 0.5391275507913753,
+   "de_wilcoxon_sig_jaccard": 0.1507351925829116
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.6825252525252523,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.497917559785335,
+   "de_wilcoxon_lfc_nmae": 0.9270679642035252,
+   "de_wilcoxon_direction_reach_raw": 0.2777995783777437,
+   "de_wilcoxon_sig_jaccard": 0.097237689675916
+  }
+ },
+ "bzv06dl_r2_arm_dl": {
+  "P_H1": {
+   "pds_cosine": 0.5034343434343431,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5191720083961601,
+   "de_wilcoxon_lfc_nmae": 7.092582645128284,
+   "de_wilcoxon_direction_reach_raw": 0.0555881420314873,
+   "de_wilcoxon_sig_jaccard": 0.1491885159973857
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.5013131313131313,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4794141376535221,
+   "de_wilcoxon_lfc_nmae": 1.6687319992456684,
+   "de_wilcoxon_direction_reach_raw": 0.1350824388033827,
+   "de_wilcoxon_sig_jaccard": 0.0702119997629813
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.501010101010101,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5114132536824996,
+   "de_wilcoxon_lfc_nmae": 2.1500957246502845,
+   "de_wilcoxon_direction_reach_raw": 0.2035002917671416,
+   "de_wilcoxon_sig_jaccard": 0.0480052187214478
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.5107070707070709,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5019133352136709,
+   "de_wilcoxon_lfc_nmae": 2.2855299290315703,
+   "de_wilcoxon_direction_reach_raw": 0.3047956423561848,
+   "de_wilcoxon_sig_jaccard": 0.0033255067865131
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.4968686868686868,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4716874397760631,
+   "de_wilcoxon_lfc_nmae": 2.1308382328401447,
+   "de_wilcoxon_direction_reach_raw": 0.0691428852450271,
+   "de_wilcoxon_sig_jaccard": 0.1037457167420288
+  }
+ },
+ "bzv06dl_r3_birds_dlS": {
+  "P_H1": {
+   "pds_cosine": 0.619090909090909,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.1391067639562435,
+   "de_wilcoxon_lfc_nmae": 0.9942180475308764,
+   "de_wilcoxon_direction_reach_raw": 0.0632496673705684,
+   "de_wilcoxon_sig_jaccard": 0.0107391107782617
+  },
+  "Q_HepG2": {
+   "pds_cosine": 0.6947474747474743,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5414017489911338,
+   "de_wilcoxon_lfc_nmae": 0.9398447954193692,
+   "de_wilcoxon_direction_reach_raw": 0.3511246691907803,
+   "de_wilcoxon_sig_jaccard": 0.0616426837500251
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.6950505050505049,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5567365359976532,
+   "de_wilcoxon_lfc_nmae": 0.9135303304150384,
+   "de_wilcoxon_direction_reach_raw": 0.3685828711347552,
+   "de_wilcoxon_sig_jaccard": 0.0651357835850702
+  },
+  "S_HCT116": {
+   "pds_cosine": 0.5665656565656565,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.3140269333888844,
+   "de_wilcoxon_lfc_nmae": 0.9412335260070648,
+   "de_wilcoxon_direction_reach_raw": 0.4212377509753218,
+   "de_wilcoxon_sig_jaccard": 0.5066687350800616
+  },
+  "S_RPE1": {
+   "pds_cosine": 0.653939393939394,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.4624087332520345,
+   "de_wilcoxon_lfc_nmae": 0.9405217931027824,
+   "de_wilcoxon_direction_reach_raw": 0.2430872067821263,
+   "de_wilcoxon_sig_jaccard": 0.0913045866336178
+  }
+ },
+ "bzv06dl_r3_w05": {
+  "Q_HepG2": {
+   "pds_cosine": 0.7121212121212119,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5702826700002622,
+   "de_wilcoxon_lfc_nmae": 0.9213447373787292,
+   "de_wilcoxon_direction_reach_raw": 0.3976146788808578,
+   "de_wilcoxon_sig_jaccard": 0.0693957749292087
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.7177777777777776,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5892644553679163,
+   "de_wilcoxon_lfc_nmae": 0.8926726498517827,
+   "de_wilcoxon_direction_reach_raw": 0.3919879554880153,
+   "de_wilcoxon_sig_jaccard": 0.0715207539002283
+  }
+ },
+ "bzv06dl_r3_w10": {
+  "Q_HepG2": {
+   "pds_cosine": 0.6970707070707065,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.544734027084113,
+   "de_wilcoxon_lfc_nmae": 0.9376960973808324,
+   "de_wilcoxon_direction_reach_raw": 0.352354077651058,
+   "de_wilcoxon_sig_jaccard": 0.0637563173557618
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.6974747474747474,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5623141639809801,
+   "de_wilcoxon_lfc_nmae": 0.9107816154412498,
+   "de_wilcoxon_direction_reach_raw": 0.3760686632976695,
+   "de_wilcoxon_sig_jaccard": 0.066355958841632
+  }
+ },
+ "bzv06dl_r3_w20": {
+  "Q_HepG2": {
+   "pds_cosine": 0.6820202020202015,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5185840232705168,
+   "de_wilcoxon_lfc_nmae": 0.9508289242364024,
+   "de_wilcoxon_direction_reach_raw": 0.3104544387550835,
+   "de_wilcoxon_sig_jaccard": 0.0562371087116461
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.676969696969697,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5362716565163267,
+   "de_wilcoxon_lfc_nmae": 0.9287496697150596,
+   "de_wilcoxon_direction_reach_raw": 0.3330000759396547,
+   "de_wilcoxon_sig_jaccard": 0.0591996993695699
+  }
+ },
+ "bzv06dl_r3_w40": {
+  "Q_HepG2": {
+   "pds_cosine": 0.6601010101010096,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.497857260433499,
+   "de_wilcoxon_lfc_nmae": 0.9607659423098852,
+   "de_wilcoxon_direction_reach_raw": 0.2641151695504719,
+   "de_wilcoxon_sig_jaccard": 0.0478955410853712
+  },
+  "R_Jurkat": {
+   "pds_cosine": 0.6438383838383838,
+   "de_wilcoxon_direction_fidelity_yield_raw": 0.5333113256333666,
+   "de_wilcoxon_lfc_nmae": 0.94313532840514,
+   "de_wilcoxon_direction_reach_raw": 0.2982186917502916,
+   "de_wilcoxon_sig_jaccard": 0.0546810132918805
+  }
+ }
+}

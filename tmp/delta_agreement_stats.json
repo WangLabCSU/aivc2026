@@ -1,0 +1,22 @@
+{
+ "dualsrcdeep_vs_bizard_v02": {
+  "A": {
+   "pairs": 3624145,
+   "both_nonzero": 3620229,
+   "sign_agree_rate": 0.6432,
+   "sign_agree_weighted": 0.7655
+  },
+  "B": {
+   "pairs": 3624145,
+   "both_nonzero": 3620221,
+   "sign_agree_rate": 0.6256,
+   "sign_agree_weighted": 0.7501
+  },
+  "C": {
+   "pairs": 3624145,
+   "both_nonzero": 3620225,
+   "sign_agree_rate": 0.6327,
+   "sign_agree_weighted": 0.762
+  }
+ }
+}

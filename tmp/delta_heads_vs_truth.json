@@ -1,0 +1,42 @@
+{
+ "head_vs_truth_top50": [
+  {
+   "name": "bizard_v02_top50",
+   "pairs": 0
+  },
+  {
+   "name": "dualsrcdeep_top50",
+   "pairs": 4695,
+   "sign_agree": 0.6584,
+   "weighted": 0.6959
+  }
+ ],
+ "topk_bizard": {
+  "500": {
+   "pairs": 0,
+   "sign_agree": null
+  },
+  "1000": {
+   "pairs": 0,
+   "sign_agree": null
+  },
+  "2000": {
+   "pairs": 0,
+   "sign_agree": null
+  }
+ },
+ "topk_dualsrcdeep": {
+  "500": {
+   "pairs": 1168,
+   "sign_agree": 0.8553
+  },
+  "1000": {
+   "pairs": 1519,
+   "sign_agree": 0.8262
+  },
+  "2000": {
+   "pairs": 1934,
+   "sign_agree": 0.803
+  }
+ }
+}

@@ -1,0 +1,2 @@
+RESULT gwps: rows=81,162,977 unique_pairs=81,162,977 mult=1.00 targets=9,866
+RESULT hct116_all: rows=670,122,948 unique_pairs=669,741,072 mult=1.00 targets=17,358

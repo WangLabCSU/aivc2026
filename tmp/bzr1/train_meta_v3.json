@@ -1,0 +1,80 @@
+{
+  "t_sec": 786.2,
+  "rounds": 500,
+  "seed": 0,
+  "params": {
+    "objective": "reg:pseudohubererror",
+    "tree_method": "hist",
+    "device": "cuda",
+    "max_depth": 8,
+    "eta": 0.05,
+    "subsample": 0.7,
+    "colsample_bytree": 0.6,
+    "huber_slope": 0.05,
+    "seed": 0
+  },
+  "feats": [
+    "x",
+    "ax",
+    "gmean",
+    "gstd",
+    "gq90",
+    "pmean",
+    "pq90",
+    "x_z",
+    "x_rel_p",
+    "x_rel_g",
+    "tg_mean",
+    "tg_std",
+    "tg_q90",
+    "src_id"
+  ],
+  "formulation": "direct-y + partial row decorrelation (mean dir + residual PCs)",
+  "K": 16,
+  "beta": 0.5,
+  "tuning": "2-fold LODO within hold-100; basis from pred rows only",
+  "grid_mean": {
+    "(0, 0.0)": 0.5484,
+    "(0, 0.25)": 0.567,
+    "(0, 0.5)": 0.5995999999999999,
+    "(0, 0.75)": 0.6841999999999999,
+    "(0, 1.0)": 0.8901999999999999,
+    "(4, 0.25)": 0.5973999999999999,
+    "(4, 0.5)": 0.8852,
+    "(4, 0.75)": 0.589,
+    "(4, 1.0)": 0.5402,
+    "(16, 0.25)": 0.5962,
+    "(16, 0.5)": 0.8981999999999999,
+    "(16, 0.75)": 0.5802,
+    "(16, 1.0)": 0.5309999999999999
+  },
+  "baseline_direct": {
+    "mae": 0.0701126828789711,
+    "corr": 0.2523568727251382,
+    "spearman_med": 0.09173105217707661
+  },
+  "baseline_zero_mae": 0.0575416199862957,
+  "model_pred": {
+    "mae": 0.052707407623529434,
+    "corr": 0.5103844352829243,
+    "spearman_med": 0.23825536734395028
+  },
+  "rank_pds": {
+    "nc": 0.7935000000000001,
+    "rawcal": 0.5545,
+    "v3": 0.9118999999999999
+  },
+  "spearman_rows": {
+    "nc": 0.14541655666569137,
+    "rawcal": 0.25105542183631285,
+    "v3": 0.09464663357469327
+  },
+  "gates": {
+    "corr_beats_direct": true,
+    "mae_beats_zero": true,
+    "spearman_beats_direct": true,
+    "pds_beats_both": true,
+    "sp_kept": false
+  },
+  "verdict": "FAIL"
+}

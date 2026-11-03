@@ -1,0 +1,15 @@
+  entry:    A8L3mpuxVO9GsqtI2JxM
+  model:    bizard-v0.10
+  status:   published
+  submitted:2026-10-19T00:03:06.601397Z
+  Rank:                            778
+  Overall:                         0.09221944692891787
+  Perturbation discrimination pds: 0.5082550336740826
+  Expression accuracy mse:         0
+  DE log-FC accuracy nmae:         -0.060501564629378946
+  DE direction fidelity fid:       -0.028895884528864418
+  DE direction reach reach:        0.13101934979361324
+  DE significance overlap jac:     0.0034397472640547047
+  Partition:                       val
+  Panel:                           vcc2026-val-1
+  Anchor set:                      vcc2026-valA-r4+vcc2026-valB-r4+vcc2026-valC-r4

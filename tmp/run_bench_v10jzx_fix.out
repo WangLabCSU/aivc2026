@@ -1,0 +1,21 @@
+[bench jzx-fix] 02:58:10 start
+[bench jzx-fix] rc=0 03:03:27
+[score jzx-fix] rc=0 03:03:31
+[pred jzx-fix] rc=0 03:03:31
+{
+ "pds": 0.29,
+ "jac": -0.0302,
+ "nmae": -1.6679,
+ "fid": -0.297,
+ "reach": 0.0612,
+ "overall_pred": -0.274,
+ "local_raw": {
+  "pds": 0.7619,
+  "jac": 0.0459,
+  "nmae": -6.0,
+  "fid": 0.7464,
+  "reach": 0.1324
+ },
+ "local_anchor": -0.7188997492649567
+}
+[chain done] 03:03:31

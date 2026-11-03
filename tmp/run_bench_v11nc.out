@@ -1,0 +1,21 @@
+[bench nc] 03:37:09 start
+[bench nc] rc=0 03:42:56
+[score nc] rc=0 03:42:59
+[pred nc] rc=0 03:43:00
+{
+ "pds": 0.5314,
+ "jac": 0.0005,
+ "nmae": -0.0846,
+ "fid": -0.0601,
+ "reach": 0.1284,
+ "overall_pred": 0.0859,
+ "local_raw": {
+  "pds": 0.9381,
+  "jac": 0.095,
+  "nmae": -0.3594,
+  "fid": 0.8316,
+  "reach": 0.2371
+ },
+ "local_anchor": 0.2903830219969193
+}
+[chain done] 03:43:00

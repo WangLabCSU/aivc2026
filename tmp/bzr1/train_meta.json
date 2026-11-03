@@ -1,0 +1,52 @@
+{
+  "t_sec": 735.0,
+  "rounds": 500,
+  "seed": 0,
+  "params": {
+    "objective": "reg:pseudohubererror",
+    "tree_method": "hist",
+    "device": "cuda",
+    "max_depth": 8,
+    "eta": 0.05,
+    "subsample": 0.7,
+    "colsample_bytree": 0.6,
+    "huber_slope": 0.05,
+    "seed": 0
+  },
+  "feats": [
+    "x",
+    "ax",
+    "gmean",
+    "gstd",
+    "gq90",
+    "pmean",
+    "pq90",
+    "x_z",
+    "x_rel_p",
+    "x_rel_g"
+  ],
+  "n_train": 3740985,
+  "n_hold": 3740985,
+  "baseline_direct": {
+    "mae": 0.07817055284976959,
+    "corr": 0.0007132092966069536,
+    "spearman_med": 0.0001994411496501546
+  },
+  "baseline_zero_mae": 0.0578039176762104,
+  "model_pred": {
+    "mae": 0.058180999010801315,
+    "corr": 0.00012965615780809455,
+    "spearman_med": 0.00014434496820152687
+  },
+  "resid_only_diag": {
+    "mae": 0.058180999010801315,
+    "corr": 0.5863350816262334,
+    "spearman_med": 0.6042634117098302
+  },
+  "gates": {
+    "corr_beats_direct": false,
+    "mae_beats_zero": false,
+    "spearman_beats_direct": false
+  },
+  "verdict": "FAIL"
+}

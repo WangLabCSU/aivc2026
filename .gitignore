@@ -34,6 +34,16 @@ tmp/.watchdog_*.lock
 tmp/QUARantine_dup/
 tmp/bzr1/amp_hold_v1.parquet
 tmp/bzarch_probe2_lfcs.npy
+
+# ---------- 模型权重/缓存/数据zip (iter043-140, NFS已在盘可复用) ----------
+/vcc_2026_controls_final.zip
+tmp/v08_topk/
+tmp/v06_dl_smoke/
+tmp/v06_dl_smoke_se600m/
+tmp/bzr1/M_ctx*.json
+tmp/bzr1/ntc_cells_q.npy
+tmp/bzr1/sim5_cache.npz
+tmp/bzr1/pred_means_g6146.npy
 *.swp
 
 # --- 例外: 小体积产物入 git（提交分数快照/校准框架，大文件 h5ad/vcc 仍不入）---

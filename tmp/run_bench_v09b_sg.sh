@@ -1,6 +1,6 @@
 #!/bin/bash
 # iter030-修正6 v0.9b sign-gate SG100/SG50 双链: bench → score → heur predict
-set -u
+# (不用 set -u: conda deactivate 钩子 unbound variable 会误杀)
 source /data/home/wsx/miniconda3/etc/profile.d/conda.sh
 conda activate aivc2026
 cd /data/resource/wanglab/aivc/aivc2026
