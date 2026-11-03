@@ -999,3 +999,26 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - timer1025 存活 (uptime 42h58m); 距 10-25 发射 ~9.3h; 无异常
 ## iter043-134 (10-24 15:17 UTC): 常规tick — 静默期
 - timer1025 存活 (uptime 43h29m); 距 10-25 发射 ~8.75h; 无异常
+## iter043-135 (10-25 13:50 UTC): loop重启接管 — v0.20 published, 第2发 v0.21 (HY8复刻) 接线发射
+- 上 session loop 断于 iter043-134 (10-24 15:17 UTC); 本 tick 新 session 接管, /loop 动态自续模式
+- **v0.20 (hykens, OfOYrkK5HQa0nENXyjlY) 已于 00:02 UTC 准点发射, 00:21 published** ✅; timer1025 第2发占位未接线 (预期内)
+- 竞赛剩余: **11.4 天** (截止 11-05 23:59 UTC); 只最后一发计奖, 成绩 11-19 公布 (近期 entry score 全 null, 盲射期确认)
+- 弹药库复核: v14–v20 七个 .prep.vcc 全在盘 (3.0G×7) — "弹药清空"仅指发射队列耗尽, 文件可复用重发
+- **决策: 今日第2发 = v0.18 bundle (HY8×λ70) 复用 as bizard-v0.21** (scripts/submit_bizard_v21_1025.sh, task b9dgnylv0)
+  - 依据: 全网格 heur overall_pred HY8 0.0915 = 最优 (hykens 0.0914/HY6 0.0907); 发射后 last 立即升级到网格最优, 零下行 (额度当日作废)
+  - 兼任: 发射链保温 + 盲射期管线可靠性再验证
+- 终局预案 (预注册): 11-05 闭合弹 = bizard-v0.21 同款 (HY8×λ70 bundle 重发), UTC 11-05 上午发射留缓冲; 11-04 起 token 不再消耗于新变体 (无反馈信号, 网格已闭)
+- 2h cancel 红线监控中 (memory vcc-submission-ops)
+## iter043-136 (10-25 14:22 UTC): v0.21 published ✅ — last 升级到网格最优, 10-25 额度 2/2 用满
+- bizard-v0.21 (HY8×λ70 复刻, entry dPBxnKlPGsLATyp75WSi): 13:50:35 提交 → ~14:20 published, 全程 ~29min (上传 16m22s @3.1MiB/s)
+- **当前 last = bizard-v0.21 (HY8×λ70, heur overall_pred 0.0915 网格最优)**; v0.20 hykens (0.0914) 被安全覆盖
+- 10-25 额度 2/2 用满 (v0.20 00:02 + v0.21 13:50); 明日 00:00 UTC 重置
+- 终局预案维持: 静默保持 → 11-04 复核 → 11-05 UTC 上午闭合弹 (bizard-v0.22 = 同 HY8×λ70 bundle, 身份冗余保险) → 收官
+- 无异常; 进入静默保持期
+## iter043-137 (11-03 03:25 UTC): session接管 — 复活断链 + 终局watchdog重装 + at定时闭合弹
+- 上 session (11-02 21:27 EST) 启动的 v22 链 + launch_timer_1105 均**死于 session 退出** (ps 全空, v22 log 仅 attempt 1 无输出); 本 tick 接管, /loop 动态自续模式
+- 竞赛剩余: **~68.5h** (截止 11-05 23:59 UTC); 只最后一发计奖, 成绩 11-19 公布; 今日 (11-03 UTC) 额度 0/2 未动
+- 安全复核全绿: CLI 0.3.0 在位; v18 bundle 目标=controls_final 官方清单 (controls vs controls_final 300靶大幅换血, 旧清单已失效, bundle 对的是新清单 ✓); v0.21 last (dPBxnKlPGsLATyp75WSi) published/FINAL 完好; 10-25 后无新 bench (网格结论 HY8×λ70 0.0915 不变)
+- **新装 scripts/submit_final_watchdog.sh (统一发射链)**: launching/任一phase 卡死>2h 红线 → cancel --yes 重发 (v23 老链无此逻辑只记 FAIL); 全 vcc 调用包 timeout; DBUS 清空; flock 防双发; PUBLISHED_OK 幂等; GUARD 护栏后不新发只等终态 (官方: 截止前受理、在途 processing 仍计奖)
+- **执行**: (1) 11-03 03:22 UTC 复跑 v0.22 演练链 (setsid 脱离, guard 21:00 UTC); (2) 闭合弹 v0.23 改用 **at -t 202611042002** (本地 11-04 20:02 EST = UTC 11-05 01:02, job 2, atd 存活且重启后会补跑) — 废弃裸 sleep-loop timer (两个已全部饿死, 不可信)
+- 终局预案不变: v0.22/v0.23 同 v18 bundle (HY8×λ70), Nov 5 guard 21:00 UTC, 2h 红线自动 cancel+refire
