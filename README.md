@@ -45,6 +45,8 @@ aivc2026/
 | `pert_counts.csv` | 300 个待预测靶基因 |
 | `manifest.json` | 面板元信息（300 扰动 × 400 cells/pert 的真值由 Arc 保留） |
 
+`data/raw/controls_final/` 为最终面板（final phase，context **D/E/F**，CLI ≥0.3.0，`vcc datasets download controls-final`）：同样 300 靶但**与验证期 controls 完全换血**（数百靶不同，勿混用两份 pert_counts/gene_names），预测 360,000 cells × 18,533 genes（每 context 120k）。终局提交链与决策档案见 [docs/team/final_phase_archive_2026.md](docs/team/final_phase_archive_2026.md)；统一发射链 `scripts/submit_final_watchdog.sh`（2h 停滞 cancel+refire / flock 幂等 / 截止护栏）。
+
 ## 快速开始
 
 ```bash

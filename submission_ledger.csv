@@ -24,3 +24,25 @@ date,submitter,pred_file,git_commit,loco_score,online_score_per_metric,quota_use
 2026-10-12,wsx,20261008_bizard_v10,32dcc51,0.3521,"pds=0.2852;mse=0;nmae=-0.0168;fid=-0.0319;reach=0.0711;jac=-0.0034;overall=+0.0507;rank=884",architecture,BizardNet v1.0首测:+0.0507正向;家族偏移-0.30(同启发式家族,远优swarm的-0.43)——transformer+skip载体可迁移;fid-0.032达冠军水平(+0.0886的-0.034);nmae-0.017全场最佳;短板pds 0.285/reach 0.071=幅度不足(λ39按bench峰外推,官方需更高λ·sd);网络SSL干扰下重试链上传成功
 2026-10-12,wsx,20261012_bizard_ccrn_v02,32dcc51,0.3907,"pds=NA;mse=0;nmae=NA;fid=NA;reach=NA;jac=NA;overall=-0.0408;rank=1116",architecture,CCRN v0.2(PBT 0.3907)官方-0.0408:bench+0.04优势官方反转-0.09——PBT优化出的指纹条件化捷径不迁移(偏移-0.43同swarm家族);CCRN线封存;BizardNet(skip载体)成bizard家族唯一迁移正解(偏移-0.30)
 2026-10-14,wsx,20261012_bizard_v10_lam55,Sp0ec77FFB8ayk57ZmDS,NA,"pds=0.3045;mse=0;nmae=-0.1743;fid=-0.0141;reach=0.0815;jac=0.0003;overall=+0.0330;rank=925",calibration,BizardNet v1.0 λ55(vs λ39 +0.0507):整体-0.018回退——λ上探失准,pds+0.019/nmae-0.157恶化主导,fid-0.014 Champion-class best-so-far;λ55官方移位律×1.4预测+0.05~0.07未兑现(实际+0.033),λ曲线λ39>λ55峰值应在λ39-55间;v1.0基线维持λ39,mse恒0第17发
+2026-10-14,wsx,NA,NA,NA,"overall=0.04565;rank=908",daily-best,bizard-v0.2=λ47: v02族λ曲线第4点; 首个plain命名提交(bizard-vN.N)
+2026-10-15,wsx,20261015_bizard_v02_lam37,NA,NA,"overall=0.05021;rank=886",daily-best,bizard-v0.3=λ37: v02族λ曲线峰值(37>35>47) 击穿0.05
+2026-10-15,wsx,20261015_bizard_v02_lam35,NA,NA,"overall=0.04912;rank=887",calibration,bizard-v0.4=λ35: λ下探穷尽; in-family λ最优~36-38
+2026-10-16,wsx,20261016_bizard_v05,NA,NA,"overall=0.00066;rank=1028",architecture,bizard-v0.5=坏bundle事故: 与v04_agg bit-identical(stale copy) gen2池官方塌方local 0.2741→0.00066; 制度化build manifest纪律
+2026-10-16,wsx,20261005_dualsrcdeep_lam75,NA,NA,"overall=0.080944;pds=0.5184;nmae=-0.1548;fid=-0.0185;reach=0.1361;jac=0.0044;rank=789",daily-best,bizard-v0.6=λ75: 方向四项(pds/fid/reach/jac)全纪录但nmae过冲; 官方λ峰确证6.5; 4项增益不敌nmae一项
+2026-10-17,wsx,20261016_dualsrcdeep_lam70mf14,NA,NA,"overall=0.085809;rank=782",daily-best,bizard-v0.7=λ70mf14: 纯λ轴探针; 方向/幅度在λ轴分离确证
+2026-10-18,wsx,20261018_bizard_v08_hcx,NA,NA,"overall=0.085867;rank=788",calibration,bizard-v0.8=hcx换源探针: heur 0.0896→官方0.085867(gap -0.0037)
+2026-10-18,wsx,20261018_bizard_v09_hy12,NA,NA,"overall=0.092378;pds=0.5062;nmae=-0.0575;fid=-0.058;rank=762",daily-best,bizard-v0.9=HY12×λ70: 系列最高; HY构造臂官方兑现; official-mode anchor 0.3144全场最佳
+2026-10-19,wsx,NA,NA,NA,"overall=0.092219;pds=0.5083;nmae=-0.0605;fid=-0.0289;reach=0.1310;jac=0.0034;rank=764",daily-best,bizard-v0.10=HY8×λ70: 与HY12差-0.00016; HY构造族官方平台0.0922-0.0924
+2026-10-20,wsx,NA,NA,NA,"overall=-0.0072;pds=0.2776;nmae=0.0450;fid=-0.4163;reach=0.0710;jac=-0.0206;rank=1085",calibration,bizard-v0.11=λ2.5 mse轴探针: pds腰斩; mse轴对λ封闭(轴19)
+2026-10-20,wsx,NA,NA,NA,"overall=0.092247;pds=0.5087;nmae=-0.0605;fid=-0.0290;reach=0.1309;jac=0.0034;rank=783",calibration,bizard-v0.12=HY8×λ70+mf28: max_fold首点无差(轴20); mf族全维穷尽
+2026-10-21,wsx,20261021_bizard_v13_hy12v25,NA,NA,"overall=0.03333;pds=0.5080;fid=-0.039;rank=984",architecture,bizard-v0.13=HY12+vcc2025 16靶注入: nmae恶化-0.34; 官方同源≠同分布(轴21); 22轴全档封闭
+2026-10-22,wsx,20261022_bizard_v14_final_v09replica,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1;anchor=testD/E/F-r1",final-blind,bizard-v0.14=v09replica generic-on: final面板全链打通(prep 0.3.0→上传16min→published); 与v0.15构成盲发对照
+2026-10-22,wsx,20261022_bizard_v15_final_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.15=nogeneric保守版: 与v0.14单变量对照(generic guides处理)
+2026-10-23,wsx,20261023_bizard_v16_final_hy6_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.16=HY6×λ70: final网格点
+2026-10-23,wsx,20261023_bizard_v17_final_hy12_lam62_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.17=HY12×λ62: final网格点
+2026-10-24,wsx,20261024_bizard_v18_final_hy8_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.18=HY8×λ70: heur overall_pred 0.0915全网格最优; 终局弹药源(v0.21/22/23复刻)
+2026-10-24,wsx,20261024_bizard_v19_final_hy12_lam78_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.19=HY12×λ78: final网格点
+2026-10-25,wsx,20261025_bizard_v20_final_hykens_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.20=hykens: final网格点(heur 0.0914)
+2026-10-25,wsx,20261024_bizard_v18_final_hy8_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.21=v18复刻: last刷新为网格最优; 10-25额度2/2
+2026-11-03,wsx,20261024_bizard_v18_final_hy8_nogeneric,8fe9ebc,NA,"blind;mode=FINAL;panel=vcc2026-test-1;entry=7hpdoYjVOSgydX5KBDUB",final-blind,bizard-v0.22=v18复刻: 演练+CLI 0.3.0链路保温+last刷新; watchdog链首发(at+flock+2h红线)
+2026-11-05,wsx,20261024_bizard_v18_final_hy8_nogeneric,8fe9ebc,NA,"scheduled;at job 2 = UTC 11-05 01:02;GUARD=21:00UTC",final-blind,bizard-v0.23=闭合弹(计奖): at定时+watchdog(2h停滞cancel+refire); 只最后一发计奖
