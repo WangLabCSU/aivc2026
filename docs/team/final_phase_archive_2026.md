@@ -13,7 +13,7 @@
 | 10-22 | **最终测试集发布**: `controls-final`, context D/E/F, 360k cells × 18533 genes, 面板 `vcc2026-test-1`, 锚 testD/E/F-r1 |
 | 10-25 14:20 | final 期第 7 发 v0.21 published, 进入静默保持 |
 | 11-03 03:22 | v0.22 演练复刻 (CLI 0.3.0 链路保温 + last 刷新) |
-| **11-05 01:02** | **闭合弹 v0.23 定时发射 (at job 2)**, GUARD 21:00 UTC |
+| **11-04 02:39** | **闭合弹 v0.23 提前发射 (用户指令, watchdog 链), 03:09 published — entry beDqtDiHkdbzT5fCcYBy** |
 | **11-05 23:59** | **截止**; 截止前受理、在途 processing 仍计奖 |
 | 11-19/20 | 虚拟授奖仪式, final 成绩解卷 |
 
@@ -52,7 +52,7 @@
 | bizard-v0.20 | 10-25 | OfOYrkK5HQa0nENXyjlY | hykens | 盲 | — | 网格点 (0.0914) |
 | bizard-v0.21 | 10-25 | dPBxnKlPGsLATyp75WSi | =v18 复刻 | 盲 | — | last 升至网格最优 |
 | bizard-v0.22 | 11-03 | 7hpdoYjVOSgydX5KBDUB | =v18 复刻 | 盲 | — | 演练 + CLI 0.3.0 保温 |
-| bizard-v0.23 | 11-05 (定) | — | =v18 复刻 | 盲 | — | **闭合弹 (计奖)** |
+| **bizard-v0.23** | **11-04** | **beDqtDiHkdbzT5fCcYBy** | =v18 复刻 | 盲 | — | **闭合弹 published 03:09 UTC = 最后一发计奖发** |
 
 更早期启发式/fusion/ens 时代 (09-28 ~ 10-09, l0→ens_alpha05) 见 `submission_ledger.csv` 前段; 官方快照全集 `outputs/metrics/*_online.json`。
 

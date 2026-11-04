@@ -45,4 +45,4 @@ date,submitter,pred_file,git_commit,loco_score,online_score_per_metric,quota_use
 2026-10-25,wsx,20261025_bizard_v20_final_hykens_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.20=hykens: final网格点(heur 0.0914)
 2026-10-25,wsx,20261024_bizard_v18_final_hy8_nogeneric,NA,NA,"blind;mode=FINAL;panel=vcc2026-test-1",final-blind,bizard-v0.21=v18复刻: last刷新为网格最优; 10-25额度2/2
 2026-11-03,wsx,20261024_bizard_v18_final_hy8_nogeneric,8fe9ebc,NA,"blind;mode=FINAL;panel=vcc2026-test-1;entry=7hpdoYjVOSgydX5KBDUB",final-blind,bizard-v0.22=v18复刻: 演练+CLI 0.3.0链路保温+last刷新; watchdog链首发(at+flock+2h红线)
-2026-11-05,wsx,20261024_bizard_v18_final_hy8_nogeneric,8fe9ebc,NA,"scheduled;at job 2 = UTC 11-05 01:02;GUARD=21:00UTC",final-blind,bizard-v0.23=闭合弹(计奖): at定时+watchdog(2h停滞cancel+refire); 只最后一发计奖
+2026-11-04,wsx,20261024_bizard_v18_final_hy8_nogeneric,beb82d5,NA,"published;mode=FINAL;panel=vcc2026-test-1;anchor=testD/E/F-r1;entry=beDqtDiHkdbzT5fCcYBy",final-blind,bizard-v0.23=闭合弹提前发射(用户指令 11-04 02:39UTC): last=网格最优HY8×λ70; 上传16m29s+scoring→published 03:09全程30min; **最后一发=计奖发**; at job 2已拆除(冗余)

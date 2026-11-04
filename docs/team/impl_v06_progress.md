@@ -1027,3 +1027,8 @@ v0.12 raw: pds_cosine 0.7302 / **expr_mse_unbiased_capped_norm 6.1912** / nmae 1
 - **闭合弹就位**: at job 2 (11-04 20:02 EST = UTC 11-05 01:02) → scripts/submit_final_watchdog.sh bizard-v0.23, GUARD 21:00 UTC, 2h 停滞红线自动 cancel+refire; 本链已由 v0.22 全链路验证
 - **材料存档四批 commit**: 8fe9ebc (watchdog链+断链复活) / 7ce6730 (ledger 26→48行全补 v0.2-v0.23 + docs/team/final_phase_archive_2026.md + README final面板节) / f8752c8 (submit脚本v09-v21+网格configs+历史定时器) / 001fc84 (tmp探索工件全量, M_ctx权重/缓存/zip按gitignore排除) — 工作树清零
 - 终局态势: last = v0.22 (网格最优), 11-04 静默 (额度不用), 11-05 01:02 UTC v0.23 闭合 → 23:59 截止, 11-19 解卷
+## iter043-142 (11-04 03:15 UTC): 闭合弹提前落位 — v0.23 published ✅ 竞赛提交终局
+- 用户指令"能发就发最后最优版" → 最优版在库 (v18 bundle HY8×λ70, 4次官方盲发验证) → 02:39 UTC watchdog 链发射 bizard-v0.23
+- **published 03:09:48 UTC** (entry beDqtDiHkdbzT5fCcYBy, 上传16m29s@3.1MiB/s + scoring→全程30min): FINAL/panel test-1/anchor testD/E/F-r1 — **最后一发 = 计奖发**, last=网格最优
+- at job 2 已拆除 (atrm, 冗余); ledger v0.23 行 scheduled→published 实录; archive §1/§3 更新
+- 竞赛提交阶段终结: 11-05 23:59 UTC 截止前无任何进一步动作需要; 11-19/20 授奖仪式解卷 (7发final盲分 + v0.23计奖发, 阅读指南见 final_phase_archive_2026.md §7)
