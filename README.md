@@ -61,6 +61,40 @@ vcc prep outputs/submissions/<name>.h5ad -g data/raw/controls/gene_names.csv \
       --perts data/raw/controls/pert_counts.csv -o outputs/submissions/<name>.vcc
 ```
 
+## 竞赛已收官（2026-11-05 截止）：文档导读
+
+本仓库现为**复盘/学习档案**。按目的选读：
+
+### 学习评测体系（指标怎么算的）
+| 文档 | 内容 |
+|---|---|
+| [docs/research/upstream/](docs/research/upstream/) | **cell-eval2 官方指标规格书闭卷镜像**（46KB 全文 + 18KB 精简卡，含 commit sha 与阅读路线）——六指标公式唯一权威出处 |
+| [docs/research/2026-09-28_官方规则评分与工具链.md](docs/research/2026-09-28_官方规则评分与工具链.md) | 官方规则/评分/CLI 速查（已核实官网与 wiki） |
+| [docs/research/bench_reliability_final.md](docs/research/bench_reliability_final.md) | 本地评测可靠性终版：哪些指标可本地复现、仿射换算、方差分解 |
+| [docs/research/2026-09-30_本地官方校准框架.md](docs/research/2026-09-30_本地官方校准框架.md) | 本地 bench 框架（cell-eval2 + 五上下文面板 + 锚点归一化） |
+
+### 了解本队方法与终局（bizard 家族）
+| 文档 | 内容 |
+|---|---|
+| [docs/team/final_phase_archive_2026.md](docs/team/final_phase_archive_2026.md) | **终局存档**：时间线、23 发官方成绩全表、封闭轴清单、复现路径、解卷日指南 |
+| [docs/bizard/](docs/bizard/) | bizard 架构与 v01–v10 演进 |
+| [docs/team/impl_v06_progress.md](docs/team/impl_v06_progress.md) | iter 全量过程日志（append-only 台账） |
+| [docs/iterations/](docs/iterations/) | 每轮迭代预注册与结果（iter001 起） |
+
+### 核心数据文件（大文件在 NFS 盘上，不在 git）
+| 路径 | 状态 | 说明 |
+|---|---|---|
+| `submission_ledger.csv` | git 内 | 提交台账（48 发全记录，核心协作文件） |
+| `outputs/submissions/` | **NFS 留盘** | 52 组提交 bundle（.h5ad + .vcc，368G）；终局弹药 = `20261024_bizard_v18_final_hy8_nogeneric.prep.vcc` |
+| `outputs/metrics/` | JSON 快照进 git，h5ad/bundle 留 NFS | 官方分数 machine snapshot 全集 = 权威读数源（151G） |
+| `logs/submit_bizard_v*.log` | NFS 留盘 | 每发提交完整链路日志 |
+| `tmp/bzr1/` | 脚本链进 git，>15MB 权重/缓存留 NFS | bzr1 校准器训练链全档（131M） |
+| `tmp/state_zh_input_hepg2.h5ad` | NFS 留盘 | Q_HepG2 bench 输入快照 |
+| `tmp/QUARantine_dup/` | **已删（2026-11-10）** | 7.1G bit-identical 隔离区；正主 sha 验证在盘后清除，事故记录见台账与终局存档 §6 |
+| `.cache/verifylibs` | **已删（2026-11-10）** | 库校验缓存，可再生 |
+
+NFS 单点风险：仓库 git 已镜像至 GitHub `WangLabCSU/aivc2026`（private，2026-11-10 push）。
+
 ## 协作规范（要点）
 
 1. **git 为主干记录**：大文件一律不进 git（已 ignore）；代码进 `src/`，实验配置进 `configs/`。

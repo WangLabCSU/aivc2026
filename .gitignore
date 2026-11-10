@@ -29,7 +29,7 @@ slurm-*.out
 .idea/
 .DS_Store
 
-# ---------- 运行时/隔离区 (iter043-139) ----------
+# ---------- 运行时/隔离区 (iter043-139; 隔离区2026-11-10已删, 规则保留防复发) ----------
 tmp/.watchdog_*.lock
 tmp/QUARantine_dup/
 tmp/bzr1/amp_hold_v1.parquet

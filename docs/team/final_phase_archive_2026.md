@@ -86,7 +86,12 @@
 - `outputs/submissions/*.prep.vcc`: v14–v22 弹药全档 (3.0–3.2GB × 7+); **v18 = 终局弹药**
 - `outputs/metrics/*_online.json`: 官方分数 machine snapshot 全集 (权威读数源)
 - `logs/submit_bizard_v*.log`: 每发完整链路日志 (含 entry/published 时间线)
-- `tmp/QUARantine_dup/`: 7.1G 重复 bundle 隔离区 (bit-identical 事故 v0.5 的产物, 勿删勿提交)
+- ~~`tmp/QUARantine_dup/`: 7.1G 重复 bundle 隔离区~~ (**2026-11-10 已删**: bit-identical 双胞胎,
+  正主 `outputs/submissions/20261016_dualsrcdeep_lam70mf14.vcc` sha256 `019b95422af18ab6` 删前已验证在盘;
+  v0.5 事故本身以台账 + docs 记录为准, 大文件不再占盘)
+- `tmp/bzr1/` (~130M, **保留**): bzr1 校准器训练链全部脚本/日志/中间件 — iter043-140 已入库,
+  其中 >15MB 权重矩阵 (M_ctx*.json / M_amp_*.json) 与缓存 (sim5_cache.npz 等) 按 gitignore 留 NFS 不进 git
+- `tmp/state_zh_input_hepg2.h5ad` (33M, **保留**): Q_HepG2 bench 输入快照 (gitignore, NFS 留盘)
 - `docs/team/impl_v06_progress.md`: iter 全量过程日志 (append-only 台账)
 - `submission_ledger.csv`: 提交台账 (核心协作文件, 本次已补全至 v0.23)
 - 关键脚本: `scripts/submit_final_watchdog.sh` (终局发射链), `tmp/launch_timer_*.sh` (历史定时器, 已废弃勿再用)

@@ -145,7 +145,7 @@ Sat Oct 17 03:40:00 AM UTC 2026
 - 3batch.parquet 系 build_orion_signatures_v3.py 备份的 hct116_all 旧代 (同 xatlas HCT116_3batches.h5ad, 不同构建参数), 非独立第三源。
 - 官方202共同靶 779万对 logFC: abs差中位数 0.0005 (p90 0.0363, corr 0.52) — 近重复; 加入=给 hct116 双倍权重, 分布形态扰动 (与 top-k/γ 同构), 非新信息注入。
 - 覆盖零增益: 3batch-only vs hct116_all (official)=[]; SPATA20 仍无解 (gwps∪hct116_all∪3batch=299/300)。
-- 裁定: 弃 (同数据冗余源)。通过 coverage law (交集202>0) 但信息量=0, 不建 config 不花算力。v0.8 重复 artifact 已隔离至 tmp/QUARantine_dup/ (outputs/submissions 清空防误提)。
+- 裁定: 弃 (同数据冗余源)。通过 coverage law (交集202>0) 但信息量=0, 不建 config 不花算力。v0.8 重复 artifact 已隔离至 tmp/QUARantine_dup/ (outputs/submissions 清空防误提)。[2026-11-10 注: 隔离区已删 — 与正主 20261016_dualsrcdeep_lam70mf14.vcc (sha 019b95422af18ab6) 逐字节一致, 见 final_phase_archive_2026.md §6]
 - 结构项清单仍空窗: 现有九签名源中仅 gwps/hct116_all 有官方交集, 全部加源组合已被枚举穷尽 (k562_ess/hepg2/jurkat/rpe1/norman/tahoe 交集0, 3batch 冗余, norman 3靶可忽略) → 加源路径正式封死; 下一结构项需新信息族 (非签名源维度)。10-17 剩 1 发 hold 等 10-18 重置。
 - 冻结未动(BizardNet方向头/λ链λ47=bizard-v0.2/affine/gate_report/C2 g/sign_fix关闭/LOCO禁令/PBT奖励)
 
